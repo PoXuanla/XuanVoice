@@ -10,7 +10,7 @@ const SongWatchList = (props) => {
         return (
           <Box key={index} mb={1}>
             <ListCell songData={songData} songIndex={index + 1} />
-            {index !== songData.length - 1 ? <Divider pt={1} /> : null}
+            {index !== songListData.length - 1 ? <Divider pt={1} /> : null}
           </Box>
         )
       })}

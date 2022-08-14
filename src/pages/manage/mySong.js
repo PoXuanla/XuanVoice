@@ -2,12 +2,13 @@ import { Box, Typography, Button, Avatar, Divider, CircularProgress, Modal } fro
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import SongList from '../../component/manage/mySong/SongList'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import { fetchUserSong, deleteSong } from '../../api/song'
+import Song from '../../component/manage/mySong/Song'
 
 const MySong = () => {
-  const [songListData, setSongListData] = useState(null)
+  const [songListData, setSongListData] = useState([])
   const [showDelModal, setShowDelModal] = useState(false)
   const [delModalMsg, setDelModalMsg] = useState('')
   const [delSongId, setDelSongId] = useState('')
@@ -15,23 +16,16 @@ const MySong = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    if (Object.keys(user).length !== 0) fetchSong()
-  }, [user])
+    fetchSong()
+  }, [])
 
   const fetchSong = async () => {
-    try {
-      const response = await axios.get(
-        `${process.env.REACT_APP_URL}/api/v1/users/${user._id}/songs`
-      )
-      const data = response.data
-      console.log(`fetch song : ${data.song}`)
-      if (data.song.length !== 0) setSongListData(data.song)
-      else setSongListData([])
-    } catch (e) {
-      console.log(e)
-    }
+    await fetchUserSong()
+      .then((data) => {
+        setSongListData(data.song)
+      })
+      .catch()
   }
-
   const editSongHandler = (songId) => {
     navigate(`/manage/song/${songId}/edit`)
   }
@@ -41,10 +35,19 @@ const MySong = () => {
     setDelSongId(songId)
   }
   const deleteSongHandler = async () => {
-    const response = await axios.delete(`${process.env.REACT_APP_URL}/api/v1/songs/${delSongId}`)
-    //刷新songList
-    fetchSong()
-    setShowDelModal(false)
+    await deleteSong(delSongId)
+      .then(() => {
+        fetchSong()
+        setShowDelModal(false)
+      })
+      .catch(() => {
+        setShowDelModal(false)
+      })
+  }
+  const modalClose = (event, reason) => {
+    if (reason === 'backdropClick') {
+      setShowDelModal(false)
+    }
   }
   return (
     <>
@@ -65,21 +68,22 @@ const MySong = () => {
         songListData.map((song, index) => {
           return (
             <div key={index}>
-              <SongList
+              <Song
                 key={index}
                 name={song.name}
                 image={song.image}
                 songId={song._id}
                 onDelete={openDelSongModal}
                 onEdit={editSongHandler}
-              ></SongList>
-              <Divider />
+              ></Song>
+              {songListData.length - 1 === index ? '' : <Divider />}
             </div>
           )
         })}
       {/* 刪除 Modal */}
       <Modal
         open={showDelModal}
+        onClose={modalClose}
         aria-labelledby='modal-modal-title'
         aria-describedby='modal-modal-description'
       >
@@ -110,11 +114,14 @@ const MySong = () => {
             {delModalMsg}
           </Typography>
           <Box sx={{ textAlign: 'right' }}>
-            <Button onClick={deleteSongHandler}>刪除</Button>
+            <Button variant='contained' onClick={deleteSongHandler}>
+              刪除
+            </Button>
             <Button
               onClick={() => {
                 setShowDelModal(false)
               }}
+              variant='outlined'
             >
               取消
             </Button>

@@ -20,6 +20,8 @@ import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import SongForm from '../../component/manage/mySong/SongForm'
+import { createSong } from '../../api/song'
+import { getAllSongCategories } from '../../api/songCategory'
 
 const UploadMySong = () => {
   const [songCategory, setSongCategory] = useState(null)
@@ -36,18 +38,10 @@ const UploadMySong = () => {
   const dispatch = useDispatch()
   const { isLoading } = useSelector((state) => state.load)
   const navigate = useNavigate()
-  useEffect(() => {
-    const fetchSongCategory = async () => {
-      try {
-        const response = await axios.get(`${process.env.REACT_APP_URL}/api/v1/songCategory`)
-        const responseData = response.data
-        setSongCategory(responseData.SongCategory)
-        console.log(responseData.SongCategory)
-      } catch (e) {
-        console.log(e)
-      }
-    }
-    fetchSongCategory()
+  useEffect(async () => {
+    await getAllSongCategories().then((data) => {
+      setSongCategory(data.SongCategory)
+    })
   }, [])
   const mp3ChangeHandler = (e) => {
     if (mp3Ref.current.files[0]) {
@@ -91,18 +85,24 @@ const UploadMySong = () => {
   }
   const submitHandler = async (formData) => {
     dispatch(setLoading())
-    try {
-      const response = await axios.post(`${process.env.REACT_APP_URL}/api/v1/songs`, formData, {
-        headers: {
-          'Content-Type': `multipart/form-data;`
-        }// find user and return all fields except password
-
-      })
+    await createSong(formData).then(() => {
       dispatch(clearLoading())
-      navigate('/manage/song')
-    } catch (e) {
-      console.log(e)
-    }
+      navigate('/manage/song', { replace: true })
+    })
+    // const accessToken = localStorage.getItem('accessToken')
+    // try {
+    //   const response = await axios.post(`${process.env.REACT_APP_URL}/api/v1/songs`, formData, {
+    //     headers: {
+    //       'Content-Type': `multipart/form-data;`,
+    //       Authorization: `Bearer ${accessToken}`
+    //     } // find user and return all fields except password
+    //   })
+    //   console.log(response.data)
+    //   // dispatch(clearLoading())
+    //   // navigate('/manage/song')
+    // } catch (e) {
+    //   console.log(e)
+    // }
   }
   return (
     <SongForm mode={'create'} onSubmit={submitHandler}></SongForm>

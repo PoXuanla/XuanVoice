@@ -19,6 +19,7 @@ import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { clearLoading, setLoading } from '../slice/loadSlice'
 import { LoadingButton } from '@mui/lab'
+import { getUserInform } from '../api/user'
 const UserInform = () => {
   const [userInform, setUserInform] = useState('')
   const [userSongs, setUserSongs] = useState([])
@@ -27,33 +28,21 @@ const UserInform = () => {
   const { isLoading } = useSelector((state) => state.load)
   const dispatch = useDispatch()
   const account = useParams().account
-  useEffect(() => {
+
+  useEffect(async () => {
     dispatch(setLoading())
-  }, [])
-  useEffect(() => {
-    const fetchUserInform = async () => {
-      try {
-        const response = await axios.get(
-          `${process.env.REACT_APP_URL}/api/v1/users/userInform/${account}`
-        )
-        if (response.data.status !== 'success') {
-          setUserExist(false)
-          dispatch(clearLoading())
-          return
-        }
-        const userInform = response.data.inform
-        const userSongs = response.data.inform.songs
+    await getUserInform(account)
+      .then((data) => {
+        const userInform = data.inform
+        const userSongs = data.inform.songs
         setUserInform(userInform)
         setUserSongs(userSongs)
         dispatch(clearLoading())
-      } catch (e) {
-        console.log(e)
+      })
+      .catch(() => {
         dispatch(clearLoading())
-      }
-    }
-    if (Object.getOwnPropertyNames(user).length !== 0) fetchUserInform()
-  }, [user])
-
+      })
+  }, [])
   return (
     <>
       {isLoading && (

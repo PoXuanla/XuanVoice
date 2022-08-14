@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 import { setLoading, clearLoading } from './loadSlice'
-
+import { checkTokenValid } from '../api/user'
 export const login = createAsyncThunk('auth/login', async ({ account, password }, thunkAPI) => {
   try {
     thunkAPI.dispatch(setLoading())
@@ -26,24 +26,19 @@ export const login = createAsyncThunk('auth/login', async ({ account, password }
     return thunkAPI.rejectWithValue({ message: '請求錯誤' })
   }
 })
-export const validAccessToken = createAsyncThunk(
-  'auth/validAccessToken',
-  async ({ accessToken }, thunkAPI) => {
-    try {
-      const response = await axios.get(`${process.env.REACT_APP_URL}/api/v1/users/test`, {
-        headers: { Authorization: `Bearer ${accessToken}` }
-      })
-      const responseData = response.data
-      if (responseData.status === 'success') {
-        return { user: responseData.user }
-      } else {
-        return thunkAPI.rejectWithValue()
-      }
-    } catch (err) {
-      return thunkAPI.rejectWithValue()
-    }
-  }
-)
+export const validAccessToken = createAsyncThunk('auth/validAccessToken', async (thunkAPI) => {
+  let isValid = false
+  let user = {}
+  await checkTokenValid()
+    .then((data) => {
+      isValid = true
+      user = { user: data.user }
+    })
+    .catch(() => {
+    })
+
+  return isValid ? user : thunkAPI.rejectWithValue()
+})
 export const register = createAsyncThunk('auth/register', async (data, thunkAPI) => {
   try {
     thunkAPI.dispatch(setLoading())
@@ -68,7 +63,8 @@ export const register = createAsyncThunk('auth/register', async (data, thunkAPI)
 const authSlice = createSlice({
   name: 'auth',
   initialState: {
-    isLoggedIn: localStorage.getItem('accessToken') ? true : false,
+    // isLoggedIn: localStorage.getItem('accessToken') ? true : false,
+    isLoggedIn: false,
     user: {} //
   },
   reducers: {
@@ -76,7 +72,7 @@ const authSlice = createSlice({
       localStorage.removeItem('accessToken')
       state.isLoggedIn = false
       state.user = {}
-    },
+    }
   },
   extraReducers: {
     [login.fulfilled]: (state, action) => {
@@ -89,6 +85,7 @@ const authSlice = createSlice({
     },
     [validAccessToken.fulfilled]: (state, action) => {
       state.isLoggedIn = true
+      console.log(action.payload)
       // return { ...initialState, user: action.payload.user }
       state.user = action.payload.user
     },

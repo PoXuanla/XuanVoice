@@ -1,5 +1,5 @@
 import { Box, Avatar, Typography, Button, Grid } from '@mui/material'
-const SongList = (props) => {
+const Song = (props) => {
   const editHandler = (songId) => (e) => {
     props.onEdit(songId)
   }
@@ -25,4 +25,4 @@ const SongList = (props) => {
     </Grid>
   )
 }
-export default SongList
+export default Song

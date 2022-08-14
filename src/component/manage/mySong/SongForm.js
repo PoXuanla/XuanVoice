@@ -117,7 +117,6 @@ const SongForm = (props) => {
     formData.append('intro', intro)
     formData.append('lyric', lyric)
 
-    if (mode === 'create') formData.append('author', user._id)
     if (mp3Ref.current.files[0] !== undefined) formData.append('mp3', mp3Ref.current.files[0])
     if (imgRef.current.files[0] !== undefined) formData.append('img', imgRef.current.files[0])
     props.onSubmit(formData)

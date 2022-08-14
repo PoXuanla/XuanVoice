@@ -22,6 +22,8 @@ const Manage = () => {
   const [selectMenuIndex, setSelectMenuIndex] = useState(0)
   const breakCrumbString = useLocation().pathname.split('/').splice(1) //用於 BreakCrumb
   const TCBreakCrumbString = []
+
+
   //Convert to Tranditional Chinese
   for (let i = 0; i < breakCrumbString.length; i++) {
     if (breakCrumbString[i] === 'manage') TCBreakCrumbString.push('音樂庫')
@@ -29,10 +31,10 @@ const Manage = () => {
     if (breakCrumbString[i] === 'song') TCBreakCrumbString.push('我的作品')
     if (breakCrumbString[i] === 'songlist') TCBreakCrumbString.push('我的歌單')
     if (breakCrumbString[i] === 'upload') TCBreakCrumbString.push('上傳')
-    if(breakCrumbString[i] ==='edit')TCBreakCrumbString.push('編輯歌曲')
+    if (breakCrumbString[i] === 'edit') TCBreakCrumbString.push('編輯歌曲')
   }
   if (breakCrumbString.length == 1) TCBreakCrumbString.push('我的喜歡')
-  
+
   //Change Menu Selected when Url Pathname Change
   useEffect(() => {
     if (breakCrumbString[1] === undefined) setSelectMenuIndex(0)
@@ -52,13 +54,7 @@ const Manage = () => {
     if (index === 1) {
       let link = `/${breakCrumbString[0]}/${breakCrumbString[1]}`
       return (
-        <Link
-          key={index}
-          underline='hover'
-          color='inherit'
-          component={RouterLink}
-          to={link}
-        >
+        <Link key={index} underline='hover' color='inherit' component={RouterLink} to={link}>
           <Typography key={index} color='text.primary' variant='body1' sx={{ fontWeight: 700 }}>
             {data}
           </Typography>
@@ -84,7 +80,10 @@ const Manage = () => {
     setSelectMenuIndex(index)
   }
   return (
-    <Container maxWidth={false} sx={{ bgcolor: 'background.default',minHeight:'calc(100vh - 68.5px)',height:'100%' }}>
+    <Container
+      maxWidth={false}
+      sx={{ bgcolor: 'background.default', minHeight: 'calc(100vh - 68.5px)', height: '100%' }}
+    >
       <Grid container>
         <Grid
           item
@@ -99,14 +98,14 @@ const Manage = () => {
               padding: 2,
               boxShadow: '0 2px 4px rgb(0 0 0 / 10%), 0 8px 16px rgb(0 0 0 / 10%)',
               borderRadius: 2,
-              bgcolor:'action.hover'
+              bgcolor: 'action.hover'
             }}
           >
             <Typography
               variant='h6'
               sx={{
                 fontWeight: 700,
-                color: 'text.primary',
+                color: 'text.primary'
               }}
             >
               音樂庫
@@ -147,17 +146,18 @@ const Manage = () => {
           xs={12}
           sm={9}
           sx={{
-            padding: 2,
-            
+            padding: 2
           }}
         >
-          <Breadcrumbs aria-label='breadcrumb' sx={{marginBottom:2}}>{BreakCrumbData}</Breadcrumbs>
+          <Breadcrumbs aria-label='breadcrumb' sx={{ marginBottom: 2 }}>
+            {BreakCrumbData}
+          </Breadcrumbs>
           <Box
             sx={{
               boxShadow: '0 2px 4px rgb(0 0 0 / 10%), 0 8px 16px rgb(0 0 0 / 10%)',
               padding: 2,
               borderRadius: 2,
-              bgcolor:'action.hover'
+              bgcolor: 'action.hover'
             }}
           >
             <Outlet />
