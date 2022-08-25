@@ -1,60 +1,91 @@
 import React, { useEffect } from 'react'
-import './App.css'
+import { useSelector, useDispatch } from 'react-redux'
+import { Routes, Route } from 'react-router-dom'
+import { Box } from '@mui/material'
+import { alpha } from '@mui/material/styles'
+import { ThemeProvider, createTheme, rgbToHex } from '@mui/material/styles'
 import Nav from './component/Nav/Nav'
-import { Routes, Route, useNavigate, useLocation } from 'react-router-dom'
+import IsLoggedIn from './component/IsLoggedIn'
+import { validAccessToken } from './slice/authSlice'
 import Main from './pages/main'
 import Browse from './pages/browse'
 import Login from './pages/login'
 import Register from './pages/register'
-import { Box } from '@mui/material'
 import Manage from './pages/manage/manage'
 import Like from './pages/manage/like'
 import MySong from './pages/manage/mySong'
 import UploadMySong from './pages/manage/uploadMySong'
 import UpdateMySong from './pages/manage/updateMySong'
 import Song from './pages/song'
-import { useSelector, useDispatch } from 'react-redux'
-import { Navigate } from 'react-router-dom'
-import { ThemeProvider, createTheme } from '@mui/material/styles'
-import { grey } from '@mui/material/colors'
-import { validAccessToken } from './slice/authSlice'
 import UserInform from './pages/userInform'
-import PageNotFound from './pages/pageNotFind'
+import PageNotFound from './pages/pageNotFound'
+import MySongLists from './pages/manage/mySongLists'
 import MySongList from './pages/manage/mySongList'
+import {
+  blue,
+  blueGrey,
+  deepPurple,
+  green,
+  grey,
+  orange,
+  pink,
+  red,
+  teal
+} from '@mui/material/colors'
 const App = () => {
-  const { isLoggedIn, user } = useSelector((state) => state.auth)
   const { mode } = useSelector((state) => state.mode)
   const dispatch = useDispatch()
-  const navigate = useNavigate()
-  const location = useLocation()
-  useEffect(() => {
-    if (location.pathname.split('/')[1] === 'manage') {
-      dispatch(validAccessToken())
-    }
-  }, [location.pathname])
 
-  const theme = createTheme({
-    palette: {
-      mode: mode,
-      modal: grey[900],
-      content: 'rgba(255, 255, 255, 0.08)',
-      boxShadow: '0 2px 4px rgb(0 0 0 / 10%), 0 8px 16px rgb(0 0 0 / 10%)'
-    }
-  })
+  //驗證JWT Token
+  useEffect(() => {
+    dispatch(validAccessToken())
+  }, [])
+
+  //Dark Mode
+  const theme = React.useMemo(
+    () =>
+      createTheme({
+        palette: {
+          mode: mode,
+          ...(mode === 'dark'
+            ? {
+                background: {
+                  paper: blueGrey[900]
+                },
+                primary: { main: blueGrey['A700'] },
+                secondary: { main: '#ffffff' }
+              }
+            : {
+                background: {
+                  default: '#fafafa'
+                },
+                secondary: { main: blue[500] }
+              })
+        }
+      }),
+    [mode]
+  )
 
   return (
     <ThemeProvider theme={theme}>
-      <Box sx={{ bgcolor: 'background.default', minHeight: 'calc(100vh)', height: '100%' }}>
+      <Box sx={{ bgcolor: 'background.default', height: '100%', minHeight: 'calc(100vh)' }}>
         <Nav />
         <Routes>
           <Route path='/' element={<Main />} />
           <Route path='/Browse' element={<Browse />} />
 
-          <Route path='/manage' element={<Manage />}>
+          <Route
+            path='/manage'
+            element={
+              <IsLoggedIn>
+                <Manage />
+              </IsLoggedIn>
+            }
+          >
             <Route path='' element={<Like />} />
             <Route path='likes' element={<Like />} />
-            <Route path='songlist' element={<MySongList />} />
-
+            <Route path='songlists/:songlistid' element={<MySongList />} />
+            <Route path='songlists' element={<MySongLists />} />
             <Route path='song' element={<MySong />} />
             <Route path='song/upload' element={<UploadMySong />} />
             <Route path='song/:songid/edit' element={<UpdateMySong />} />

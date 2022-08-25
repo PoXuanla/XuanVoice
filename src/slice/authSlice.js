@@ -17,6 +17,7 @@ export const login = createAsyncThunk('auth/login', async ({ account, password }
     const responseData = response.data
     if (responseData.status === 'success') {
       localStorage.setItem('accessToken', responseData.token)
+      localStorage.setItem('isLoggedIn', true)
       return thunkAPI.fulfillWithValue({ user: responseData.user })
     } else {
       return thunkAPI.rejectWithValue({ message: responseData.message })
@@ -33,9 +34,9 @@ export const validAccessToken = createAsyncThunk('auth/validAccessToken', async 
     .then((data) => {
       isValid = true
       user = { user: data.user }
+      localStorage.setItem('isLoggedIn', true)
     })
-    .catch(() => {
-    })
+    .catch(() => {})
 
   return isValid ? user : thunkAPI.rejectWithValue()
 })
@@ -85,8 +86,6 @@ const authSlice = createSlice({
     },
     [validAccessToken.fulfilled]: (state, action) => {
       state.isLoggedIn = true
-      console.log(action.payload)
-      // return { ...initialState, user: action.payload.user }
       state.user = action.payload.user
     },
     [validAccessToken.rejected]: (state) => {

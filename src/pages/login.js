@@ -7,13 +7,15 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, Link } from 'react-router-dom'
 
 const Login = () => {
-  const [account, setAccount] = useState('')
-  const [password, setPassword] = useState('')
-  const [error, setError] = useState('')
   const { isLoading } = useSelector((state) => state.load)
   const dispatch = useDispatch()
   const navigator = useNavigate()
 
+  const [account, setAccount] = useState('')
+  const [password, setPassword] = useState('')
+  const [loginError, setLoginError] = useState('')
+
+  //登入
   const submitHandler = (event) => {
     event.preventDefault()
     dispatch(login({ account, password }))
@@ -22,7 +24,7 @@ const Login = () => {
         navigator('/')
       })
       .catch((err) => {
-        setError(err.message)
+        setLoginError(err.message)
       })
   }
   const changeAccountHandler = (e) => {
@@ -95,10 +97,10 @@ const Login = () => {
           <Alert
             severity='error'
             sx={{
-              display: error === '' ? 'none' : 'flex'
+              display: loginError === '' ? 'none' : 'flex'
             }}
           >
-            {error}
+            {loginError}
           </Alert>
         </Box>
 

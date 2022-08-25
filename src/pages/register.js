@@ -8,20 +8,21 @@ import { useNavigate } from 'react-router-dom'
 import { register } from '../slice/authSlice'
 
 const Register = (e) => {
+  const dispatch = useDispatch()
+  const navigator = useNavigate()
+  const { isLoading } = useSelector((state) => state.load)
+
   const accountRef = useRef(null)
   const passwordRef = useRef(null)
   const nameRef = useRef(null)
   const introRef = useRef(null)
   const imgRef = useRef(null)
+
   const [userImageError, setUserImageError] = useState(null) //圖片錯誤訊息
   const [userImagePreview, setUserImagePreview] = useState('') //圖片預覽 src
-  const [registerError, setRegisterError] = useState(null) //圖片錯誤訊息
+  const [registerError, setRegisterError] = useState(null) //註冊錯誤訊息
 
-  const dispatch = useDispatch()
-  const navigator = useNavigate()
-
-  const { isLoading } = useSelector((state) => state.load)
-
+  //註冊
   const submitHandler = (e) => {
     e.preventDefault()
     setUserImagePreview('')
@@ -41,7 +42,8 @@ const Register = (e) => {
         setRegisterError(err.message)
       })
   }
-  const fileHandler = (e) => {
+  //判斷圖片大小是否 > 500kb
+  const validImgSizeHandler = (e) => {
     if (imgRef.current.files[0]) {
       let file = imgRef.current.files[0]
       let fileLimit = 500000 //500kb
@@ -55,6 +57,7 @@ const Register = (e) => {
       }
     }
   }
+  //預覽圖片
   const setPreviewImg = (file) => {
     if (file) {
       setUserImagePreview(URL.createObjectURL(file))
@@ -164,7 +167,7 @@ const Register = (e) => {
             id='contained-button-file'
             type='file'
             ref={imgRef}
-            onChange={fileHandler}
+            onChange={validImgSizeHandler}
             style={{ display: 'none' }}
           />
           <Button

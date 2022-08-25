@@ -6,3 +6,15 @@ export const createSongList = (data) => {
 export const getUserSongLists = () => {
   return request('get', '/api/v1/songList/userSongList')
 }
+export const deleteSongListBySongId = (songId) => {
+  return request('delete', `/api/v1/songList/${songId}`)
+}
+export const getListsAndCheckSongExistList = (songId) => {
+  return request('get', `/api/v1/songList/userSongList/exist/${songId}`)
+}
+export const updateSongInSongList = (songListId, data) => {
+  return request('patch', `/api/v1/songList/${songListId}`, data)
+}
+export const getListSongs = (songListId) => {
+  return request('get', `/api/v1/songList/${songListId}`)
+}

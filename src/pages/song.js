@@ -1,3 +1,4 @@
+import React from 'react'
 import {
   Avatar,
   Container,
@@ -9,9 +10,9 @@ import {
   TextField,
   Button
 } from '@mui/material'
-import React from 'react'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 import PlayCircleIcon from '@mui/icons-material/PlayCircle'
+
 const Song = () => {
   return (
     <>

@@ -1,10 +1,12 @@
+import { useEffect, useRef, useState } from 'react'
+import { useSelector } from 'react-redux'
+import axios from 'axios'
 import {
   Avatar,
   Alert,
   Grid,
   Button,
   Box,
-  Divider,
   Typography,
   TextField,
   InputLabel,
@@ -14,62 +16,55 @@ import {
 } from '@mui/material'
 import { LoadingButton } from '@mui/lab'
 import EditIcon from '@mui/icons-material/Edit'
-import { useSelector } from 'react-redux'
 import AddCircleIcon from '@mui/icons-material/AddCircle'
-import { useEffect, useRef, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
-import { KeyboardReturnSharp, PropaneSharp } from '@mui/icons-material'
-import { grey } from '@mui/material/colors'
-import { palette } from '@mui/system'
+import { getAllSongCategories } from '../../../api/songCategory'
 const SongForm = (props) => {
-  const song = props.song ? props.song : null
-  const mode = props.mode
-  const [songCategory, setSongCategory] = useState(null) //設定初始的分類選單
+  const { song = null, mode } = props
+  // song (Object) => 歌曲資訊
+  // mode (String) => 表單模式 ('create'、'update')
+  
+  const { isLoading } = useSelector((state) => state.load)
+
+  const [songCategories, setSongCategories] = useState(null) //全部的歌曲分類
   const [songImageError, setSongImageError] = useState(null) //圖片錯誤訊息
   const [songImagePreview, setSongImagePreview] = useState('') //圖片預覽 src
-  const [uploadMp3Name, setUploadMp3Name] = useState(null)
-  const [uploadMp3Error, setUploadMp3Error] = useState(null)
+  const [uploadMp3Name, setUploadMp3Name] = useState(null) //上傳 mp3 名稱
+  const [uploadMp3Error, setUploadMp3Error] = useState(null) //上傳時的 mp3 錯誤
   const [selectSongCategory, setSelectSongCategory] = useState('') //已選擇的分類
-  const [songName, setSongName] = useState('')
-  const [intro, setIntro] = useState('')
-  const [lyric, setLyric] = useState('')
-  const mp3Ref = useRef(null)
-  const imgRef = useRef(null)
-  const { isLoading } = useSelector((state) => state.load)
-  const { user } = useSelector((state) => state.auth)
+  const [songName, setSongName] = useState('') //歌名
+  const [intro, setIntro] = useState('') //簡介
+  const [lyric, setLyric] = useState('') //歌詞
+  const mp3Ref = useRef(null) //mp3
+  const imgRef = useRef(null) //圖片
 
+  //mode = update , 顯示歌曲訊息
   useEffect(() => {
     if (song) {
-      setUploadMp3Name(`${song.name}.mp3`)
-      setSelectSongCategory(song.songCategory._id)
       if (song.image) setSongImagePreview(song.image)
       if (song.name) setSongName(song.name)
       if (song.intro) setIntro(song.intro)
       if (song.lyric) setLyric(song.lyric)
+
+      setUploadMp3Name(`${song.name}.mp3`)
+      setSelectSongCategory(song.songCategory._id)
     }
   }, [song])
-  useEffect(() => {
-    //fetch 歌曲分類
-    const fetchSongCategory = async () => {
-      try {
-        const response = await axios.get(`${process.env.REACT_APP_URL}/api/v1/songCategory`)
-        const responseData = response.data
-        setSongCategory(responseData.SongCategory)
-      } catch (e) {
-        console.log(e)
-      }
-    }
-    fetchSongCategory()
+
+  //取得全部的歌曲分類
+  useEffect(async () => {
+    await getAllSongCategories().then((response) => {
+      setSongCategories(response.SongCategory)
+    })
   }, [])
+
+  // 預覽圖片
   const setPreviewImg = (file) => {
-    console.log(file)
     if (file) {
-      console.log(URL.createObjectURL(file))
       setSongImagePreview(URL.createObjectURL(file))
     }
   }
-  const imgHandler = (e) => {
+  // 圖片大小 >=  500kb 顯示錯誤
+  const validImgSizeHandler = (e) => {
     if (imgRef.current.files[0]) {
       let file = imgRef.current.files[0]
       let fileLimit = 500000 //500kb
@@ -83,11 +78,12 @@ const SongForm = (props) => {
       }
     }
   }
-  const songCategoryHandler = (event) => {
-    console.log(event.target.value)
+  // 選擇歌曲分類
+  const selectSongCategoryHandler = (event) => {
     setSelectSongCategory(event.target.value)
   }
-  const mp3ChangeHandler = (e) => {
+  //mp3大小超過5000kb,顯示錯誤
+  const validMp3SizeHandler = (e) => {
     if (mp3Ref.current.files[0]) {
       let file = mp3Ref.current.files[0]
       console.log(file)
@@ -103,14 +99,14 @@ const SongForm = (props) => {
       }
     }
   }
+  // 執行更新或新建
   const submitHandler = (e) => {
     e.preventDefault()
-    //If user not fill in MP3 field during create song
+    //新建歌單時，必須 upload mp3
     if (mp3Ref.current.files[0] === undefined && mode === 'create') {
       setUploadMp3Error('要填入MP3唷 (つ´ω`)つ')
       return
     }
-
     var formData = new FormData()
     formData.append('name', songName)
     formData.append('songCategory', selectSongCategory)
@@ -173,12 +169,12 @@ const SongForm = (props) => {
               id='contained-button-file'
               type='file'
               ref={imgRef}
-              onChange={imgHandler}
+              onChange={validImgSizeHandler}
               style={{ display: 'none' }}
             />
 
             <Button
-              variant='outlined'
+              variant='contained'
               component='span'
               sx={{
                 marginBottom: '15px',
@@ -192,12 +188,15 @@ const SongForm = (props) => {
       </Grid>
       <Grid item xs={12} sm={9}>
         <Box sx={{ paddingLeft: 2 }} component='form' onSubmit={submitHandler}>
-          <Typography variant='h6' sx={{ fontWeight: 700, marginBottom: 2, color: 'text.primary' }}>
+          <Typography
+            variant='subtitle1'
+            sx={{ fontWeight: 700, marginBottom: 2, color: 'text.primary' }}
+          >
             MP3
           </Typography>
           {/* MP3上傳後的檔名 */}
           <Typography
-            variant='h6'
+            variant='body1'
             sx={{
               marginBottom: 2,
               display: uploadMp3Name ? 'block' : 'none',
@@ -221,11 +220,11 @@ const SongForm = (props) => {
                 ref={mp3Ref}
                 accept='audio/mp3'
                 id='uploadMp3'
-                onChange={mp3ChangeHandler}
+                onChange={validMp3SizeHandler}
                 style={{ display: 'none' }}
               />
               <Button
-                variant='outlined'
+                variant='contained'
                 component='span'
                 sx={{
                   padding: 1,
@@ -244,7 +243,10 @@ const SongForm = (props) => {
             </Alert>
           </Box>
 
-          <Typography variant='h6' sx={{ fontWeight: 700, marginBottom: 2, color: 'text.primary' }}>
+          <Typography
+            variant='subtitle1'
+            sx={{ fontWeight: 700, marginBottom: 2, color: 'text.primary' }}
+          >
             歌曲資訊
           </Typography>
           <TextField
@@ -281,7 +283,10 @@ const SongForm = (props) => {
               />
             </Grid>
           </Grid>
-          <Typography variant='h6' sx={{ fontWeight: 700, marginBottom: 2, color: 'text.primary' }}>
+          <Typography
+            variant='subtitle1'
+            sx={{ fontWeight: 700, marginBottom: 2, mt: 2, color: 'text.primary' }}
+          >
             歌曲狀態
           </Typography>
           {/* 歌曲分類 */}
@@ -294,10 +299,10 @@ const SongForm = (props) => {
                 defaultValue=''
                 value={selectSongCategory}
                 label='分類'
-                onChange={songCategoryHandler}
+                onChange={selectSongCategoryHandler}
               >
-                {songCategory
-                  ? songCategory.map((data, index) => {
+                {songCategories
+                  ? songCategories.map((data, index) => {
                       return (
                         <MenuItem key={index} value={data._id}>
                           {data.name}
