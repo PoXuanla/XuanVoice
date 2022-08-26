@@ -1,127 +1,68 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-  Box,
-  Typography,
-  Avatar,
-  Skeleton,
-  Menu,
-  MenuItem,
-  IconButton
-} from '@mui/material'
-import SortIcon from '@mui/icons-material/Sort'
-import { getListSongs } from '../../api/songList'
+import { Box, Typography, Avatar, Skeleton, Menu, MenuItem, IconButton } from '@mui/material'
+import { getListSongs, replaceSortMode } from '../../api/songList'
 import { setLoading, clearLoading } from '../../slice/loadSlice'
+import SortMenu from '../../component/manage/mySongList/SortMenu'
+import DragDropList from '../../component/manage/mySongList/DragDropList'
 
 const MySongList = () => {
   const dispatch = useDispatch()
   const { isLoading } = useSelector((state) => state.load)
-  const songlistid = useParams().songlistid
+  const songListId = useParams().songListId
 
   const [songs, setSongs] = useState([])
   const [listName, setListName] = useState('')
-  //menu
-  const [menuEl, setMenuEl] = useState(null)
-  const [menuCurrentIndex, setMenuCurrentIndex] = useState(0)
-  const openMenu = Boolean(menuEl)
+  const [menuMode, setMenuMode] = useState(null)
 
   // 取得 SongList 內的 Song
-  useEffect(async () => {
-    dispatch(setLoading())
-    await getListSongs(songlistid).then((data) => {
+  useEffect(() => {
+    getListSong()
+  }, [])
+  const getListSong = async () => {
+    try {
+      dispatch(setLoading())
+      const data = await getListSongs(songListId)
+      setMenuMode({ orderBy: data.mode.orderBy, sort: data.mode.sort })
       setSongs(data.songs)
       setListName(data.listName)
       dispatch(clearLoading())
-    })
-  }, [])
-
-  const handleMenuClick = (event) => {
-    setMenuEl(event.currentTarget)
+    } catch (e) {
+      console.log(e)
+    }
   }
-  const handleMenuClose = () => {
-    setMenuEl(null)
+  const changeSortModeHandler = async (index, mode) => {
+    const response = await replaceSortMode(songListId, mode)
+    await getListSong(songListId)
+    setMenuMode({ ...response.mode })
   }
-  const menuOptions = [
-    '手動',
-    '發布日期(最新)',
-    '發布日期(最舊)',
-    '建立日期(最新)',
-    '建立日期(最舊)'
-  ]
-
+  const changeModeToManualHandler = async () => {
+    await replaceSortMode(songListId, { orderBy: 'manual', sort: 'asc' })
+  }
   return (
     <>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }} mb={2}>
         {/* ListName */}
-        {!isLoading && (
-          <Typography variant='h6' sx={{ fontWeight: 700, color: 'text.primary' }}>
-            {listName}
+        {
+          <Typography variant='h6' sx={{ fontWeight: 700, color: 'text.primary', width: '70%' }}>
+            {isLoading ? <Skeleton animation='wave' height={35} /> : listName}
           </Typography>
-        )}
-        {isLoading && <Skeleton animation='wave' height={35} width={'70%'} />}
+        }
         {/* Sort Menu */}
-        <IconButton
-          id='basic-button'
-          variant='contained'
-          aria-controls={openMenu ? 'basic-menu' : undefined}
-          aria-haspopup='true'
-          aria-expanded={openMenu ? 'true' : undefined}
-          onClick={handleMenuClick}
-          sx={{ fontSize: { xs: 15, sm: 18 } }}
-        >
-          <SortIcon />
-        </IconButton>
-
-        <Menu
-          id='basic-menu'
-          anchorEl={menuEl}
-          open={openMenu}
-          onClose={handleMenuClose}
-          MenuListProps={{
-            'aria-labelledby': 'basic-button'
-          }}
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'right'
-          }}
-          transformOrigin={{
-            vertical: 'top',
-            horizontal: 'right'
-          }}
-        >
-          {menuOptions.map((name, index) => {
-            return (
-              <MenuItem key={index} onClick={handleMenuClose} selected={index === menuCurrentIndex}>
-                {name}
-              </MenuItem>
-            )
-          })}
-        </Menu>
+        <SortMenu menuMode={menuMode} changeSortMode={changeSortModeHandler}></SortMenu>
       </Box>
       {/* Songs */}
-      {!isLoading && (
-        <Box sx={{ display: 'flex' }}>
-          <Avatar
-            variant='rounded'
-            sx={{
-              width: 50,
-              height: 50
-            }}
-            src={songs.length !== 0 ? songs[0].image : ''}
-          ></Avatar>
-          <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', ml: 2 }}>
-            <Typography variant='subtitle2' sx={{ fontWeight: 600, color: 'text.primary' }}>
-              {songs.length !== 0 ? songs[0].name : ''}
-            </Typography>
-            <Typography variant='caption' sx={{ fontWeight: 300, color: 'text.secondary' }}>
-              {songs.length !== 0 ? songs[0].author.account : ''}
-            </Typography>
-          </Box>
-        </Box>
-      )}
 
-      {isLoading && <Skeleton animation='wave' height={65} />}
+      {isLoading ? (
+        <Skeleton animation='wave' height={65} />
+      ) : (
+        <DragDropList
+          songsData={songs}
+          songListId={songListId}
+          changeModeToManual={changeModeToManualHandler}
+        />
+      )}
     </>
   )
 }

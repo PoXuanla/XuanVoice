@@ -18,3 +18,9 @@ export const updateSongInSongList = (songListId, data) => {
 export const getListSongs = (songListId) => {
   return request('get', `/api/v1/songList/${songListId}`)
 }
+export const replaceSongOrder = (songListId, data) => {
+  return request('put', `/api/v1/songList/${songListId}/songs`, data)
+}
+export const replaceSortMode = (songListId, data) => {
+  return request('put', `/api/v1/songList/${songListId}/sortMode`, data)
+}

@@ -1,16 +1,22 @@
-import { Avatar, Box, Typography } from '@mui/material'
-import React from 'react'
+import { Avatar, Box, Divider, IconButton, Typography } from '@mui/material'
+import React, { forwardRef } from 'react'
+import { DragHandle } from '@mui/icons-material'
 
 const ListCell = (props) => {
-  const { songData = [], songIndex, rank = null } = props
+  const {
+    songData = {},
+    songIndex,
+    rank = null,
+    divider = false
+  } = props
   const children = props.children
-  // songData  (Array)   => 歌曲資料
+  // songData  (Object)  => 歌曲資料
   // songIndex (Number)  => 歌曲索引
   // rank      (Boolean) => 歌曲前方顯示數字
   // isLoading (Boolean) => 正在載入中
-
+  // divider   (Boolean) => 分隔線
   return (
-    <Box mb={1}>
+    <Box sx={{ width: '100%' }}>
       <Box
         pr={2}
         sx={{
@@ -72,6 +78,7 @@ const ListCell = (props) => {
         {/* ToolBar */}
         {children}
       </Box>
+      {divider && <Divider mt={1} mb={1} sx={{ mt: 1, mb: 1 }} />}
     </Box>
   )
 }

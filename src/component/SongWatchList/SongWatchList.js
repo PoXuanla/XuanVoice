@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { Box, Divider, IconButton, Skeleton } from '@mui/material'
 import { AddCircle, PlayCircle, Edit, Delete } from '@mui/icons-material'
 import UserSongListModal from '../UserSongListModal'
-import ListCell from './ListCell'
+import ListCell from '../ListCell'
 import SimpleComfirmModal from '../../component/SimpleComfirmModal'
 
 const SongWatchList = (props) => {
@@ -20,7 +20,6 @@ const SongWatchList = (props) => {
   const [delSongName, setDelSongName] = useState('')
   const [delSongId, setDelSongId] = useState('')
   const [showDelModal, setShowDelModal] = useState(false)
-
 
   const addToSongList = (songId) => () => {
     setAddToSongListSongId(songId)
@@ -101,12 +100,17 @@ const SongWatchList = (props) => {
       {/* Render ListCell */}
       {songListData.map((songData, index) => {
         return (
-          <Box key={index} mb={1}>
-            <ListCell songData={songData} songIndex={index + 1} isLoading={isLoading} rank={rank}>
+          <Box key={index}>
+            <ListCell
+              songData={songData}
+              songIndex={index + 1}
+              isLoading={isLoading}
+              rank={rank}
+              divider={index !== songListData.length - 1 ? true : false}
+            >
               {mode === 'show' && showModeToolBar(songData._id)}
               {mode === 'edit' && editModeToolBar(songData._id, songData.name)}
             </ListCell>
-            {index !== songListData.length - 1 ? <Divider pt={1} /> : null}
           </Box>
         )
       })}

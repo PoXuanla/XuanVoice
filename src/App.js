@@ -53,13 +53,15 @@ const App = () => {
                   paper: blueGrey[900]
                 },
                 primary: { main: blueGrey['A700'] },
-                secondary: { main: '#ffffff' }
+                secondary: { main: '#ffffff' },
+                action: { selected: blueGrey[700], hover: blueGrey[500] }
               }
             : {
                 background: {
                   default: '#fafafa'
                 },
-                secondary: { main: blue[500] }
+                secondary: { main: blue[500] },
+                action: { selected: blue[700], hover: blue[500] }
               })
         }
       }),
@@ -84,7 +86,7 @@ const App = () => {
           >
             <Route path='' element={<Like />} />
             <Route path='likes' element={<Like />} />
-            <Route path='songlists/:songlistid' element={<MySongList />} />
+            <Route path='songlists/:songListId' element={<MySongList />} />
             <Route path='songlists' element={<MySongLists />} />
             <Route path='song' element={<MySong />} />
             <Route path='song/upload' element={<UploadMySong />} />

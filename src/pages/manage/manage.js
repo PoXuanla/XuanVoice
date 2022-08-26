@@ -58,7 +58,6 @@ const Manage = () => {
       </Link>
     )
   })
-  console.log(BreakCrumbData)
   const CurrentMenuHandler = (index) => (event) => {
     setSelectMenuIndex(index)
   }

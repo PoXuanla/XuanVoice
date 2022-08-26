@@ -1,4 +1,6 @@
+import { useState, useEffect, React } from 'react'
+
 const Like = () => {
-  return <div>asdasd</div>
+  return <></>
 }
 export default Like

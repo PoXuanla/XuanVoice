@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 import { Box, Typography, Button, TextField, Divider, Skeleton } from '@mui/material'
-import SongList from '../../component/manage/mySongList/SongList'
+import SongList from '../../component/manage/mySongLists/SongList'
 import { createSongList, getUserSongLists, deleteSongListBySongId } from '../../api/songList'
 import { setLoading, clearLoading } from '../../slice/loadSlice'
 import SimpleComfirmModal from '../../component/SimpleComfirmModal'
