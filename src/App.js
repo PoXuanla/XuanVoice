@@ -32,6 +32,7 @@ import {
   red,
   teal
 } from '@mui/material/colors'
+import MusicPlayer from './component/MusicPlayer/MusicPlayer'
 const App = () => {
   const { mode } = useSelector((state) => state.mode)
   const dispatch = useDispatch()
@@ -54,14 +55,30 @@ const App = () => {
                 },
                 primary: { main: blueGrey['A700'] },
                 secondary: { main: '#ffffff' },
-                action: { selected: blueGrey[700], hover: blueGrey[500] }
+                action: { selected: blueGrey[700], hover: blueGrey[500] },
+                player: {
+                  primary: blueGrey[200],
+                  secondary: blueGrey[50],
+                  background: blueGrey[800],
+                  item: {
+                    background:blueGrey[800]
+                  }
+                }
               }
             : {
                 background: {
                   default: '#fafafa'
                 },
                 secondary: { main: blue[500] },
-                action: { selected: blue[700], hover: blue[500] }
+                action: { selected: blue[700], hover: blue[500] },
+                player: {
+                  primary: blue[700],
+                  secondary: blue[300],
+                  background: '#fafafa',
+                  item: {
+                    background:blueGrey[200]
+                  }
+                }
               })
         }
       }),
@@ -99,6 +116,7 @@ const App = () => {
 
           <Route path='*' element={<PageNotFound />} />
         </Routes>
+        <MusicPlayer />
       </Box>
     </ThemeProvider>
   )

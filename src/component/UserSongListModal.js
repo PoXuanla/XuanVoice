@@ -40,6 +40,7 @@ const UserSongListModal = (props) => {
       })
     }
   }, [show])
+  
   const handleToggle = (value) => async () => {
     const currentIndex = checked.indexOf(value)
     const newChecked = [...checked]

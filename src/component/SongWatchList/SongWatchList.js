@@ -1,11 +1,12 @@
 import { React, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 import { Box, Divider, IconButton, Skeleton } from '@mui/material'
 import { AddCircle, PlayCircle, Edit, Delete } from '@mui/icons-material'
 import UserSongListModal from '../UserSongListModal'
 import ListCell from '../ListCell'
 import SimpleComfirmModal from '../../component/SimpleComfirmModal'
-
+import { replaceSongListData } from '../../slice/musicplayerSlice'
 const SongWatchList = (props) => {
   const { songListData, mode = 'show', editLocation, rank = false, isLoading = false } = props
   // songListData (Array)   => 歌曲資料
@@ -14,7 +15,7 @@ const SongWatchList = (props) => {
   // editLocation (String)  => 編輯網址
   // isLoading    (Boolean) => 正在載入中
   const navigate = useNavigate()
-
+  const dispatch = useDispatch()
   const [addToSongListSongId, setAddToSongListSongId] = useState('')
   const [showSongList, setShowSongList] = useState(false)
   const [delSongName, setDelSongName] = useState('')
@@ -53,6 +54,11 @@ const SongWatchList = (props) => {
         // setShowDelModal(false)
       })
   }
+  const playMusic = (songId) => () => {
+    const song = songListData.find((data) => data._id === songId)
+    const { name, image, author, mp3 } = song
+    dispatch(replaceSongListData([{ name, image, author, mp3 }]))
+  }
   //工具欄-一般顯示模式
   const showModeToolBar = (songId) => (
     <Box
@@ -66,7 +72,7 @@ const SongWatchList = (props) => {
       <IconButton onClick={addToSongList(songId)}>
         <AddCircle sx={{ fontSize: { xs: 15, sm: 18 } }}></AddCircle>
       </IconButton>
-      <IconButton>
+      <IconButton onClick={playMusic(songId)}>
         <PlayCircle sx={{ fontSize: { xs: 15, sm: 18 } }}></PlayCircle>
       </IconButton>
     </Box>

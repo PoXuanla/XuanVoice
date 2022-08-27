@@ -11,10 +11,10 @@ const CustomMenuItem = styled(MenuItem)(({ theme }) => ({
 
 const menuOptions = [
   { name: '手動', orderBy: 'manual', sort: 'asc' },
-  { name: '發布日期(最新)', orderBy: 'songCreatedTime', sort: 'asc' },
-  { name: '發布日期(最舊)', orderBy: 'songCreatedTime', sort: 'desc' },
-  { name: '建立日期(最新)', orderBy: 'createdTime', sort: 'asc' },
-  { name: '建立日期(最舊)', orderBy: 'createdTime', sort: 'desc' }
+  { name: '發布日期(最新)', orderBy: 'songCreatedTime', sort: 'desc' },
+  { name: '發布日期(最舊)', orderBy: 'songCreatedTime', sort: 'asc' },
+  { name: '建立日期(最新)', orderBy: 'createdAt', sort: 'desc' },
+  { name: '建立日期(最舊)', orderBy: 'createdAt', sort: 'asc' }
 ]
 const SortMenu = (props) => {
   const { menuMode } = props
