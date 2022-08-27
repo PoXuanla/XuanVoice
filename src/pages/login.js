@@ -46,7 +46,7 @@ const Login = () => {
           alignItems: 'center',
           boxShadow: '0 2px 4px rgb(0 0 0 / 10%), 0 8px 16px rgb(0 0 0 / 10%)',
           borderRadius: 2,
-          bgcolor: 'content'
+          bgcolor: 'background.paper'
         }}
         onSubmit={submitHandler}
       >
@@ -122,7 +122,7 @@ const Login = () => {
         <Typography variant='body1' sx={{ paddingRight: '10px', color: 'text.secondary' }}>
           還沒註冊嘛?立即
         </Typography>
-        <Button variant='outlined' component={Link} to='/register'>
+        <Button variant='contained' component={Link} to='/register'>
           註冊
         </Button>
       </Box>

@@ -8,8 +8,9 @@ const DragSongListItem = forwardRef((props, ref) => {
   // songData (Object) => 歌曲資料
   // provided (Object) => Draggable Object
 
+
   const deleteHandler = () => {
-    console.log(songData.name)
+    props.onDelete(songData)
   }
   const ToolBar = () => {
     return (

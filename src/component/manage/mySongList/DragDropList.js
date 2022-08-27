@@ -10,24 +10,35 @@ const reorder = (list, startIndex, endIndex) => {
   return result
 }
 
-const SongList = (props) => {
-  const songs = props.songs
-  return songs.map((song, index) => {
-    return <Song song={song} index={index} key={song._id} />
-  })
-}
-const Song = ({ song, index }) => {
+const Song = (props) => {
+  const { song, index } = props
+  const deleteSongHandler = (songData) => props.onDelete(songData)
   return (
     <Draggable draggableId={song._id} index={index}>
       {(provided) => (
-        <DragSongListItem songData={song} ref={provided.innerRef} provided={provided} />
+        <DragSongListItem
+          songData={song}
+          ref={provided.innerRef}
+          provided={provided}
+          onDelete={deleteSongHandler}
+        />
       )}
     </Draggable>
   )
 }
+const SongList = (props) => {
+  const songs = props.songs
+  const deleteSongHandler = (songData) => props.onDelete(songData)
+  return songs.map((song, index) => {
+    return <Song song={song} index={index} key={song._id} onDelete={deleteSongHandler} />
+  })
+}
 const DragDropList = (props) => {
   const { songsData = [], songListId } = props
   const [songs, setSongs] = useState(songsData)
+
+  const deleteSongHandler = (songData) => props.onDelete(songData)
+
   const onDragEnd = async (result) => {
     if (!result.destination) {
       return
@@ -45,17 +56,17 @@ const DragDropList = (props) => {
       ob.order = index
       return ob
     })
-
-      setSongs(reorderSong)
-      props.changeModeToManual()
+    setSongs(reorderSong)
+    props.changeModeToManual()
     await replaceSongOrder(songListId, { songs: updateSongs })
   }
+
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <Droppable droppableId='list'>
         {(provided) => (
           <div ref={provided.innerRef} {...provided.droppableProps}>
-            <SongList songs={songs} />
+            <SongList songs={songs} onDelete={deleteSongHandler} />
             {provided.placeholder}
           </div>
         )}

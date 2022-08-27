@@ -24,7 +24,6 @@ const SortMenu = (props) => {
 
   useEffect(() => {
     if (menuMode !== null) {
-      console.log(menuMode)
       const index = menuOptions.findIndex(
         (menu) => menu.orderBy === menuMode.orderBy && menu.sort === menuMode.sort
       )
