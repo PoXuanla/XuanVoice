@@ -5,7 +5,13 @@ import data from '../data'
 
 const MusicImg = (props) => {
   const showUI = props.showUI
-  const { width = '', height = '', marginRight = '', filter = '', opacity = 1 } = props.css || {}
+  const {
+    width = '',
+    height = '',
+    marginRight = '',
+    filter = '',
+    opacity = 1
+  } = props.css || {}
   const [totalSongNum, setTotalSongNum] = useState(null)
 
   const { songListData, currentSongIndex } = useSelector((state) => state.musicplayer)
@@ -25,7 +31,7 @@ const MusicImg = (props) => {
         filter: filter || '',
         transition: 'height .5s,filter .5s, opacity .5s',
         opacity: opacity || '',
-        backgroundColor: 'black'
+        backgroundColor: 'black',
       }}
     />
   )

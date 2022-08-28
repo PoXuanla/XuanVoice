@@ -13,7 +13,7 @@ const MusicInfo = (props) => {
     bottom = 0,
     padding = 0,
     marginRight = 0,
-    color = '#000'
+    color = props.color || '#000'
   } = props.css || {}
   const showBtn = props.showBtn
   const { songListData, currentSongIndex } = useSelector((state) => state.musicplayer)
@@ -36,11 +36,11 @@ const MusicInfo = (props) => {
           width: showBtn ? 'calc(100% - 70px)' : '100%'
         }}
       >
-        <Typography noWrap variant='body1' color={ color}>
+        <Typography noWrap variant='body1' color={color}>
           {songListData.length === 0 ? '' : songListData[currentSongIndex].name}
         </Typography>
 
-        <Typography variant='body2' color={ color}>
+        <Typography variant='body2' color={color}>
           {songListData.length === 0 ? '' : songListData[currentSongIndex].author.name}
         </Typography>
       </Box>

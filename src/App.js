@@ -87,7 +87,7 @@ const App = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Box sx={{ bgcolor: 'background.default', height: '100%', minHeight: 'calc(100vh)' }}>
+      <Box sx={{ bgcolor: 'background.default', height: '100%', minHeight: 'calc(100vh)',pb:'100px' }}>
         <Nav />
         <Routes>
           <Route path='/' element={<Main />} />

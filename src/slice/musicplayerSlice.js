@@ -57,6 +57,9 @@ export const musicplayerSlice = createSlice({
     },
     setSongCurrentTime: (state, action) => {
       state.songCurrentTime = action.payload
+    },
+    setCurrentSongIndex: (state, action) => {
+      state.currentSongIndex = action.payload
     }
   }
 })
@@ -70,7 +73,8 @@ export const {
   changePlayMode,
   adjustVolume,
   setSongDuration,
-  setSongCurrentTime
+  setSongCurrentTime,
+  setCurrentSongIndex
 } = musicplayerSlice.actions
 
 export default musicplayerSlice.reducer

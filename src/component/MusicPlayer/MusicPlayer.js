@@ -2,18 +2,13 @@ import { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 import WebPlayer from './web/WebPlayer'
-// import DialogMusicPlayer from './Dialog/DialogMusicPlayer'
-import {
-  setSongDuration,
-  playSong,
-  pauseSong,
-  nextSong
-} from '../../slice/musicplayerSlice'
+import DialogMusicPlayer from './dialog/DialogMusicPlayer'
+import { setSongDuration, playSong, pauseSong, nextSong } from '../../slice/musicplayerSlice'
 
 const MusicPlayer = () => {
   //useState
   const [player] = useState(new Audio())
-  const [openDialog, setOpenDialog] = useState(true)
+  const [openDialog, setOpenDialog] = useState(false)
 
   //redux
   const dispatch = useDispatch()
@@ -43,7 +38,7 @@ const MusicPlayer = () => {
         player.play()
         dispatch(nextSong())
         dispatch(playSong())
-        
+
         player.play()
         break
       case 'loop':
@@ -57,11 +52,11 @@ const MusicPlayer = () => {
   return (
     <>
       <WebPlayer openDialog={openDialogHandler} player={player}></WebPlayer>
-      {/* <DialogMusicPlayer
+      <DialogMusicPlayer
         openDialog={openDialog}
         closeDialog={closeDialogHandler}
         player={player}
-      ></DialogMusicPlayer> */}
+      ></DialogMusicPlayer>
     </>
   )
 }
