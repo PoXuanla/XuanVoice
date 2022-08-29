@@ -30,7 +30,7 @@ const DialogPlayer = (props) => {
           boxShadow: !showPlayList ? 3 : 0,
           borderRadius: 1,
           padding: 3,
-          background: !showPlayList ? blueGrey[800] : 'inherit'
+          background: !showPlayList ? 'player.background' : 'inherit'
         }}
       >
         <Box

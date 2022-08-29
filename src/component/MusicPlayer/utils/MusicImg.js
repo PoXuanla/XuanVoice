@@ -29,7 +29,10 @@ const MusicImg = (props) => {
         height: height || '',
         marginRight: marginRight || 0,
         filter: filter || '',
-        transition: 'height .5s,filter .5s, opacity .5s',
+        transition: 'height .3s',
+
+//        transition: 'height .3s,filter .3s, opacity .3s',
+        // transition:'all .3s',
         opacity: opacity || '',
         backgroundColor: 'black',
       }}

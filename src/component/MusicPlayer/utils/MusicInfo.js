@@ -27,7 +27,7 @@ const MusicInfo = (props) => {
         width: width || '100%',
         textOverflow: 'ellipsis',
         marginRight: marginRight || 0,
-        transition: 'all .5s'
+        // transition: 'all .5s'
       }}
     >
       {/* 作者歌名 */}

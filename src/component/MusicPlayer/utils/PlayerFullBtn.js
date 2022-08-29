@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { IconButton, Slider, Box } from '@mui/material'
+import { IconButton, Slider, Box, ClickAwayListener } from '@mui/material'
 
 import { blueGrey, pink } from '@mui/material/colors'
 import VolumeDownIcon from '@mui/icons-material/VolumeDown'
@@ -20,7 +20,7 @@ import {
   changePlayMode,
   adjustVolume
 } from '../../../slice/musicplayerSlice'
-import { alpha, styled } from '@mui/material/styles';
+import { alpha, styled } from '@mui/material/styles'
 
 const CustomSlider = styled(Slider)(({ theme }) => ({
   padding: 0,
@@ -70,6 +70,10 @@ const PlayerFullBtn = (props) => {
   }
   const toggleVolumeSlideHandler = () => {
     setShowVolumeSlide((show) => !show)
+  }
+  const closeVolumeSlideHandler = () => {
+    setShowVolumeSlide(false)
+    console.log('click')
   }
   const adjustVolumeHandler = (e, value) => {
     player.volume = value
@@ -130,63 +134,34 @@ const PlayerFullBtn = (props) => {
             )}
           </IconButton>
           {/* 聲音調整滑鈕 */}
-          <Box
-            sx={{
-              display: showVolumeSlide ? 'block' : 'none',
-              position: 'absolute',
-              bottom: '90%',
-              left: 15,
-              height: 75,
-              zIndex: 10,
-              bgcolor: blueGrey[100],
-              padding: '6px',
-              borderRadius: '5px',
-              boxShadow: '2px 2px 0px 2px rgba(0,0,0, 0.2)'
-            }}
-          >
-            <CustomSlider
-              max={1}
-              min={0}
-              step={0.05}
-              orientation='vertical'
-              value={volume}
-              aria-label='Temperature'
-              onChange={adjustVolumeHandler}
-            />
-            {/* <Slider
-              // id="costInflation"
-              // name="costInflation"
-              sx={{
-                color: 'player.secondary',
-                padding: 0,
-                width: 3,
-                '& input[type="range"]': {
-                  WebkitAppearance: 'slider-vertical'
-                },
-                '& .MuiSlider-thumb': {
-                  height: 12,
-                  width: 12,
-                  backgroundColor: '#fff',
-                  '&:focus,&:hover,&.Mui-focusVisible': {
-                    boxShadow: `0px 0px 0px 7px ${alpha(theme.palette.success.main, 0.16)}`
-                  },
-                  '&.Mui-active': {
-                    boxShadow: '0px 0px 0px 15px rgba(233, 30, 99, 0.4)'
-                  }
-                },
-                '&.MuiSlider-root': {
-                  padding: 0
-                }
-              }}
-              max={1}
-              min={0}
-              step={0.05}
-              orientation='vertical'
-              value={volume}
-              aria-label='Temperature'
-              onChange={adjustVolumeHandler}
-            /> */}
-          </Box>
+          {showVolumeSlide && (
+            <ClickAwayListener onClickAway={closeVolumeSlideHandler}>
+              <Box
+                sx={{
+                  display: showVolumeSlide ? 'block' : 'none',
+                  position: 'absolute',
+                  bottom: '90%',
+                  left: 15,
+                  height: 75,
+                  zIndex: 10,
+                  bgcolor: blueGrey[100],
+                  padding: '6px',
+                  borderRadius: '5px',
+                  boxShadow: '2px 2px 0px 2px rgba(0,0,0, 0.2)'
+                }}
+              >
+                <CustomSlider
+                  max={1}
+                  min={0}
+                  step={0.05}
+                  orientation='vertical'
+                  value={volume}
+                  aria-label='Temperature'
+                  onChange={adjustVolumeHandler}
+                />
+              </Box>
+            </ClickAwayListener>
+          )}
         </Box>
         {/* 前一首歌曲 */}
         <IconButton size='medium' onClick={prevSongHandler} disabled={currentSongIndex === 0}>
@@ -225,7 +200,8 @@ const PlayerFullBtn = (props) => {
             fontSize='medium'
             sx={{
               fontSize: '30px',
-              color: currentSongIndex === totalSongNum - 1 ? 'player.item.background' : 'player.primary'
+              color:
+                currentSongIndex === totalSongNum - 1 ? 'player.item.background' : 'player.primary'
             }}
           />
         </IconButton>

@@ -21,17 +21,7 @@ import UserInform from './pages/userInform'
 import PageNotFound from './pages/pageNotFound'
 import MySongLists from './pages/manage/mySongLists'
 import MySongList from './pages/manage/mySongList'
-import {
-  blue,
-  blueGrey,
-  deepPurple,
-  green,
-  grey,
-  orange,
-  pink,
-  red,
-  teal
-} from '@mui/material/colors'
+import { blue, blueGrey } from '@mui/material/colors'
 import MusicPlayer from './component/MusicPlayer/MusicPlayer'
 const App = () => {
   const { mode } = useSelector((state) => state.mode)
@@ -53,7 +43,7 @@ const App = () => {
                 background: {
                   paper: blueGrey[900]
                 },
-                primary: { main: blueGrey['A700'] },
+                primary: { main: blueGrey[500] },
                 secondary: { main: '#ffffff' },
                 action: { selected: blueGrey[700], hover: blueGrey[500] },
                 player: {
@@ -61,7 +51,7 @@ const App = () => {
                   secondary: blueGrey[50],
                   background: blueGrey[800],
                   item: {
-                    background:blueGrey[800]
+                    background: blueGrey[800]
                   }
                 }
               }
@@ -69,6 +59,7 @@ const App = () => {
                 background: {
                   default: '#fafafa'
                 },
+                // primary: { main: blue[500], contrastText: '#000', },
                 secondary: { main: blue[500] },
                 action: { selected: blue[700], hover: blue[500] },
                 player: {
@@ -76,7 +67,7 @@ const App = () => {
                   secondary: blue[300],
                   background: '#fafafa',
                   item: {
-                    background:blueGrey[200]
+                    background: blueGrey[200]
                   }
                 }
               })
@@ -87,7 +78,14 @@ const App = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Box sx={{ bgcolor: 'background.default', height: '100%', minHeight: 'calc(100vh)',pb:'100px' }}>
+      <Box
+        sx={{
+          bgcolor: 'background.default',
+          height: '100%',
+          minHeight: 'calc(100vh)',
+          pb: '100px'
+        }}
+      >
         <Nav />
         <Routes>
           <Route path='/' element={<Main />} />
@@ -113,7 +111,7 @@ const App = () => {
           <Route path='/register' element={<Register />} />
           <Route path='/song' element={<Song />} />
           <Route path='/userInform/:account' element={<UserInform />} />
-
+          <Route path='/browse' element={<Browse />} />
           <Route path='*' element={<PageNotFound />} />
         </Routes>
         <MusicPlayer />

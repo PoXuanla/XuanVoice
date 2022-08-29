@@ -1,7 +1,7 @@
 import { React, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
-import { Box, Divider, IconButton, Skeleton } from '@mui/material'
+import { Box, Divider, IconButton, Skeleton, Typography } from '@mui/material'
 import { AddCircle, PlayCircle, Edit, Delete } from '@mui/icons-material'
 import UserSongListModal from '../UserSongListModal'
 import ListCell from '../ListCell'
@@ -9,7 +9,7 @@ import SimpleComfirmModal from '../../component/SimpleComfirmModal'
 import { replaceSongListData } from '../../slice/musicplayerSlice'
 const SongWatchList = (props) => {
   const { songListData, mode = 'show', editLocation, rank = false, isLoading = false } = props
-  // songListData (Array)   => 歌曲資料
+  // songListData (Array)   => 歌曲資料 [{ name, image, author, mp3 }]
   // mode         (String)  => 歌曲列表的使用模式('edit'、'show')
   // rank         (Boolean) => 歌曲前方顯示數字
   // editLocation (String)  => 編輯網址
@@ -101,25 +101,36 @@ const SongWatchList = (props) => {
         <>
           <Skeleton animation='wave' height={50} />
           <Skeleton animation='wave' height={50} />
+          <Skeleton animation='wave' height={50} />
+          <Skeleton animation='wave' height={50} />
+          <Skeleton animation='wave' height={50} />
+
         </>
       )}
       {/* Render ListCell */}
-      {songListData.map((songData, index) => {
-        return (
-          <Box key={index}>
-            <ListCell
-              songData={songData}
-              songIndex={index + 1}
-              isLoading={isLoading}
-              rank={rank}
-              divider={index !== songListData.length - 1 ? true : false}
-            >
-              {mode === 'show' && showModeToolBar(songData._id)}
-              {mode === 'edit' && editModeToolBar(songData._id, songData.name)}
-            </ListCell>
-          </Box>
-        )
-      })}
+      {!isLoading &&
+        songListData.map((songData, index) => {
+          return (
+            <Box key={index}>
+              <ListCell
+                songData={songData}
+                songIndex={index + 1}
+                rank={rank}
+                divider={index !== songListData.length - 1 ? true : false}
+              >
+                {mode === 'show' && showModeToolBar(songData._id)}
+                {mode === 'edit' && editModeToolBar(songData._id, songData.name)}
+              </ListCell>
+            </Box>
+          )
+        })}
+      {songListData.length === 0 && !isLoading && (
+        <Box sx={{ textAlign: 'center' }}>
+          <Typography color='text.primary' variant='body1'>
+            沒有任何資料
+          </Typography>
+        </Box>
+      )}
       {/* 加入歌單 Modal */}
       {mode === 'show' && (
         <UserSongListModal

@@ -3,14 +3,9 @@ import React, { forwardRef } from 'react'
 import { DragHandle } from '@mui/icons-material'
 
 const ListCell = (props) => {
-  const {
-    songData = {},
-    songIndex,
-    rank = null,
-    divider = false
-  } = props
+  const { songData = {}, songIndex, rank = null, divider = false } = props
   const children = props.children
-  // songData  (Object)  => 歌曲資料
+  // songData  (Object)  => 歌曲資料 { name, image, author:{name, account} }
   // songIndex (Number)  => 歌曲索引
   // rank      (Boolean) => 歌曲前方顯示數字
   // isLoading (Boolean) => 正在載入中
