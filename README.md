@@ -1,70 +1,61 @@
-# Getting Started with Create React App
+# <p align='center'>XuanVoice </p>
+<p align='center'>基於 React 、 Material UI 、 Express 、 MongoDB 打造的音樂平台</p>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 使用技術
+```diff
+FrondEnd
+```
 
-## Available Scripts
+`React v17`　:　Hooks
 
-In the project directory, you can run:
+`React-Router v6`　:　Auth Guard、Navigate
 
-### `npm start`
+`React-Redux (toolkit)`　:　AsyncThunk 、 Handle Global State and Store
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+`Material UI`　:　Use UI Component 、Dark Mode、Icons、Custom Styled Component
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+`Axios`　:　Handle Ajax request
 
-### `npm test`
+`React-Beautiful-DND`　:　Handle drag and drop for lists 
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```diff
+BacckEnd
+```
 
-### `npm run build`
+`Express.js`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+`FireBase`　:　Store Image and Mp3
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+`JWT`　:　Handle User Auth
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+`MongoDB Altas`　:　Store Any Data except Image and Mp3
 
-### `npm run eject`
+`Mongoose`　:　Query Data with ODM
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+`RESTful API`
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## 功能介紹
+### MusicPlayer
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```diff
+播放平台音樂
+三種模式 : Simple Mode 、Normal Mode、FullScreen Mode
+可 切換上下首歌曲 、 播放/暫停 、 調整音量、切換歌曲播放模式(自動換首 / 重複循環)、播放歌單
+```
+### DarkMode
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```diff
+切換深淺主題顏色
+```
 
-## Learn More
+![darkmode](https://user-images.githubusercontent.com/37298465/187186176-fe6924f8-be24-4d25-b6b6-827fa372d1a8.png)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### User Songs Management
+```diff
+管理個人歌曲及歌單
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## 聲明
+```diff
+本專案為個人練習作品，絕無商業用途。
+```
