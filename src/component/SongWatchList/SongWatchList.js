@@ -100,11 +100,6 @@ const SongWatchList = (props) => {
       {isLoading && (
         <>
           <Skeleton animation='wave' height={50} />
-          <Skeleton animation='wave' height={50} />
-          <Skeleton animation='wave' height={50} />
-          <Skeleton animation='wave' height={50} />
-          <Skeleton animation='wave' height={50} />
-
         </>
       )}
       {/* Render ListCell */}

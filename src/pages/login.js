@@ -1,23 +1,31 @@
-import { Box, Container, TextField, Typography, Alert, Button } from '@mui/material'
-import LoadingButton from '@mui/lab/LoadingButton'
-import LoginIcon from '@mui/icons-material/Login'
-import React, { useEffect, useState } from 'react'
-import { login, validAccessToken } from '../slice/authSlice'
+import React, { useState, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, Link } from 'react-router-dom'
+import { Container, Typography, Alert, Button } from '@mui/material'
+import LoadingButton from '@mui/lab/LoadingButton'
+import LoginIcon from '@mui/icons-material/Login'
+import { login } from '../slice/authSlice'
+import { LoginAlert, Wrapper, MoveToRegister } from '../component/Login/LoginStyle'
+import LoginFields from '../component/Login/LoginFields'
 
 const Login = () => {
   const { isLoading } = useSelector((state) => state.load)
   const dispatch = useDispatch()
   const navigator = useNavigate()
+  const accountRef = useRef(null)
+  const passwordRef = useRef(null)
+  const fieldsRef = useRef({ accountRef, passwordRef })
 
-  const [account, setAccount] = useState('')
-  const [password, setPassword] = useState('')
   const [loginError, setLoginError] = useState('')
 
   //登入
   const submitHandler = (event) => {
     event.preventDefault()
+    const { accountRef, passwordRef } = fieldsRef.current
+
+    const account = accountRef.current.value
+    const password = passwordRef.current.value
+
     dispatch(login({ account, password }))
       .unwrap()
       .then(() => {
@@ -27,83 +35,25 @@ const Login = () => {
         setLoginError(err.message)
       })
   }
-  const changeAccountHandler = (e) => {
-    setAccount(e.target.value)
-  }
-  const changePasswordHandler = (e) => {
-    setPassword(e.target.value)
-  }
+
   return (
     <Container maxWidth='xs'>
-      <Box
-        component='form'
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          padding: '10px',
-          marginTop: '50px',
-          alignItems: 'center',
-          boxShadow: '0 2px 4px rgb(0 0 0 / 10%), 0 8px 16px rgb(0 0 0 / 10%)',
-          borderRadius: 2,
-          bgcolor: 'background.paper'
-        }}
-        onSubmit={submitHandler}
-      >
-        <Typography
-          variant='h6'
-          sx={{
-            marginTop: '15px',
-            marginBottom: '15px',
-            fontWeight: 'bold',
-            color: 'text.primary'
-          }}
-        >
+      <Wrapper component='form' onSubmit={submitHandler}>
+
+        {/* Title */}
+        <Typography variant='h6' className='title'>
           歡迎使用XuanVoice
         </Typography>
-        <TextField
-          id='account'
-          label='帳號'
-          required
-          autoComplete='off'
-          inputProps={{ minLength: 6 }}
-          onChange={changeAccountHandler}
-          sx={{
-            width: '85%',
-            marginBottom: '15px'
-          }}
-        />
-        <TextField
-          id='password'
-          label='密碼'
-          required
-          type='password'
-          autoComplete='off'
-          inputProps={{ minLength: 6 }}
-          onChange={changePasswordHandler}
-          sx={{
-            width: '85%'
-          }}
-        />
-        <Box
-          sx={{
-            width: '85%',
-            height: '100px',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center'
-          }}
-        >
-          <Alert
-            severity='error'
-            sx={{
-              display: loginError === '' ? 'none' : 'flex'
-            }}
-          >
-            {loginError}
-          </Alert>
-        </Box>
 
+        {/* 登入欄位 */}
+        <LoginFields ref={fieldsRef} />
+
+        {/* 錯誤提示 */}
+        <LoginAlert loginError={loginError}>
+          <Alert severity='error'>{loginError}</Alert>
+        </LoginAlert>
+
+        {/* 登入按鈕 */}
         <LoadingButton
           color='primary'
           loading={isLoading}
@@ -114,18 +64,15 @@ const Login = () => {
         >
           登入
         </LoadingButton>
-      </Box>
-
-      <Box
-        sx={{ display: 'flex', justifyContent: 'right', marginTop: '35px', alignItems: 'center' }}
-      >
-        <Typography variant='body1' sx={{ paddingRight: '10px', color: 'text.secondary' }}>
-          還沒註冊嘛?立即
-        </Typography>
+      </Wrapper>
+      
+      {/* 前往註冊 */}
+      <MoveToRegister>
+        <Typography variant='body1'>還沒註冊嘛?立即</Typography>
         <Button variant='contained' component={Link} to='/register'>
           註冊
         </Button>
-      </Box>
+      </MoveToRegister>
     </Container>
   )
 }

@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 import { setLoading, clearLoading } from './loadSlice'
 import { checkTokenValid } from '../api/user'
+
 export const login = createAsyncThunk('auth/login', async ({ account, password }, thunkAPI) => {
   try {
     thunkAPI.dispatch(setLoading())
@@ -28,17 +29,20 @@ export const login = createAsyncThunk('auth/login', async ({ account, password }
   }
 })
 export const validAccessToken = createAsyncThunk('auth/validAccessToken', async (thunkAPI) => {
-  let isValid = false
-  let user = {}
-  await checkTokenValid()
-    .then((data) => {
-      isValid = true
-      user = { user: data.user }
-      localStorage.setItem('isLoggedIn', true)
-    })
-    .catch(() => {})
+  try {
+    let isValid = false
+    let user = {}
+    console.log('exec')
+    const response = await checkTokenValid()
+    console.log(response)
 
-  return isValid ? user : thunkAPI.rejectWithValue()
+    isValid = true
+    user = { user: response.user }
+    localStorage.setItem('isLoggedIn', true)
+    return isValid ? user : thunkAPI.rejectWithValue()
+  } catch (e) {
+    thunkAPI.rejectWithValue()
+  }
 })
 export const register = createAsyncThunk('auth/register', async (data, thunkAPI) => {
   try {
@@ -71,6 +75,7 @@ const authSlice = createSlice({
   reducers: {
     logout: (state, action) => {
       localStorage.removeItem('accessToken')
+      localStorage.removeItem('isLoggedIn')
       state.isLoggedIn = false
       state.user = {}
     }

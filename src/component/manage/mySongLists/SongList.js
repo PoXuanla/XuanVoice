@@ -3,7 +3,8 @@ import { useDispatch } from 'react-redux'
 import { Box, Typography, IconButton, Link } from '@mui/material'
 import { Delete, PlaylistPlay } from '@mui/icons-material'
 import { getListSongs } from '../../../api/songList'
-import { replaceSongListData,playSong } from '../../../slice/musicplayerSlice'
+import { replaceSongListData, playSong } from '../../../slice/musicplayerSlice'
+import { SongListWrapper } from './MySongListsStyle'
 const SongList = (props) => {
   const { songList, sumOfSong = 0 } = props
   //songList  (Object) => 歌單資訊
@@ -13,37 +14,33 @@ const SongList = (props) => {
   const showDeleteMadalHandler = () => {
     props.showDeleteModal(songList._id, songList.name)
   }
-  const playSongListHandler = async () => { 
+  const playSongListHandler = async () => {
     const listSongs = await getListSongs(songList._id)
-    console.log(listSongs)
     dispatch(replaceSongListData(listSongs.songs))
     dispatch(playSong())
   }
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-      <Box>
+    <SongListWrapper>
+      <div>
         {/* SongList Name */}
         <Link component={RouterLink} underline='none' to={`/manage/songlists/${songList._id}`}>
-          <Typography variant='body1' sx={{ fontWeight: 700, color: 'text.primary' }}>
+          <Typography className='songName' variant='body1'>
             {songList.name}
           </Typography>
         </Link>
         {/* 共幾曲 */}
-        <Typography
-          variant='caption'
-          sx={{ color: 'text.secondary' }}
-        >{`${sumOfSong}曲`}</Typography>
-      </Box>
+        <Typography className='sumOfSong' variant='caption'>{`${sumOfSong}曲`}</Typography>
+      </div>
       {/* ToolBar */}
-      <Box>
+      <div>
         <IconButton onClick={playSongListHandler}>
           <PlaylistPlay sx={{ fontSize: { xs: 17, sm: 20 } }} />
         </IconButton>
         <IconButton onClick={showDeleteMadalHandler}>
           <Delete sx={{ fontSize: { xs: 15, sm: 18 } }} />
         </IconButton>
-      </Box>
-    </Box>
+      </div>
+    </SongListWrapper>
   )
 }
 export default SongList

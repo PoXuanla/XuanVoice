@@ -6,6 +6,11 @@ import { grey } from '@mui/material/colors'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { register } from '../slice/authSlice'
+import UserImg from '../component/Register/UserImg'
+import RegisterFields from '../component/Register/RegisterFields'
+
+import { Wrapper, RegisterAlert } from '../component/Register/RegisterStyle'
+import { AssignmentReturn } from '@material-ui/icons'
 
 const Register = (e) => {
   const dispatch = useDispatch()
@@ -17,15 +22,14 @@ const Register = (e) => {
   const nameRef = useRef(null)
   const introRef = useRef(null)
   const imgRef = useRef(null)
+  const fieldsRef = useRef({ accountRef, passwordRef, nameRef, introRef })
 
-  const [userImageError, setUserImageError] = useState(null) //圖片錯誤訊息
-  const [userImagePreview, setUserImagePreview] = useState('') //圖片預覽 src
   const [registerError, setRegisterError] = useState(null) //註冊錯誤訊息
 
   //註冊
   const submitHandler = (e) => {
+    const { accountRef, passwordRef, nameRef, introRef } = fieldsRef.current
     e.preventDefault()
-    setUserImagePreview('')
     var formData = new FormData()
     formData.append('account', accountRef.current.value)
     formData.append('password', passwordRef.current.value)
@@ -42,144 +46,17 @@ const Register = (e) => {
         setRegisterError(err.message)
       })
   }
-  //判斷圖片大小是否 > 500kb
-  const validImgSizeHandler = (e) => {
-    if (imgRef.current.files[0]) {
-      let file = imgRef.current.files[0]
-      let fileLimit = 500000 //500kb
-      if (file.size > fileLimit) {
-        file = null
-        setUserImageError('圖片需小於500kb')
-        setUserImagePreview('')
-      } else {
-        setUserImageError(null)
-        setPreviewImg(file)
-      }
-    }
-  }
-  //預覽圖片
-  const setPreviewImg = (file) => {
-    if (file) {
-      setUserImagePreview(URL.createObjectURL(file))
-    }
-  }
+
   return (
-    <Container maxWidth='xs' sx={{ paddingTop: '50px', paddingBottom: '20px' }}>
-      <Box
-        component='form'
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          padding: '10px',
-          alignItems: 'center',
-          boxShadow: '0 2px 4px rgb(0 0 0 / 10%), 0 8px 16px rgb(0 0 0 / 10%)',
-          bgcolor: 'content'
-        }}
-        onSubmit={submitHandler}
-      >
-        <Typography
-          variant='h6'
-          sx={{
-            marginTop: '15px',
-            marginBottom: '15px',
-            fontWeight: 'bold',
-            color: 'text.primary'
-          }}
-        >
-          註冊
-        </Typography>
-        <TextField
-          id='account'
-          label='帳號'
-          size='small'
-          required
-          autoComplete='off'
-          inputProps={{ minLength: 6 }}
-          inputRef={accountRef}
-          sx={{
-            width: '60%',
-            marginBottom: '15px'
-          }}
-        />
-        <TextField
-          id='password'
-          label='密碼'
-          required
-          size='small'
-          autoComplete='off'
-          inputRef={passwordRef}
-          inputProps={{ minLength: 6 }}
-          sx={{
-            width: '60%',
-            marginBottom: '15px'
-          }}
-        />
-        <TextField
-          id='name'
-          label='暱稱'
-          required
-          size='small'
-          type='password'
-          autoComplete='off'
-          inputRef={nameRef}
-          inputProps={{ minLength: 2 }}
-          sx={{
-            width: '60%',
-            marginBottom: '15px'
-          }}
-        />
-        <TextField
-          id='intro'
-          label='自我介紹'
-          multiline
-          inputRef={introRef}
-          sx={{
-            width: '60%',
-            marginBottom: '15px'
-          }}
-        />
-        {/* 照片預覽 */}
-        <Avatar
-          variant={'rounded'}
-          alt=''
-          src={userImagePreview}
-          sx={{
-            width: 150,
-            height: 150,
-            background: grey[200],
-            marginBottom: '15px',
-            display: userImagePreview ? 'block' : 'none'
-          }}
-        />
-        {/* 圖片錯誤提示 */}
-        <Alert
-          variant='outlined'
-          severity='error'
-          sx={{ display: userImageError ? 'flex' : 'none', marginBottom: '15px' }}
-        >
-          {userImageError}
-        </Alert>
-        {/* 上傳圖片按鈕 */}
-        <label htmlFor='contained-button-file'>
-          <input
-            accept='image/*'
-            id='contained-button-file'
-            type='file'
-            ref={imgRef}
-            onChange={validImgSizeHandler}
-            style={{ display: 'none' }}
-          />
-          <Button
-            variant='outlined'
-            component='span'
-            sx={{
-              marginBottom: '15px'
-            }}
-          >
-            上傳大頭照
-          </Button>
-        </label>
+    <Container maxWidth='xs' sx={{ paddingTop: 5 }}>
+      <Wrapper component='form' onSubmit={submitHandler}>
+        {/* Title */}
+        <Typography variant='h6'>註冊</Typography>
+        {/* 註冊欄位 */}
+        <RegisterFields ref={fieldsRef} />
+        {/* 圖片 */}
+        <UserImg ref={imgRef} />
+        {/* 註冊按鈕 */}
         <LoadingButton
           color='primary'
           loading={isLoading}
@@ -191,14 +68,10 @@ const Register = (e) => {
           註冊
         </LoadingButton>
         {/* 註冊錯誤提示 */}
-        <Alert
-          variant='outlined'
-          severity='error'
-          sx={{ display: registerError ? 'flex' : 'none', marginTop: '15px', marginBottom: '15px' }}
-        >
+        <RegisterAlert variant='outlined' severity='error' registerError={registerError !== null}>
           {registerError}
-        </Alert>
-      </Box>
+        </RegisterAlert>
+      </Wrapper>
     </Container>
   )
 }

@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
-import axios from 'axios'
 import {
   Avatar,
   Alert,
@@ -18,14 +17,14 @@ import { LoadingButton } from '@mui/lab'
 import EditIcon from '@mui/icons-material/Edit'
 import AddCircleIcon from '@mui/icons-material/AddCircle'
 import { getAllSongCategories } from '../../../api/songCategory'
+import SongCategorySelect from '../../SongForm/SongCategorySelect'
 const SongForm = (props) => {
   const { song = null, mode } = props
   // song (Object) => 歌曲資訊
   // mode (String) => 表單模式 ('create'、'update')
-  
+
   const { isLoading } = useSelector((state) => state.load)
 
-  const [songCategories, setSongCategories] = useState(null) //全部的歌曲分類
   const [songImageError, setSongImageError] = useState(null) //圖片錯誤訊息
   const [songImagePreview, setSongImagePreview] = useState('') //圖片預覽 src
   const [uploadMp3Name, setUploadMp3Name] = useState(null) //上傳 mp3 名稱
@@ -50,13 +49,6 @@ const SongForm = (props) => {
     }
   }, [song])
 
-  //取得全部的歌曲分類
-  useEffect(async () => {
-    await getAllSongCategories().then((response) => {
-      setSongCategories(response.SongCategory)
-    })
-  }, [])
-
   // 預覽圖片
   const setPreviewImg = (file) => {
     if (file) {
@@ -79,8 +71,8 @@ const SongForm = (props) => {
     }
   }
   // 選擇歌曲分類
-  const selectSongCategoryHandler = (event) => {
-    setSelectSongCategory(event.target.value)
+  const selectSongCategoryHandler = (value) => {
+    setSelectSongCategory(value)
   }
   //mp3大小超過5000kb,顯示錯誤
   const validMp3SizeHandler = (e) => {
@@ -128,32 +120,21 @@ const SongForm = (props) => {
             alignItems: 'center'
           }}
         >
-          <Box
+          {/* 圖片預覽 */}
+          <Avatar
+            variant='rounded'
+            src={
+              songImagePreview.includes('blob')
+                ? songImagePreview
+                : `${songImagePreview}?${Math.random()}`
+            }
             sx={{
               width: '100%',
-              height: 0,
-              paddingBottom: '100%',
-              position: 'relative',
-              marginBottom: 2
+              height: '100%',
+              marginBottom:2
             }}
-          >
-            {/* 圖片預覽 */}
-            <Avatar
-              variant='rounded'
-              src={
-                songImagePreview.includes('blob')
-                  ? songImagePreview
-                  : `${songImagePreview}?${Math.random()}`
-              }
-              sx={{
-                width: '100%',
-                height: '100%',
-                position: 'absolute',
-                top: 0,
-                left: 0
-              }}
-            ></Avatar>
-          </Box>
+          ></Avatar>
+
           {/* 圖片錯誤提示 */}
           <Alert
             variant='outlined'
@@ -291,27 +272,10 @@ const SongForm = (props) => {
           </Typography>
           {/* 歌曲分類 */}
           {
-            <FormControl required sx={{ width: '100%' }}>
-              <InputLabel id='selectLabel'>分類</InputLabel>
-              <Select
-                labelId='selectLabel'
-                id='simpleSelect'
-                defaultValue=''
-                value={selectSongCategory}
-                label='分類'
-                onChange={selectSongCategoryHandler}
-              >
-                {songCategories
-                  ? songCategories.map((data, index) => {
-                      return (
-                        <MenuItem key={index} value={data._id}>
-                          {data.name}
-                        </MenuItem>
-                      )
-                    })
-                  : null}
-              </Select>
-            </FormControl>
+            <SongCategorySelect
+              selectSongCategory={selectSongCategory}
+              selectSongCategoryHandler={selectSongCategoryHandler}
+            />
           }
           {/* submit 按鈕 */}
           <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 2 }}>

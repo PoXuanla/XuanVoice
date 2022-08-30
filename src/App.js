@@ -29,6 +29,11 @@ const App = () => {
 
   //驗證JWT Token
   useEffect(() => {
+    const token = localStorage.getItem('accessToken')
+    if (token === null) {
+      localStorage.setItem('isLoggedIn', false)
+      return
+    }
     dispatch(validAccessToken())
   }, [])
 

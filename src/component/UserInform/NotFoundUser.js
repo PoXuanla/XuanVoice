@@ -1,7 +1,7 @@
 import { Container, Typography, Box } from '@mui/material'
 import styled from '@emotion/styled'
 
-const PageNotFoundStyle = styled(Box)(({ theme }) => ({
+const UserNotFoundStyle = styled(Box)(({ theme }) => ({
   boxShadow: theme.shadows[1],
   textAlign: 'center',
   backgroundColor: theme.palette.background.paper,
@@ -13,15 +13,11 @@ const PageNotFoundStyle = styled(Box)(({ theme }) => ({
     color: theme.palette.text.primary
   }
 }))
-const PageNotFound = () => {
+const NotFoundUser = () => {
   return (
-    <>
-      <Container maxWidth={'md'}>
-        <PageNotFoundStyle>
-          <Typography variant='h5'>Page Not Found.(,,・ω・,,)</Typography>
-        </PageNotFoundStyle>
-      </Container>
-    </>
+    <UserNotFoundStyle>
+      <Typography variant='h5'>Not Found This User (,,・ω・,,)</Typography>
+    </UserNotFoundStyle>
   )
 }
-export default PageNotFound
+export default NotFoundUser

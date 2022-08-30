@@ -4,9 +4,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Box, Typography, Skeleton } from '@mui/material'
 import { getListSongs, replaceSortMode, updateSongInSongList } from '../../api/songList'
 import { setLoading, clearLoading } from '../../slice/loadSlice'
-import SortMenu from '../../component/manage/mySongList/SortMenu'
-import DragDropList from '../../component/manage/mySongList/DragDropList'
+import SortMenu from '../../component/manage/MySongList/SortMenu'
+import DragDropList from '../../component/manage/MySongList/DragDropList'
 import SimpleComfirmModal from '../../component/SimpleComfirmModal'
+import { Wrapper } from '../../component/manage/MySongList/MySongListStyle'
 const MySongList = () => {
   const dispatch = useDispatch()
   const { isLoading } = useSelector((state) => state.load)
@@ -49,7 +50,6 @@ const MySongList = () => {
       getListSong()
       setShowDelModal(false)
     } catch (e) {
-      console.log('w')
     }
   }
 
@@ -59,16 +59,15 @@ const MySongList = () => {
   }
   return (
     <>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }} mb={2}>
-        {/* ListName */}
+      <Wrapper>
         {
-          <Typography variant='h6' sx={{ fontWeight: 700, color: 'text.primary', width: '70%' }}>
-            {isLoading ? <Skeleton animation='wave' height={35} /> : listName}
+          <Typography variant='h6' className='title'>
+            {isLoading ? <Skeleton animation='wave' height={35} width={100} /> : listName}
           </Typography>
         }
         {/* Sort Menu */}
         <SortMenu menuMode={menuMode} changeSortMode={changeSortModeHandler}></SortMenu>
-      </Box>
+      </Wrapper>
       {/* Songs */}
 
       {isLoading ? (
