@@ -1,11 +1,10 @@
 import { useRef, useState } from 'react'
 import { Typography, Button, TextField } from '@mui/material'
 import { Wrapper } from './MySongListsStyle'
-import SimpleComfirmModal from '../../SimpleComfirmModal'
+import SimpleComfirmModal from '../../SimpleComfirmModal/SimpleComfirmModal'
 import { createSongList } from '../../../api/songList'
 
 const TitleBar = (props) => {
-    
   const [showCreateModal, setShowCreateModal] = useState(false)
   const listNameRef = useRef()
 

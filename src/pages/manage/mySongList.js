@@ -4,10 +4,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Box, Typography, Skeleton } from '@mui/material'
 import { getListSongs, replaceSortMode, updateSongInSongList } from '../../api/songList'
 import { setLoading, clearLoading } from '../../slice/loadSlice'
-import SortMenu from '../../component/manage/MySongList/SortMenu'
-import DragDropList from '../../component/manage/MySongList/DragDropList'
-import SimpleComfirmModal from '../../component/SimpleComfirmModal'
-import { Wrapper } from '../../component/manage/MySongList/MySongListStyle'
+import SortMenu from '../../component/Manage/MySongList/SortMenu'
+import DragDropList from '../../component/Manage/MySongList/DragDropList'
+import SimpleComfirmModal from '../../component/SimpleComfirmModal/SimpleComfirmModal'
+import { Wrapper } from '../../component/Manage/MySongList/MySongListStyle'
 const MySongList = () => {
   const dispatch = useDispatch()
   const { isLoading } = useSelector((state) => state.load)
@@ -49,8 +49,7 @@ const MySongList = () => {
       await updateSongInSongList(songListId, data)
       getListSong()
       setShowDelModal(false)
-    } catch (e) {
-    }
+    } catch (e) {}
   }
 
   const openDelModal = (songData) => {

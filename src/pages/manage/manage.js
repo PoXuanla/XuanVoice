@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { Outlet, Link as RouterLink } from 'react-router-dom'
 import { Box, Container, Grid } from '@mui/material'
-import MenuGridItem from '../../component/manage/Manage/MenuGridItem'
-import BreadCrumbBar from '../../component/manage/Manage/BreadCrumbBar'
-import { OutletBox } from '../../component/manage/Manage/ManageStyle'
+import MenuGridItem from '../../component/Manage/Manage/MenuGridItem'
+import BreadCrumbBar from '../../component/Manage/Manage/BreadCrumbBar'
+import { OutletBox } from '../../component/Manage/Manage/ManageStyle'
 
 const Manage = () => {
   const [selectMenuIndex, setSelectMenuIndex] = useState(0)

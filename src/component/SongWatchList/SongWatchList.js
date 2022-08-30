@@ -5,7 +5,7 @@ import { Box, Divider, IconButton, Skeleton, Typography } from '@mui/material'
 import { AddCircle, PlayCircle, Edit, Delete } from '@mui/icons-material'
 import UserSongListModal from '../UserSongListModal'
 import ListCell from '../ListCell/ListCell'
-import SimpleComfirmModal from '../../component/SimpleComfirmModal'
+import SimpleComfirmModal from '../SimpleComfirmModal/SimpleComfirmModal'
 import { replaceSongListData } from '../../slice/musicplayerSlice'
 const SongWatchList = (props) => {
   const { songListData, mode = 'show', editLocation, rank = false, isLoading = false } = props
@@ -14,6 +14,7 @@ const SongWatchList = (props) => {
   // rank         (Boolean) => 歌曲前方顯示數字
   // editLocation (String)  => 編輯網址
   // isLoading    (Boolean) => 正在載入中
+
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [addToSongListSongId, setAddToSongListSongId] = useState('')
@@ -45,14 +46,13 @@ const SongWatchList = (props) => {
     setShowDelModal(false)
   }
   const deleteSongHandler = async () => {
-    await deleteSong(delSongId)
-      .then(() => {
-        // fetchSong()
-        // setShowDelModal(false)
-      })
-      .catch(() => {
-        // setShowDelModal(false)
-      })
+    try {
+      await deleteSong(delSongId)
+      fetchSong()
+      setShowDelModal(false)
+    } catch (e) {
+      setShowDelModal(false)
+    }
   }
   const playMusic = (songId) => () => {
     const song = songListData.find((data) => data._id === songId)

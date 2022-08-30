@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchUserSong } from '../../api/song'
 import SongWatchList from '../../component/SongWatchList/SongWatchList'
 import { setLoading, clearLoading } from '../../slice/loadSlice'
-import { Wrapper } from '../../component/manage/MySong/MySongStyle'
+import { Wrapper } from '../../component/Manage/MySong/MySongStyle'
 
 const MySong = () => {
   const dispatch = useDispatch()

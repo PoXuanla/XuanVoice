@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 import { Box, Divider, Skeleton } from '@mui/material'
-import SongList from '../../component/manage/MySongLists/SongList'
+import SongList from '../../component/Manage/MySongLists/SongList'
 import { getUserSongLists, deleteSongListBySongId } from '../../api/songList'
 import { setLoading, clearLoading } from '../../slice/loadSlice'
-import SimpleComfirmModal from '../../component/SimpleComfirmModal'
-import TitleBar from '../../component/manage/MySongLists/TitleBar'
+import SimpleComfirmModal from '../../component/SimpleComfirmModal/SimpleComfirmModal'
+import TitleBar from '../../component/Manage/MySongLists/TitleBar'
 
 const MySongLists = () => {
   const dispatch = useDispatch()

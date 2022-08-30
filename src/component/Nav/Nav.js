@@ -1,35 +1,17 @@
-import React, { useEffect, useState } from 'react'
-import {
-  Box,
-  Button,
-  Tooltip,
-  List,
-  ListItemIcon,
-  ListItemText,
-  SwipeableDrawer,
-  Divider,
-  ListItem,
-  MenuItem,
-  AppBar,
-  Toolbar,
-  IconButton,
-  Typography,
-  Menu,
-  Container,
-  Avatar
-} from '@mui/material'
-import MenuIcon from '@mui/icons-material/Menu'
-import InboxIcon from '@mui/icons-material/MoveToInbox'
-import MailIcon from '@mui/icons-material/Mail'
+import React, { useState } from 'react'
+import { Box, Button, Tooltip, AppBar, Toolbar, IconButton, Container, Avatar } from '@mui/material'
+
 import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { logout } from '../../slice/authSlice'
 import { toggleMode } from '../../slice/modeSlice'
 import { createTheme } from '@mui/material'
+import SwipeDrawer from './SwipeDrawer'
+import NavMenu from './NavMenu'
+import UserImgBtn from './UserImgBtn'
 
 const Nav = () => {
-  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn)
   const user = useSelector((state) => state.auth.user)
   const { mode } = useSelector((state) => state.mode)
   const userImg = useSelector((state) => {
@@ -44,7 +26,7 @@ const Nav = () => {
   const [showDrawer, setShowDrawer] = useState(false)
 
   //處理尺寸小於 sm 的 menu
-  const toggleDrawer = (bool) => (event) => {
+  const toggleDrawer = (bool) => {
     setShowDrawer(bool)
   }
   //處理尺寸 >= sm 的 menu
@@ -58,7 +40,7 @@ const Nav = () => {
     if (document.body.offsetWidth >= theme.breakpoints.values.md) {
       handleOpenUserMenu(event)
     } else {
-      toggleDrawer(true)()
+      toggleDrawer(true)
     }
   }
   //登入
@@ -101,68 +83,7 @@ const Nav = () => {
     { text: '登入', needLogin: false, click: loginHandler, link: null },
     { text: '登出', needLogin: true, click: logoutHandler, link: null }
   ]
-  //尺寸 < sm 的 Menu (Drawer)
-  const list = (anchor) => (
-    <Box
-      sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
-      role='presentation'
-      onClick={toggleDrawer(false)}
-    >
-      <List>
-        {pages.map((text, index) => (
-          <ListItem component={Link} to={index === 0 ? '/' : '/browse'} button key={text}>
-            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
-      <Divider />
-      <List>
-        {settings.map((data, index) => {
-          let item = (
-            <ListItem
-              button
-              key={data.text}
-              onClick={data.click}
-              component={data.link !== null ? Link : null}
-              to={data.link !== null ? data.link : ''}
-            >
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-              <ListItemText primary={data.text} />
-            </ListItem>
-          )
-          if (!isLoggedIn && data.needLogin) return
-          else if (!isLoggedIn && !data.needLogin) return item
-          else if (isLoggedIn) {
-            if (data.text === '登入') return
-            return item
-          }
-        })}
-      </List>
-    </Box>
-  )
-  //尺寸 >= sm 的 Menu
-  const menu = settings.map((data, index) => {
-    let item = (
-      <MenuItem
-        sx={{
-          width: '100%'
-        }}
-        key={data.text}
-        onClick={data.click}
-        component={data.link !== null ? Link : null}
-        to={data.link !== null ? data.link : null}
-      >
-        <Typography textAlign='center'>{data.text}</Typography>
-      </MenuItem>
-    )
-    if (!isLoggedIn && data.needLogin) return
-    else if (!isLoggedIn && !data.needLogin) return item
-    else if (isLoggedIn) {
-      if (data.text === '登入') return
-      return item
-    }
-  })
+
   return (
     <AppBar position='static' elevation={0}>
       <Container maxWidth='xl'>
@@ -177,7 +98,7 @@ const Nav = () => {
             >
               XuanVoice
             </Button>
-
+            {/* width > 900 在 XuanVoice 右側會出現page的連結 */}
             <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
               {pages.map((page, index) => (
                 <Button
@@ -193,50 +114,21 @@ const Nav = () => {
           </Box>
 
           <Box>
-            <Tooltip title='打開設定'>
-              {/* 觸發 Menu 的按鈕 */}
-              <IconButton onClick={openMenu} sx={{ p: 0 }} color='inherit'>
-                <Avatar
-                  alt='User'
-                  src={
-                    userImg
-                      ? userImg
-                      : 'https://eitrawmaterials.eu/wp-content/uploads/2016/09/person-icon.png'
-                  }
-                  sx={{ display: { xs: 'none', md: 'flex' } }}
-                />
-                <MenuIcon sx={{ display: { xs: 'block', md: 'none' } }} />
-              </IconButton>
-            </Tooltip>
+            {/* 觸發 Menu 的按鈕 */}
+            <UserImgBtn openMenu={openMenu} userImg={userImg} />
             {/* 尺寸小於 md 的 Menu */}
-            <SwipeableDrawer
-              sx={{ display: { xs: 'block', md: 'none' } }}
-              anchor={'right'}
-              open={showDrawer}
-              onClose={toggleDrawer(false)}
-              onOpen={toggleDrawer(true)}
-            >
-              {list('right')}
-            </SwipeableDrawer>
+            <SwipeDrawer
+              pages={pages}
+              settings={settings}
+              toggleDrawer={toggleDrawer}
+              showDrawer={showDrawer}
+            />
             {/*  尺寸大於 md 的 Menu */}
-            <Menu
-              sx={{ mt: '45px', display: { xs: 'none', md: 'block' } }}
-              id='menu-appbar'
-              anchorEl={anchorMenuBtn}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right'
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right'
-              }}
-              open={Boolean(anchorMenuBtn)}
-              onClose={handleCloseUserMenu}
-            >
-              {menu}
-            </Menu>
+            <NavMenu
+              settings={settings}
+              anchorMenuBtn={anchorMenuBtn}
+              handleCloseUserMenu={handleCloseUserMenu}
+            />
           </Box>
         </Toolbar>
       </Container>
