@@ -51,7 +51,7 @@ const ListCell = (props) => {
               height: 50,
               boxShadow: 3
             }}
-            src={songData.image}
+            src={`${songData.image}?${Math.random()}`}
           ></Avatar>
           {/* 歌曲名稱、作者 */}
           <Box

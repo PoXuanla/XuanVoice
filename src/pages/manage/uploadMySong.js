@@ -2,7 +2,7 @@ import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { setLoading, clearLoading } from '../../slice/loadSlice'
 import { createSong } from '../../api/song'
-import SongForm from '../../component/manage/MySong/SongForm'
+import SongForm from '../../component/SongForm/SongForm'
 
 const UploadMySong = () => {
   const dispatch = useDispatch()

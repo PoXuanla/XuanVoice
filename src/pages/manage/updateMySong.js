@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 
-import SongForm from '../../component/manage/MySong/SongForm'
+import SongForm from '../../component/SongForm/SongForm'
 import { setLoading, clearLoading } from '../../slice/loadSlice'
 import { getSongById, patchSongById } from '../../api/song'
 
