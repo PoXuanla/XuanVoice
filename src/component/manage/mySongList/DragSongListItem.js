@@ -1,7 +1,7 @@
 import { forwardRef } from 'react'
 import { Delete, DragHandle } from '@mui/icons-material'
 import { IconButton, Box, Divider } from '@mui/material'
-import ListCell from '../../ListCell'
+import ListCell from '../../ListCell/ListCell'
 
 const DragSongListItem = forwardRef((props, ref) => {
   const { songData = {}, provided = {} } = props
