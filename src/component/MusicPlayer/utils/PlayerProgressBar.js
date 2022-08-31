@@ -2,14 +2,12 @@ import { useEffect, useRef, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 import { Box, Typography } from '@mui/material'
-import { blueGrey, pink } from '@mui/material/colors'
-import { setSongCurrentTime,playSong } from '../../../slice/musicplayerSlice'
-
+import { setSongCurrentTime, playSong } from '../../../slice/musicplayerSlice'
+import { BottomProgressBar, ProgressBar, TimeBar } from './UtilsStyle'
 const PlayerProgressBar = (props) => {
   //props
-  const player = props.player
-  const { position, top, left, bottom, padding, bgcolor, color } = props.css || {}
-  const showTime = props.showTime //是否顯示 current Time & duration Time
+  const { player, color, showTime } = props
+  //是否顯示 current Time & duration Time
   //useState
   const [durationToMin, setDurationToMin] = useState('') //convert Duration to 00:00 format
   const [currentTimeToMin, setCurrentTimeToMin] = useState(0) //convert currentTime to 00:00 format
@@ -87,66 +85,29 @@ const PlayerProgressBar = (props) => {
   }
 
   return (
-    <Box
-      sx={{
-        width: '100%',
-        position: position || 'static',
-        top: top !== undefined ? top : null,
-        bottom: bottom !== undefined ? bottom : null,
-        left: left !== undefined ? left : null,
-        padding: padding || 0,
-        zIndex: 1,
-        bgcolor: bgcolor
-        // cursor: 'pointer'
-      }}
-    >
+    <>
       {/* CurrentTime & DurationTime */}
       {showTime && (
-        <Box
-          sx={{
-            display: 'flex',
-            width: '100%',
-            justifyContent: 'space-between',
-            marginBottom: '6px'
-          }}
-        >
+        <TimeBar>
           <Typography variant='body2' fontSize={10} color={color}>
             {currentTimeToMin}
           </Typography>
           <Typography variant='body2' fontSize={10} color={color}>
             {durationToMin}
           </Typography>
-        </Box>
+        </TimeBar>
       )}
 
-      {/* 播放條 */}
       {/* 播放底條 */}
-      <Box
+      <BottomProgressBar
         ref={progressBarRef}
         onMouseDown={progressMouseDown}
         onMouseMove={progressMouseMove}
         onMouseUp={progressMouseUp}
-        sx={{
-          display: 'block',
-          position: 'relative',
-          borderRadius: '10px',
-          width: '100%',
-          height: 4,
-          bgcolor: 'player.item.background',
-          overflow: 'hidden',
-          cursor: 'pointer',
-        }}
       >
         {/* 播放進度條 */}
-        <Box
-          sx={{
-            position: 'absolute',
-            width: progressPercentage,
-            height: 4,
-            cursor: 'pointer',
-            bgcolor: 'player.primary'
-          }}
-        ></Box>
+        <ProgressBar progressPercentage={progressPercentage} />
+
         {/* 播放圓形拖曳鈕 */}
         {/* <Box
           onMouseDown={dd}
@@ -162,8 +123,9 @@ const PlayerProgressBar = (props) => {
             borderRadius: "50%",
           }}
         ></Box> */}
-      </Box>
-    </Box>
+        {/* </Box> */}
+      </BottomProgressBar>
+    </>
   )
 }
 export default PlayerProgressBar

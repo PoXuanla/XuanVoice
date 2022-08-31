@@ -6,26 +6,17 @@ import BreadCrumbBar from '../../component/Manage/Manage/BreadCrumbBar'
 import { OutletBox } from '../../component/Manage/Manage/ManageStyle'
 
 const Manage = () => {
-  const [selectMenuIndex, setSelectMenuIndex] = useState(0)
-
-  const changeSelectedIndexHandler = (index) => {
-    setSelectMenuIndex(index)
-  }
   return (
     <Container>
       <Grid container>
         <Grid item xs={12} sm={3} padding={2}>
           {/* MenuList */}
-          <MenuGridItem
-            selectMenuIndex={selectMenuIndex}
-            changeSelectedIndex={changeSelectedIndexHandler}
-          />
+          <MenuGridItem />
         </Grid>
-
         {/* 右邊Content */}
         <Grid item xs={12} sm={9} padding={2}>
           {/* 麵包屑導航 */}
-          <BreadCrumbBar changeSelectedIndex={changeSelectedIndexHandler} />
+          <BreadCrumbBar />
           {/* Outlet */}
           <OutletBox>
             <Outlet />

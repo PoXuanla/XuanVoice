@@ -1,13 +1,24 @@
+import React, { useState, useEffect } from 'react'
 import { Box, Button, Typography } from '@mui/material'
-import { Link as RouterLink } from 'react-router-dom'
+import { Link as RouterLink, useLocation } from 'react-router-dom'
 import { MenuGridItemContainer } from './ManageStyle'
 
 const MenuGridItem = (props) => {
-  const selectMenuIndex = props.selectMenuIndex
+  const locationString = useLocation().pathname.split('/').splice(1)
 
-  const changeSelectedIndexHandler = (index) => () => {
-    props.changeSelectedIndex(index)
+  const [selectMenuIndex, setSelectMenuIndex] = useState(0)
+
+  const changeSelectedIndexHandler = (index) => (event) => {
+    setSelectMenuIndex(index)
   }
+
+  //Change Menu Selected when Url Pathname Change
+  useEffect(() => {
+    if (locationString[1] === undefined) setSelectMenuIndex(0)
+    if (locationString[1] === 'likes') setSelectMenuIndex(0)
+    if (locationString[1] === 'songlist') setSelectMenuIndex(1)
+    if (locationString[1] === 'song') setSelectMenuIndex(2)
+  }, [useLocation().pathname])
   return (
     <MenuGridItemContainer>
       <Typography variant='h6' className='title'>

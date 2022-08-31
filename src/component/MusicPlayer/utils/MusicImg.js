@@ -1,17 +1,12 @@
 import { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import Avatar from '@mui/material/Avatar'
+import { Box } from '@mui/material'
 import data from '../data'
 
 const MusicImg = (props) => {
   const showUI = props.showUI
-  const {
-    width = '',
-    height = '',
-    marginRight = '',
-    filter = '',
-    opacity = 1
-  } = props.css || {}
+  const { width = '', height = '', marginRight = '', filter = '', opacity = 1 } = props.css || {}
   const [totalSongNum, setTotalSongNum] = useState(null)
 
   const { songListData, currentSongIndex } = useSelector((state) => state.musicplayer)
@@ -25,16 +20,9 @@ const MusicImg = (props) => {
       alt='The image'
       src={songListData.length !== 0 ? songListData[currentSongIndex].image : ''}
       style={{
-        width: width || '100%',
-        height: height || '',
-        marginRight: marginRight || 0,
-        filter: filter || '',
-        transition: 'height .3s',
-
-//        transition: 'height .3s,filter .3s, opacity .3s',
-        // transition:'all .3s',
-        opacity: opacity || '',
-        backgroundColor: 'black',
+        width: '100%',
+        height: '100%',
+        backgroundColor: 'black'
       }}
     />
   )

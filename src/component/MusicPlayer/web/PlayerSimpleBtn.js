@@ -7,9 +7,7 @@ import { pink } from '@mui/material/colors'
 import { playSong, pauseSong } from '../../../slice/musicplayerSlice'
 
 const PlayerSimpleBtn = (props) => {
-  const player = props.player
-  const { display } = props.css
-
+  const { player, showUI } = props
   const { isPlay } = useSelector((state) => state.musicplayer)
   const dispatch = useDispatch()
 
@@ -25,7 +23,7 @@ const PlayerSimpleBtn = (props) => {
   return (
     <Box
       sx={{
-        display: display || 'flex',
+        display: showUI ? 'none' : 'flex',
         width: 70
       }}
     >
@@ -37,7 +35,7 @@ const PlayerSimpleBtn = (props) => {
         onClick={() => {
           props.showUIHandler()
         }}
-        fontSize="medium"
+        fontSize='medium'
       >
         <MenuIcon sx={{ color: 'player.primary' }} />
       </IconButton>

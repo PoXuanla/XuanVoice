@@ -4,15 +4,15 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import { blueGrey } from '@mui/material/colors'
 
 const PlayerTopBtn = (props) => {
-  const { display, position, top, left } = props.css || {}
+  const { showUI } = props
   return (
     <Box
       sx={{
-        display: display || 'block',
+        display: showUI ? 'block' : 'none',
         width: '100%',
-        position: position || '',
-        top: top !== undefined ? top : null,
-        left: left !== undefined ? left : null,
+        position: 'absolute',
+        top: 0,
+        left: 0,
         padding: '15px'
       }}
     >

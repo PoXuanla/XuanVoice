@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { IconButton, Slider, Box, ClickAwayListener } from '@mui/material'
+import { IconButton, ClickAwayListener } from '@mui/material'
 
-import { blueGrey, pink } from '@mui/material/colors'
 import VolumeDownIcon from '@mui/icons-material/VolumeDown'
 import SkipPreviousIcon from '@mui/icons-material/SkipPrevious'
 import SkipNextIcon from '@mui/icons-material/SkipNext'
@@ -20,34 +19,17 @@ import {
   changePlayMode,
   adjustVolume
 } from '../../../slice/musicplayerSlice'
-import { alpha, styled } from '@mui/material/styles'
-
-const CustomSlider = styled(Slider)(({ theme }) => ({
-  padding: 0,
-  width: 3,
-  color: 'player.primary',
-  '& input[type="range"]': {
-    WebkitAppearance: 'slider-vertical'
-  },
-  '& .MuiSlider-thumb': {
-    height: 12,
-    width: 12,
-    backgroundColor: '#fff',
-    '&:focus,&:hover,&.Mui-focusVisible': {
-      boxShadow: `0px 0px 0px 7px ${alpha(theme.palette.player.primary, 0.2)}`
-    },
-    '&.Mui-active': {
-      boxShadow: `0px 0px 0px 15px ${alpha(theme.palette.player.primary, 0.4)}`
-    },
-    '&.MuiSlider-root': {
-      padding: 0
-    }
-  }
-}))
+import {
+  FullBtnContainer,
+  FullBtnWrapper,
+  VoiceContainer,
+  SlideContainer,
+  CustomSlider
+} from './UtilsStyle'
 
 const PlayerFullBtn = (props) => {
   const player = props.player
-  const { display, bgcolor } = props.css || {}
+  const { showUI } = props
   const [showVolumeSlide, setShowVolumeSlide] = useState(false)
   const [totalSongNum, setTotalSongNum] = useState(null)
   const { isPlay, currentSongIndex, songListData, playMode, playModeIndex, volume } = useSelector(
@@ -85,7 +67,6 @@ const PlayerFullBtn = (props) => {
     dispatch(prevSong())
     dispatch(playSong())
   }
-
   const nextSongHandler = () => {
     player.src = songListData[currentSongIndex + 1].mp3
     player.play()
@@ -98,58 +79,22 @@ const PlayerFullBtn = (props) => {
     //else setPlayMode('normal')
   }
   return (
-    <Box
-      sx={{
-        display: display || 'block',
-        width: '100%',
-        bgcolor: 'background.paper',
-        padding: '15px'
-      }}
-    >
-      <Box sx={{ display: 'flex', justifyContent: 'center', transition: 'all .5s' }}>
+    <FullBtnContainer showUI={showUI}>
+      <FullBtnWrapper>
         {/* 聲音 */}
-        <Box
-          sx={{
-            position: 'relative',
-            display: 'flex',
-            alignItems: 'center'
-          }}
-        >
+        <VoiceContainer>
           {/* 聲音按鈕 */}
-          <IconButton size='large' onClick={toggleVolumeSlideHandler}>
+          <IconButton size='medium' onClick={toggleVolumeSlideHandler}>
             {volume === 0 ? (
-              <VolumeOffIcon
-                sx={{
-                  fontSize: '25px',
-                  color: 'player.background'
-                }}
-              />
+              <VolumeOffIcon className='closeVoiceBtn' />
             ) : (
-              <VolumeDownIcon
-                sx={{
-                  fontSize: '25px',
-                  color: 'player.primary'
-                }}
-              />
+              <VolumeDownIcon className='openVoiceBtn' />
             )}
           </IconButton>
           {/* 聲音調整滑鈕 */}
           {showVolumeSlide && (
             <ClickAwayListener onClickAway={closeVolumeSlideHandler}>
-              <Box
-                sx={{
-                  display: showVolumeSlide ? 'block' : 'none',
-                  position: 'absolute',
-                  bottom: '90%',
-                  left: 15,
-                  height: 75,
-                  zIndex: 10,
-                  bgcolor: blueGrey[100],
-                  padding: '6px',
-                  borderRadius: '5px',
-                  boxShadow: '2px 2px 0px 2px rgba(0,0,0, 0.2)'
-                }}
-              >
+              <SlideContainer showVolumeSlide={showVolumeSlide}>
                 <CustomSlider
                   max={1}
                   min={0}
@@ -159,15 +104,14 @@ const PlayerFullBtn = (props) => {
                   aria-label='Temperature'
                   onChange={adjustVolumeHandler}
                 />
-              </Box>
+              </SlideContainer>
             </ClickAwayListener>
           )}
-        </Box>
+        </VoiceContainer>
         {/* 前一首歌曲 */}
         <IconButton size='medium' onClick={prevSongHandler} disabled={currentSongIndex === 0}>
           <SkipPreviousIcon
             sx={{
-              fontSize: '30px',
               color: currentSongIndex === 0 ? 'player.item.background' : 'player.primary'
             }}
           />
@@ -177,7 +121,6 @@ const PlayerFullBtn = (props) => {
           {!isPlay && (
             <PlayCircleIcon
               sx={{
-                fontSize: '30px',
                 color: 'player.primary'
               }}
             />
@@ -185,7 +128,6 @@ const PlayerFullBtn = (props) => {
           {isPlay && (
             <PauseCircleIcon
               sx={{
-                fontSize: '30px',
                 color: 'player.primary'
               }}
             />
@@ -197,9 +139,7 @@ const PlayerFullBtn = (props) => {
           disabled={currentSongIndex === totalSongNum - 1}
         >
           <SkipNextIcon
-            fontSize='medium'
             sx={{
-              fontSize: '30px',
               color:
                 currentSongIndex === totalSongNum - 1 ? 'player.item.background' : 'player.primary'
             }}
@@ -225,8 +165,8 @@ const PlayerFullBtn = (props) => {
             ></LoopIcon>
           )}
         </IconButton>
-      </Box>
-    </Box>
+      </FullBtnWrapper>
+    </FullBtnContainer>
   )
 }
 export default PlayerFullBtn

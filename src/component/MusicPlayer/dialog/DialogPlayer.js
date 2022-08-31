@@ -5,6 +5,7 @@ import MusicInfo from '../../MusicPlayer/utils/MusicInfo'
 import PlayerProgressBar from '../../MusicPlayer/utils/PlayerProgressBar'
 import PlayerFullBtn from '../../MusicPlayer/utils/PlayerFullBtn'
 import useWindowSize from './useWindowSize'
+import { MusicImgStyle, MusicInfoStyle } from './DialogStyle'
 
 const DialogPlayer = (props) => {
   const showPlayList = props.showPlayList
@@ -40,23 +41,16 @@ const DialogPlayer = (props) => {
             padding: '25px'
           }}
         >
-          <MusicImg
-            css={{
-              width: 200,
-              height: 200
-            }}
-          ></MusicImg>
+          <MusicImgStyle>
+            <MusicImg />
+          </MusicImgStyle>
         </Box>
+        <MusicInfoStyle>
+          <MusicInfo showBtn='true'></MusicInfo>
+        </MusicInfoStyle>
 
-        <MusicInfo
-          showBtn='true'
-          color='text.primary'
-          css={{
-            display: 'flex'
-          }}
-        ></MusicInfo>
         <PlayerProgressBar color='text.primary' showTime='true' player={player}></PlayerProgressBar>
-        <PlayerFullBtn player={player}></PlayerFullBtn>
+        <PlayerFullBtn player={player} showUI={true}></PlayerFullBtn>
       </Box>
     </Box>
   )
