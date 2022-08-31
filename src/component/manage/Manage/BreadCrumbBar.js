@@ -1,66 +1,70 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 import { Typography, Breadcrumbs, Link } from '@mui/material'
 import { useLocation, Link as RouterLink } from 'react-router-dom'
 
+const Location = [
+  { location: '/manage', name: '音樂庫' },
+  { location: '/manage/likes', name: '我的喜歡' },
+  { location: '/manage/songlists', name: '我的歌單' },
+  { location: '/manage/songlists/:id', name: '歌單' },
+  { location: '/manage/song', name: '我的作品' },
+  { location: '/manage/song/upload', name: '上傳' },
+  { location: '/manage/song/:id/edit', name: '編輯歌曲' }
+]
 const BreadCrumbBar = (props) => {
-  const TCBreadCrumbString = [] //繁體中文的麵包穴字串
-  const breadCrumbString = useLocation().pathname.split('/').splice(1) //用於 BreakCrumb
+  let breadCrumbString = useLocation().pathname.split('/').splice(1)
+  const [processUrlArray, setprocessUrlArray] = useState([])
 
-  //Convert to Tranditional Chinese
-  for (let i = 0; i < breadCrumbString.length; i++) {
-    if (breadCrumbString[i] === 'manage') TCBreadCrumbString.push('音樂庫')
-    if (breadCrumbString[i] === 'likes') TCBreadCrumbString.push('我的喜歡')
-    if (breadCrumbString[i] === 'song') TCBreadCrumbString.push('我的作品')
-    if (breadCrumbString[i] === 'songlists') TCBreadCrumbString.push('我的歌單')
-    if (breadCrumbString[i] === 'upload') TCBreadCrumbString.push('上傳')
-    if (breadCrumbString[i] === 'edit') TCBreadCrumbString.push('編輯歌曲')
-  }
-  if (breadCrumbString.length == 1) TCBreadCrumbString.push('我的喜歡')
-
-  //Change Menu Selected when Url Pathname Change
   useEffect(() => {
-    if (breadCrumbString[1] === undefined) props.changeSelectedIndex(0)
-    if (breadCrumbString[1] === 'likes') props.changeSelectedIndex(0)
-    if (breadCrumbString[1] === 'songlists') props.changeSelectedIndex(1)
-    if (breadCrumbString[1] === 'song') props.changeSelectedIndex(2)
+    let UrlArray = replaceIdtoString()
+    setprocessUrlArray(UrlArray)
   }, [useLocation().pathname])
 
-  const BreadCrumbData = TCBreadCrumbString.map((data, index) => {
-    if (index === TCBreadCrumbString.length - 1) {
-      return (
-        <Typography key={index} color='text.primary'>
-          {data}
-        </Typography>
-      )
+  //先把id替換為':id'
+  const replaceIdtoString = () => {
+    let NewBreadCrumbString = ''
+    for (let i = 0; i < breadCrumbString.length; i++) {
+      if (breadCrumbString[i].length > 20) NewBreadCrumbString += '/:id'
+      else {
+        NewBreadCrumbString += `/${breadCrumbString[i]}`
+      }
     }
-    if (index === 1) {
-      let link = `/${breadCrumbString[0]}` + `/${breadCrumbString[1]}`
-      return (
-        <Link key={index} underline='hover' color='inherit' component={RouterLink} to={link}>
-          <Typography key={index} color='text.primary' variant='body1' sx={{ fontWeight: 700 }}>
-            {data}
+    return NewBreadCrumbString.split('/').splice(1)
+  }
+  const getAllLocation = () => {
+    return Location.map((item) => item.location)
+  }
+  //再來比對location的字串
+  const BreadCrumbItem = processUrlArray.map((item, index) => {
+    let Alllocation = getAllLocation()
+    let newString = ''
+    for (let i = 0; i <= index; i++) {
+      newString += `/${processUrlArray[i]}`
+    }
+    if (Alllocation.includes(newString)) {
+      const locationIndex = Alllocation.indexOf(newString)
+      return index === processUrlArray.length - 1 ? (
+        <Typography key={index} color='text.primary'>
+          {Location[locationIndex].name}
+        </Typography>
+      ) : (
+        <Link
+          key={index}
+          underline='hover'
+          component={RouterLink}
+          to={Location[locationIndex].location}
+        >
+          <Typography color='text.primary' variant='body1' sx={{ fontWeight: 700 }}>
+            {Location[locationIndex].name}
           </Typography>
         </Link>
       )
     }
-    return (
-      <Link
-        key={index}
-        underline='hover'
-        color='inherit'
-        component={RouterLink}
-        to={`/${breadCrumbString[index]}`}
-      >
-        <Typography key={index} color='text.primary' variant='body1' sx={{ fontWeight: 700 }}>
-          {data}
-        </Typography>
-      </Link>
-    )
   })
   return (
     <Breadcrumbs aria-label='breadcrumb' sx={{ marginBottom: 2 }}>
-      {BreadCrumbData}
+      {BreadCrumbItem}
     </Breadcrumbs>
   )
 }
