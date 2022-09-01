@@ -34,10 +34,10 @@ const SongList = (props) => {
       {/* ToolBar */}
       <div>
         <IconButton onClick={playSongListHandler}>
-          <PlaylistPlay sx={{ fontSize: { xs: 17, sm: 20 } }} />
+          <PlaylistPlay sx={{ fontSize: 25 }} />
         </IconButton>
         <IconButton onClick={showDeleteMadalHandler}>
-          <Delete sx={{ fontSize: { xs: 15, sm: 18 } }} />
+          <Delete sx={{ fontSize: 25 }} />
         </IconButton>
       </div>
     </SongListWrapper>

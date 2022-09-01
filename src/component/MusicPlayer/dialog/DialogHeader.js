@@ -1,7 +1,7 @@
 import { Box, ToggleButton, Typography, IconButton } from '@mui/material'
 import { blueGrey } from '@mui/material/colors'
 import ClearIcon from '@mui/icons-material/Clear'
-import useWindowSize from './useWindowSize'
+import useWindowSize from '../../../hooks/useWindowSize'
 import { useEffect, useState } from 'react'
 const DialogHeader = (props) => {
   const showPlayList = props.showPlayList

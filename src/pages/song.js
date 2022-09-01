@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 import { Avatar, Container, Grid, Typography, Box, IconButton, Divider } from '@mui/material'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 import PlayCircleIcon from '@mui/icons-material/PlayCircle'
-import { replaceSongListData } from '../slice/musicplayerSlice'
+import { replaceSongListData, openPlayer } from '../slice/musicplayerSlice'
 import {
   TopGridContainer,
   TopInfoGridItem,
@@ -12,18 +14,20 @@ import {
   SongInfoWrapper
 } from '../component/Song/SongStyle'
 import { getSongById } from '../api/song'
-import { useParams } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+
 const Song = () => {
   const dispatch = useDispatch()
   const songId = useParams().songId
   const [songData, setSongData] = useState({})
+
   useEffect(async () => {
     const response = await getSongById(songId)
     setSongData(response.song)
   }, [])
+
   const playMusic = () => {
     const { name, image, author, mp3 } = songData
+    dispatch(openPlayer())
     dispatch(replaceSongListData([{ name, image, author, mp3 }]))
   }
   return (

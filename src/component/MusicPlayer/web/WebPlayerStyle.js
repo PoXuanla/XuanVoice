@@ -31,7 +31,7 @@ export const MusicImgStyle = styled(Box, {
 })(({ theme, showUI }) => ({
   width: showUI ? '100%' : 46,
   height: showUI ? 388 : 46,
-  marginRight: showUI ? 0 : theme.spacing(0.5),
+  marginRight: showUI ? 0 : theme.spacing(1),
   filter: showUI ? 'blur(5px)' : '',
   opacity: showUI ? '.7' : '',
   transition: 'height .3s'

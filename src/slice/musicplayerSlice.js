@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-  show: false,
+  showPlayer: false,
   isPlay: false,
   songListData: [],
   currentSongIndex: 0,
@@ -16,8 +16,8 @@ export const musicplayerSlice = createSlice({
   name: 'musicplayer',
   initialState,
   reducers: {
-    toggleShow: (state) => {
-      state.show = !state.show
+    openPlayer: (state) => { 
+      state.showPlayer = true
     },
     playSong: (state) => {
       state.isPlay = true
@@ -64,7 +64,7 @@ export const musicplayerSlice = createSlice({
   }
 })
 export const {
-  toggleShow,
+  openPlayer,
   playSong,
   pauseSong,
   nextSong,

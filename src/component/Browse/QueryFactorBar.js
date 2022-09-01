@@ -38,7 +38,7 @@ const QueryFactorBar = (props) => {
       </QueryFactorBtn>
     )
   })
-  const QueryOrderBtn = ['最多喜歡', '最新'].map((x, index) => {
+  const QueryOrderBtn = ['最新'].map((x, index) => {
     return (
       <QueryFactorBtn
         key={index}

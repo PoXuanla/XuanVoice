@@ -12,7 +12,7 @@ const MusicPlayer = () => {
 
   //redux
   const dispatch = useDispatch()
-  const { playMode, playModeIndex, songListData, currentSongIndex } = useSelector(
+  const { playMode, playModeIndex, songListData, currentSongIndex, showPlayer } = useSelector(
     (state) => state.musicplayer
   )
   const closeDialogHandler = () => {
@@ -51,7 +51,8 @@ const MusicPlayer = () => {
   }
   return (
     <>
-      <WebPlayer openDialog={openDialogHandler} player={player}></WebPlayer>
+      {showPlayer && <WebPlayer openDialog={openDialogHandler} player={player}></WebPlayer>}
+
       <DialogMusicPlayer
         openDialog={openDialog}
         closeDialog={closeDialogHandler}

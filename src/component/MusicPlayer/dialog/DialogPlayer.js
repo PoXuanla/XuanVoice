@@ -4,7 +4,7 @@ import MusicImg from '../../MusicPlayer/utils/MusicImg'
 import MusicInfo from '../../MusicPlayer/utils/MusicInfo'
 import PlayerProgressBar from '../../MusicPlayer/utils/PlayerProgressBar'
 import PlayerFullBtn from '../../MusicPlayer/utils/PlayerFullBtn'
-import useWindowSize from './useWindowSize'
+import useWindowSize from '../../../hooks/useWindowSize'
 import { MusicImgStyle, MusicInfoStyle } from './DialogStyle'
 
 const DialogPlayer = (props) => {

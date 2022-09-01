@@ -108,13 +108,13 @@ const DialogPlayList = (props) => {
                   }
                 />
 
-                <IconButton onClick={toggleHeartHandler}>
+                {/* <IconButton onClick={toggleHeartHandler}>
                   <FavoriteBorderIcon
                     sx={{
                       color: blueGrey[100]
                     }}
                   ></FavoriteBorderIcon>
-                </IconButton>
+                </IconButton> */}
               </ListItemButton>
               <Divider />
             </Box>

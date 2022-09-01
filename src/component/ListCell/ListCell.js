@@ -1,4 +1,5 @@
-import { Avatar, Box, Divider, IconButton, Typography } from '@mui/material'
+import { Box, Divider, Typography } from '@mui/material'
+import { Link as RouterLink } from 'react-router-dom'
 import React, { forwardRef } from 'react'
 import { DragHandle } from '@mui/icons-material'
 import { Wrapper, RankStyle, CellAvatar, SongInfoStyle, SongItemStyle } from './ListCellStyle'
@@ -21,12 +22,18 @@ const ListCell = (props) => {
             </RankStyle>
           )}
           {/* 圖片 */}
-          <CellAvatar variant='rounded' src={`${songData.image}}`}></CellAvatar>
+          <CellAvatar variant='rounded' src={songData.image}></CellAvatar>
           {/* 歌曲名稱、作者 */}
           <SongInfoStyle>
-            <Typography variant='subtitle2' className='text-songname'>
+            <Typography
+              component={RouterLink}
+              to={`/song/${songData._id}`}
+              variant='subtitle2'
+              className='text-songname'
+            >
               {songData.name}
             </Typography>
+
             <Typography variant='caption' className='text-author'>
               {songData.author.name}
             </Typography>

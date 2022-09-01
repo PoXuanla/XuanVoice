@@ -9,8 +9,7 @@ export const Wrapper = styled(Box)(({ theme }) => ({
 }))
 export const SongItemStyle = styled(Box)(({ theme }) => ({
   display: 'flex',
-  alignItems: 'center',
- 
+  alignItems: 'center'
 }))
 export const RankStyle = styled(Box)(({ theme }) => ({
   width: 50,
@@ -33,14 +32,19 @@ export const SongInfoStyle = styled(Box)(({ theme }) => ({
   justifyContent: 'center',
   flexDirection: 'column',
   marginLeft: theme.spacing(2),
+  textAlign: 'left',
   '& .text-songname': {
     marginBottom: 0,
     fontWeight: 700,
-    color: theme.palette.text.primary
+    color: theme.palette.text.primary,
+    textDecoration: 'none'
   },
   '& .text-author': {
     marginBottom: 0,
     fontWeight: 400,
     color: theme.palette.text.secondary
+  },
+  '& .MuiTypography-root': {
+    marginBottom: 0
   }
 }))

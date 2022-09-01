@@ -6,7 +6,7 @@ import { AddCircle, PlayCircle, Edit, Delete } from '@mui/icons-material'
 import UserSongListModal from '../UserSongListModal'
 import ListCell from '../ListCell/ListCell'
 import SimpleComfirmModal from '../SimpleComfirmModal/SimpleComfirmModal'
-import { replaceSongListData } from '../../slice/musicplayerSlice'
+import { replaceSongListData, openPlayer } from '../../slice/musicplayerSlice'
 const SongWatchList = (props) => {
   const { songListData, mode = 'show', editLocation, rank = false, isLoading = false } = props
   // songListData (Array)   => 歌曲資料 [{ name, image, author, mp3 }]
@@ -22,8 +22,14 @@ const SongWatchList = (props) => {
   const [delSongName, setDelSongName] = useState('')
   const [delSongId, setDelSongId] = useState('')
   const [showDelModal, setShowDelModal] = useState(false)
+  const [showLoggedInModal, setShowLoggedInModal] = useState(false)
 
   const addToSongList = (songId) => () => {
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true' ? true : false
+    if (!isLoggedIn) {
+      setShowLoggedInModal(true)
+      return
+    }
     setAddToSongListSongId(songId)
     setShowSongList(true)
   }
@@ -57,7 +63,11 @@ const SongWatchList = (props) => {
   const playMusic = (songId) => () => {
     const song = songListData.find((data) => data._id === songId)
     const { name, image, author, mp3 } = song
+    dispatch(openPlayer())
     dispatch(replaceSongListData([{ name, image, author, mp3 }]))
+  }
+  const goToLoggin = () => {
+    navigate('/login')
   }
   //工具欄-一般顯示模式
   const showModeToolBar = (songId) => (
@@ -70,10 +80,10 @@ const SongWatchList = (props) => {
       }}
     >
       <IconButton onClick={addToSongList(songId)}>
-        <AddCircle sx={{ fontSize: { xs: 15, sm: 18 } }}></AddCircle>
+        <AddCircle sx={{ fontSize: { xs: 25, sm: 25 } }}></AddCircle>
       </IconButton>
       <IconButton onClick={playMusic(songId)}>
-        <PlayCircle sx={{ fontSize: { xs: 15, sm: 18 } }}></PlayCircle>
+        <PlayCircle sx={{ fontSize: { xs: 25, sm: 25 } }}></PlayCircle>
       </IconButton>
     </Box>
   )
@@ -88,10 +98,10 @@ const SongWatchList = (props) => {
       }}
     >
       <IconButton onClick={editSongHandler(songId)}>
-        <Edit sx={{ fontSize: { xs: 15, sm: 18 } }}></Edit>
+        <Edit sx={{ fontSize: { xs: 25, sm: 25 } }}></Edit>
       </IconButton>
       <IconButton onClick={openDelSongModal(songId, songName)}>
-        <Delete sx={{ fontSize: { xs: 15, sm: 18 } }}></Delete>
+        <Delete sx={{ fontSize: { xs: 25, sm: 25 } }}></Delete>
       </IconButton>
     </Box>
   )
@@ -146,6 +156,19 @@ const SongWatchList = (props) => {
           onCancel={modalClose}
         >{`是否刪除 : ${delSongName}`}</SimpleComfirmModal>
       )}
+      {
+        <SimpleComfirmModal
+          show={showLoggedInModal}
+          close={modalClose}
+          title={'登入'}
+          confirmText={'前往'}
+          cancelText={'取消'}
+          onConfirm={goToLoggin}
+          onCancel={modalClose}
+        >
+          {<>尚未登入，前往登入以使用功能</>}
+        </SimpleComfirmModal>
+      }
     </>
   )
 }

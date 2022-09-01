@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import {
   Modal,
@@ -12,34 +12,48 @@ import {
   ListItemAvatar,
   Avatar,
   Checkbox,
-  Divider
+  Divider,
+  TextField,
+  Alert
 } from '@mui/material'
 import SimpleComfirmModal from './SimpleComfirmModal/SimpleComfirmModal'
-import { getListsAndCheckSongExistList, updateSongInSongList } from '../api/songList'
+import {
+  createSongList,
+  getListsAndCheckSongExistList,
+  updateSongInSongList
+} from '../api/songList'
 
 const UserSongListModal = (props) => {
   const { show = false, songId } = props
   //show   (Boolean) => 是否顯示
   //songId (String)  => 歌曲ID
-
+  const newSongListRef = useRef(null)
   const [checked, setChecked] = useState([])
   const [userSongList, setUserSongList] = useState([])
+  const [showCreateSongList, setShowCreateSongList] = useState(false)
+  const [createError, setCreateError] = useState('')
+
 
   useEffect(async () => {
     try {
       if (show) {
-        const response = await getListsAndCheckSongExistList(songId)
-        const newChecked = []
-        for (let i = 0; i < response.songLists.length; i++) {
-          if (response.songLists[i].hasThisSong) {
-            newChecked.push(i)
-          }
-        }
-        setUserSongList(response.songLists)
-        setChecked(newChecked)
+        setCreateError('')
+        getSongLists()
       }
     } catch (e) {}
   }, [show])
+
+  const getSongLists = async () => {
+    const response = await getListsAndCheckSongExistList(songId)
+    const newChecked = []
+    for (let i = 0; i < response.songLists.length; i++) {
+      if (response.songLists[i].hasThisSong) {
+        newChecked.push(i)
+      }
+    }
+    setUserSongList(response.songLists)
+    setChecked(newChecked)
+  }
 
   const handleToggle = (value) => async () => {
     const currentIndex = checked.indexOf(value)
@@ -95,6 +109,26 @@ const UserSongListModal = (props) => {
       </div>
     )
   })
+  const openCreateSongList = () => {
+    setShowCreateSongList(true)
+  }
+  const createNewSongList = async () => {
+    try {
+      const listName = newSongListRef.current.value
+      const data = {
+        name: listName
+      }
+      const response = await createSongList(data)
+      if (response.status === 'failed') {
+        setCreateError(response.message)
+        return
+      }
+      newSongListRef.current.value = ''
+      setShowCreateSongList(false)
+      getSongLists()
+      setCreateError('')
+    } catch (e) {}
+  }
   return (
     <>
       <SimpleComfirmModal show={show} title={'加入歌單'} onCancel={onCancelHandler} noFooter>
@@ -112,6 +146,37 @@ const UserSongListModal = (props) => {
             {ListItems}
           </List>
         }
+        <Button
+          variant='contained'
+          onClick={openCreateSongList}
+          sx={{ display: !showCreateSongList ? 'inline-block' : 'none', float: 'right' }}
+        >
+          立即建立歌單
+        </Button>
+        <Box sx={{ display: showCreateSongList ? 'block' : 'none' }}>
+          <Typography variant='body1' sx={{ fontWeight: 700, mb: 2 }}>
+            新建歌單
+          </Typography>
+
+          <TextField
+            label='建立歌單'
+            required
+            variant='outlined'
+            inputRef={newSongListRef}
+            sx={{ mb: 2, width: '100%' }}
+          />
+          <Alert
+            variant='filled'
+            severity='error'
+            icon={false}
+            sx={{ display: createError.length > 0 ? 'block' : 'none', marginBottom: 2 }}
+          >
+            {createError}
+          </Alert>
+          <Button variant='contained' sx={{ float: 'right' }} onClick={createNewSongList}>
+            建立
+          </Button>
+        </Box>
       </SimpleComfirmModal>
     </>
   )

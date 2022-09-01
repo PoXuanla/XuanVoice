@@ -26,7 +26,7 @@ const MusicInfo = (props) => {
         </Typography>
       </Box>
       {/* 更多功能、喜歡 */}
-      <Box
+      {/* <Box
         sx={{
           display: showBtn ? 'flex' : 'none',
           justifyContent: 'right',
@@ -53,7 +53,7 @@ const MusicInfo = (props) => {
             sx={{ '&:hover': { color: pink[500] } }}
           ></FavoriteBorderIcon>
         </IconButton>
-      </Box>
+      </Box> */}
     </>
   )
 }

@@ -6,7 +6,7 @@ import { setLoading, clearLoading } from '../../slice/loadSlice'
 import { getBrowseSongs } from '../../api/song'
 import { Button, Skeleton, Box } from '@mui/material'
 import { PlagiarismTwoTone, PrintTwoTone } from '@mui/icons-material'
-import useObserver from './useObserver'
+import useObserver from '../../hooks/useObserver'
 
 const SongList = ({ categoryId }) => {
   const dispatch = useDispatch()

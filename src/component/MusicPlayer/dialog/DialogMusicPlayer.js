@@ -1,10 +1,9 @@
 import { Dialog, Box } from '@mui/material'
-import { blueGrey, pink } from '@mui/material/colors'
 import DialogPlayList from './DialogPlayList'
 import DialogPlayer from './DialogPlayer'
 import DialogHeader from './DialogHeader'
 import { useEffect, useState } from 'react'
-import useWindowSize from './useWindowSize'
+import useWindowSize from '../../../hooks/useWindowSize'
 
 const DialogMusicPlayer = (props) => {
   const openDialog = props.openDialog
