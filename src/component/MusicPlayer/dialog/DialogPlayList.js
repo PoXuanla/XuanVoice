@@ -41,7 +41,7 @@ const DialogPlayList = (props) => {
   const { songListData, currentSongIndex } = useSelector((state) => state.musicplayer)
   const dispatch = useDispatch()
   const changeSongHandler = (index) => () => {
-    player.src = songListData[currentSongIndex].mp3
+    player.src = songListData[index].mp3
     player.play()
     dispatch(setCurrentSongIndex(index))
     dispatch(playSong())

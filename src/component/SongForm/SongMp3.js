@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { TitleStyle, UploadBtnStyle } from './SongFormStyle'
 import { Button, Typography, Alert } from '@mui/material'
-
+import NotARapper from '../../static/SongMp3/notARapper.mp3'
 const SongMp3 = React.forwardRef((props, ref) => {
   const { mode, song } = props
 
@@ -32,8 +32,12 @@ const SongMp3 = React.forwardRef((props, ref) => {
   return (
     <>
       <TitleStyle uploadMp3Name={uploadMp3Name}>
-        <Typography variant='subtitle1' className='title'>MP3</Typography>
-        <Typography variant='subtitle1' className='title-mp3'>{uploadMp3Name}</Typography>
+        <Typography variant='subtitle1' className='title'>
+          MP3
+        </Typography>
+        <Typography variant='subtitle1' className='title-mp3'>
+          {uploadMp3Name}
+        </Typography>
       </TitleStyle>
 
       <UploadBtnStyle mode={mode} uploadMp3Error={uploadMp3Error}>
@@ -49,6 +53,9 @@ const SongMp3 = React.forwardRef((props, ref) => {
             上傳MP3
           </Button>
         </label>
+        <Button color="success" variant='contained' component='a' href={NotARapper} download>
+          下載範例MP3
+        </Button>
         <Alert variant='outlined' severity='error'>
           {uploadMp3Error}
         </Alert>

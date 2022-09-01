@@ -7,5 +7,6 @@ export const MusicImgStyle = styled(Box)(({ theme }) => ({
 }))
 export const MusicInfoStyle = styled(Box)(({ theme }) => ({
   display: 'flex',
-  marginBottom: theme.spacing(2)
+  marginBottom: theme.spacing(2),
+  cursor: 'default'
 }))

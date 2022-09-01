@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import Avatar from '@mui/material/Avatar'
 import { Box } from '@mui/material'
-import data from '../data'
 
 const MusicImg = (props) => {
   const showUI = props.showUI

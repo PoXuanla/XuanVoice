@@ -8,7 +8,7 @@ const UserImgBtn = (props) => {
   }
   return (
     <Tooltip title='打開設定'>
-      <IconButton onClick={openMenu} sx={{ p: 0 }} color='inherit'>
+      <IconButton onClick={openMenu} color='inherit'>
         <Avatar
           alt='User'
           src={

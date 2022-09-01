@@ -48,7 +48,7 @@ const WebPlayer = (props) => {
 
         {/* 音樂時間軸 */}
         <PlayerProgressBarStyle showUI={showUI}>
-          <PlayerProgressBar showTime={showUI} player={player} color='text.primary' />
+          <PlayerProgressBar showTime={showUI} player={player}/>
         </PlayerProgressBarStyle>
 
         {/* 歌曲圖片 */}

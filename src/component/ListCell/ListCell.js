@@ -11,6 +11,7 @@ const ListCell = (props) => {
   // rank      (Boolean) => 歌曲前方顯示數字
   // isLoading (Boolean) => 正在載入中
   // divider   (Boolean) => 分隔線
+
   return (
     <Box sx={{ width: '100%' }}>
       <Wrapper>
@@ -34,7 +35,12 @@ const ListCell = (props) => {
               {songData.name}
             </Typography>
 
-            <Typography variant='caption' className='text-author'>
+            <Typography
+              component={RouterLink}
+              to={`/userInform/${songData.author.account}`}
+              variant='caption'
+              className='text-author'
+            >
               {songData.author.name}
             </Typography>
           </SongInfoStyle>

@@ -106,8 +106,8 @@ const App = () => {
               </IsLoggedIn>
             }
           >
-            <Route path='' element={<Like />} />
-            <Route path='likes' element={<Like />} />
+            <Route path='' element={<MySong />} />
+            {/* <Route path='likes' element={<Like />} /> */}
             <Route path='songlists/:songListId' element={<MySongList />} />
             <Route path='songlists' element={<MySongLists />} />
             <Route path='song' element={<MySong />} />

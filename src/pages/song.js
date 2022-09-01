@@ -31,7 +31,7 @@ const Song = () => {
     dispatch(replaceSongListData([{ name, image, author, mp3 }]))
   }
   return (
-    <Container maxWidth={'lg'} sx={{ mt: 2 }}>
+    <Container sx={{ mt: 2 }}>
       <TopGridContainer container>
         <Grid item xs={12} sm={3} sx={{ padding: 2 }}>
           <Avatar

@@ -10,7 +10,6 @@ import PauseCircleIcon from '@mui/icons-material/PauseCircle'
 import LoopIcon from '@mui/icons-material/Loop'
 
 import VolumeOffIcon from '@mui/icons-material/VolumeOff'
-import data from '../data'
 import {
   prevSong,
   nextSong,

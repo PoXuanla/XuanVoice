@@ -7,6 +7,7 @@ import { getBrowseSongs } from '../../api/song'
 import { Button, Skeleton, Box } from '@mui/material'
 import { PlagiarismTwoTone, PrintTwoTone } from '@mui/icons-material'
 import useObserver from '../../hooks/useObserver'
+import { replaceSongListData, openPlayer } from '../../slice/musicplayerSlice'
 
 const SongList = ({ categoryId }) => {
   const dispatch = useDispatch()
@@ -52,9 +53,15 @@ const SongList = ({ categoryId }) => {
       setHasNextSong(response.hasNext)
     } catch (e) {}
   }
-
+  const playAllMusic = () => {
+    dispatch(replaceSongListData(songListData))
+    dispatch(openPlayer())
+  }
   return (
     <Wrapper>
+      <Button variant='contained' color='error' onClick={playAllMusic} sx={{ mr: 0, mb: 2 }}>
+        播放全部
+      </Button>
       <SongWatchList songListData={songListData} mode='show' isLoading={isLoading} />
       {!morePageLoading ? (
         isLoading ? null : (
@@ -63,7 +70,7 @@ const SongList = ({ categoryId }) => {
             sx={{ mt: 2, display: hasNextSong && pageOfSongs === 2 ? 'inlineBlock' : 'none' }}
             onClick={showMorePage}
           >
-            查看更多
+            查看更多..
           </Button>
         )
       ) : (

@@ -45,7 +45,8 @@ export const MusicInfoStyle = styled(Box, {
   padding: showUI ? '15px' : 0,
   width: showUI ? '100%' : 'calc(100% - 46px - 8px - 80px - 5px)',
   marginRight: showUI ? 0 : 5,
-  color: theme.palette.text.primary
+  color: showUI ? '#fff' : theme.palette.text.primary,
+  cursor: 'default'
 }))
 export const PlayerProgressBarStyle = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'showUI'
@@ -57,5 +58,5 @@ export const PlayerProgressBarStyle = styled(Box, {
   left: 0,
   padding: showUI ? '15px' : 0,
   zIndex: 1,
-  bgcolor: theme.palette.background.paper
+  color: showUI ? '#fff' : theme.palette.text.primary
 }))

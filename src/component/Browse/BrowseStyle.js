@@ -53,5 +53,5 @@ export const Wrapper = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
   borderRadius: 8,
   padding: theme.spacing(2),
-  textAlign: 'center'
+  textAlign: 'right'
 }))

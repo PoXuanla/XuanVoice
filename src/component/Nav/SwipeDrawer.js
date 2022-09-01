@@ -39,7 +39,7 @@ const SwipeDrawer = (props) => {
     >
       <List>
         {pages.map((text, index) => (
-          <ListItem component={Link} to={index === 0 ? '/' : '/browse'} button key={text}>
+          <ListItem component={Link} to={'/browse'} button key={text}>
             <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
             <ListItemText primary={text} />
           </ListItem>

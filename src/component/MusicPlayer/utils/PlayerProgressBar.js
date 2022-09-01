@@ -89,10 +89,10 @@ const PlayerProgressBar = (props) => {
       {/* CurrentTime & DurationTime */}
       {showTime && (
         <TimeBar>
-          <Typography variant='body2' fontSize={10} color={color}>
+          <Typography variant='body2' fontSize={10}>
             {currentTimeToMin}
           </Typography>
-          <Typography variant='body2' fontSize={10} color={color}>
+          <Typography variant='body2' fontSize={10}>
             {durationToMin}
           </Typography>
         </TimeBar>

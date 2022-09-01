@@ -9,7 +9,8 @@ export const Wrapper = styled(Box)(({ theme }) => ({
 }))
 export const SongItemStyle = styled(Box)(({ theme }) => ({
   display: 'flex',
-  alignItems: 'center'
+  alignItems: 'center',
+  width: 'calc(100% - 50px - 16px - 16px)'
 }))
 export const RankStyle = styled(Box)(({ theme }) => ({
   width: 50,
@@ -28,6 +29,8 @@ export const CellAvatar = styled(Avatar)(({ theme }) => ({
   boxShadow: theme.shadows[1]
 }))
 export const SongInfoStyle = styled(Box)(({ theme }) => ({
+  width: 'calc(100% - 50px - 16px)',
+
   display: 'flex',
   justifyContent: 'center',
   flexDirection: 'column',
@@ -37,12 +40,16 @@ export const SongInfoStyle = styled(Box)(({ theme }) => ({
     marginBottom: 0,
     fontWeight: 700,
     color: theme.palette.text.primary,
-    textDecoration: 'none'
+    textDecoration: 'none',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap'
   },
   '& .text-author': {
     marginBottom: 0,
     fontWeight: 400,
-    color: theme.palette.text.secondary
+    color: theme.palette.text.secondary,
+    textDecoration: 'none'
   },
   '& .MuiTypography-root': {
     marginBottom: 0

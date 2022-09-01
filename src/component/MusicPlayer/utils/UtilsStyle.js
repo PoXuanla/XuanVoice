@@ -27,7 +27,9 @@ export const TimeBar = styled(Box)(({ theme }) => ({
   display: 'flex',
   width: '100%',
   justifyContent: 'space-between',
-  marginBottom: '6px'
+  marginBottom: '6px',
+  cursor: 'default',
+
 }))
 //PlayerFullBtn.js
 export const FullBtnContainer = styled(Box, {
@@ -36,6 +38,7 @@ export const FullBtnContainer = styled(Box, {
   display: showUI ? 'block' : 'none',
   width: '100%',
   backgroundColor: theme.palette.background.paper,
+  // border: `1px solid ${theme.palette.divider}`,
   padding: '15px',
   '& .MuiSvgIcon-root': {
     fontSize: '30px'

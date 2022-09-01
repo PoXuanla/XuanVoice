@@ -64,7 +64,7 @@ const Nav = () => {
     dispatch(toggleMode())
     setAnchorMenuBtn(null)
   }
-  const pages = ['發現', '排行榜']
+  const pages = [ '排行榜']
   const settings = [
     {
       text: '個人頁面',
@@ -72,7 +72,7 @@ const Nav = () => {
       click: clearAnchorMenuBtn,
       link: `/userInform/${Object.getOwnPropertyNames(user).length !== 0 ? user.account : ''}`
     },
-    { text: '我的音樂庫', needLogin: true, click: clearAnchorMenuBtn, link: '/manage/likes' },
+    { text: '我的歌單', needLogin: true, click: clearAnchorMenuBtn, link: '/manage/songlists' },
     { text: '管理歌曲', needLogin: true, click: clearAnchorMenuBtn, link: '/manage/song' },
     {
       text: mode === 'light' ? '深色模式' : '淺色模式',
@@ -103,7 +103,7 @@ const Nav = () => {
               {pages.map((page, index) => (
                 <Button
                   component={Link}
-                  to={index === 0 ? '/' : '/browse'}
+                  to={'/browse'}
                   key={page}
                   sx={{ my: 2, color: 'white', display: 'block', textAlign: 'center' }}
                 >

@@ -1,9 +1,6 @@
 import { useSelector } from 'react-redux'
 
 import { Box, Typography, IconButton } from '@mui/material'
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
-import { blueGrey, pink } from '@mui/material/colors'
 
 const MusicInfo = (props) => {
  
@@ -17,11 +14,11 @@ const MusicInfo = (props) => {
           width: showBtn ? 'calc(100% - 70px)' : '100%'
         }}
       >
-        <Typography noWrap variant='body1' color='text.primary'>
+        <Typography noWrap variant='body1'>
           {songListData.length === 0 ? '' : songListData[currentSongIndex].name}
         </Typography>
 
-        <Typography variant='body2' color='text.primary'>
+        <Typography variant='body2'>
           {songListData.length === 0 ? '' : songListData[currentSongIndex].author.name}
         </Typography>
       </Box>

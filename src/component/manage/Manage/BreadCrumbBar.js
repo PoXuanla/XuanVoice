@@ -17,6 +17,7 @@ const BreadCrumbBar = (props) => {
   const [processUrlArray, setprocessUrlArray] = useState([])
 
   useEffect(() => {
+    console.log(replaceIdtoString())
     let UrlArray = replaceIdtoString()
     setprocessUrlArray(UrlArray)
   }, [useLocation().pathname])

@@ -25,7 +25,7 @@ const MenuGridItem = (props) => {
         音樂庫
       </Typography>
       <Box className='BtnList'>
-        <Button
+        {/* <Button
           variant={selectMenuIndex === 0 ? 'contained' : 'text'}
           size='small'
           component={RouterLink}
@@ -33,7 +33,7 @@ const MenuGridItem = (props) => {
           onClick={changeSelectedIndexHandler(0)}
         >
           我的喜歡
-        </Button>
+        </Button> */}
         <Button
           variant={selectMenuIndex === 1 ? 'contained' : 'text'}
           size='small'
