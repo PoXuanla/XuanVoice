@@ -8,31 +8,19 @@ import SongList from '../component/Browse/SongList'
 
 const Browse = () => {
   const dispatch = useDispatch()
-  const [songListData, setSongListData] = useState([])
-
-  //取得全部歌曲
-  useEffect(() => {
-    getSongs('all')
-  }, [])
-
-  //function:取得歌曲
-  //categoryId = 'all' : 取得全部歌曲
-  const getSongs = async (categoryId) => {
-    dispatch(setLoading())
-    const response = await getBrowseSongs(categoryId, 'latest')
-    setSongListData(response.songs)
-    dispatch(clearLoading())
+  const [categoryId, setCategoryId] = useState('all')
+  const setSelectedCtyId = (categoryId) => { 
+    setCategoryId(categoryId)
   }
-
   return (
     <Container>
       <Grid container>
         <Grid item xs={12} sm={5} md={4} sx={{ padding: 2 }}>
-          <QueryFactorBar reloadSongs={getSongs} />
+          <QueryFactorBar setSelectedCtyId={setSelectedCtyId} />
         </Grid>
 
         <Grid item xs={12} sm={7} md={8} sx={{ padding: 2 }}>
-          <SongList songListData={songListData} />
+          <SongList categoryId={ categoryId} />
         </Grid>
       </Grid>
     </Container>

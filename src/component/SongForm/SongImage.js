@@ -40,7 +40,7 @@ const SongImage = React.forwardRef((props, ref) => {
         src={
           songImagePreview.includes('blob')
             ? songImagePreview
-            : `${songImagePreview}?${Math.random()}`
+            : songImagePreview
         }
       ></Avatar>
       {/* 圖片錯誤提示 */}

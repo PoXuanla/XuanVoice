@@ -112,26 +112,14 @@ const PlayerFullBtn = (props) => {
         <IconButton size='medium' onClick={prevSongHandler} disabled={currentSongIndex === 0}>
           <SkipPreviousIcon
             sx={{
-              color: currentSongIndex === 0 ? 'player.item.background' : 'player.primary'
+              color: currentSongIndex === 0 ? 'player.item.background' : 'player.main'
             }}
           />
         </IconButton>
         {/* 播放/暫停 */}
         <IconButton size='medium' onClick={togglePlayHandler}>
-          {!isPlay && (
-            <PlayCircleIcon
-              sx={{
-                color: 'player.primary'
-              }}
-            />
-          )}
-          {isPlay && (
-            <PauseCircleIcon
-              sx={{
-                color: 'player.primary'
-              }}
-            />
-          )}
+          {!isPlay && <PlayCircleIcon color='player' />}
+          {isPlay && <PauseCircleIcon color='player' />}
         </IconButton>
         <IconButton
           size='medium'
@@ -150,19 +138,11 @@ const PlayerFullBtn = (props) => {
             <LoopIcon
               fontSize='medium'
               sx={{
-                fontSize: '30px',
                 color: 'player.item.background'
               }}
             ></LoopIcon>
           ) : (
-            <LoopIcon
-              fontSize='medium'
-              sx={{
-                fontSize: '30px',
-
-                color: 'player.primary'
-              }}
-            ></LoopIcon>
+            <LoopIcon fontSize='medium' color='player'></LoopIcon>
           )}
         </IconButton>
       </FullBtnWrapper>

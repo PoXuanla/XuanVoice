@@ -52,6 +52,7 @@ const App = () => {
                 secondary: { main: '#ffffff' },
                 action: { selected: blueGrey[700], hover: blueGrey[500] },
                 player: {
+                  main: blueGrey[200],
                   primary: blueGrey[200],
                   secondary: blueGrey[50],
                   background: blueGrey[800],
@@ -68,6 +69,7 @@ const App = () => {
                 secondary: { main: blue[500] },
                 action: { selected: blue[700], hover: blue[500] },
                 player: {
+                  main: blue[700],
                   primary: blue[700],
                   secondary: blue[300],
                   background: '#fafafa',
@@ -88,7 +90,7 @@ const App = () => {
           bgcolor: 'background.default',
           height: '100%',
           minHeight: 'calc(100vh)',
-          pb: '100px'
+          pb: '70px'
         }}
       >
         <Nav />

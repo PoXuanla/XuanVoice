@@ -11,7 +11,7 @@ const DialogHeader = (props) => {
   const [screenWidth] = useWindowSize()
 
   useEffect(() => {
-    if (screenWidth < 650) {
+    if (screenWidth < 900) {
       setShowPlayerToggleBtn(false)
       setShowPlayeListToggleBtn(true)
       return

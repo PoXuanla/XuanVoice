@@ -21,7 +21,7 @@ const ListCell = (props) => {
             </RankStyle>
           )}
           {/* 圖片 */}
-          <CellAvatar variant='rounded' src={`${songData.image}?${Math.random()}`}></CellAvatar>
+          <CellAvatar variant='rounded' src={`${songData.image}}`}></CellAvatar>
           {/* 歌曲名稱、作者 */}
           <SongInfoStyle>
             <Typography variant='subtitle2' className='text-songname'>

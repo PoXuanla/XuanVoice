@@ -17,11 +17,11 @@ const DialogMusicPlayer = (props) => {
     props.closeDialog()
   }
   const toggleShowPlayListHandler = () => {
-    if (screenWidth < 650) return
+    if (screenWidth < 900) return
     setShowPlayList((state) => !state)
   }
   useEffect(() => {
-    if (screenWidth < 650) {
+    if (screenWidth < 900) {
       setShowMusicPlayer(false)
       setShowPlayList(true)
       return
@@ -49,7 +49,7 @@ const DialogMusicPlayer = (props) => {
         }}
       >
         {/* 播放列表 */}
-              {showPlayList && <DialogPlayList player={ player} />}
+        {showPlayList && <DialogPlayList player={player} />}
 
         {/* 音樂播放器 */}
         {showMusicPlayer && <DialogPlayer showPlayList={showPlayList} player={player} />}

@@ -15,6 +15,6 @@ export const createSong = (formData) => {
 export const patchSongById = (songId, formData) => {
   return request('patch', `/api/v1/songs/${songId}`, formData, 'multipart/form-data;')
 }
-export const getBrowseSongs = (categoryId, orderStr) => {
-  return request('get', `/api/v1/songs/category/${categoryId}/order/${orderStr}`)
+export const getBrowseSongs = (categoryId, orderStr,page) => {
+  return request('get', `/api/v1/songs/category/${categoryId}/order/${orderStr}?page=${page}`)
 }

@@ -18,9 +18,9 @@ const QueryFactorBar = (props) => {
     setLoading(false)
   }, [])
 
-  const setSelectedCtyHandler = (index) => () => {
+  const setSelectedCtyIdHandler = (index) => () => {
     setSelectedCtyIndex(index)
-    props.reloadSongs(songCategories[index]._id)
+    props.setSelectedCtyId(songCategories[index]._id)
   }
   const setSelectedOrderHandler = (index) => () => {
     setSelectedOrderIndex(index)
@@ -32,7 +32,7 @@ const QueryFactorBar = (props) => {
         size='small'
         color='primary'
         variant={index === selectedCtyIndex ? 'contained' : 'outlined'}
-        onClick={setSelectedCtyHandler(index)}
+        onClick={setSelectedCtyIdHandler(index)}
       >
         {category.name}
       </QueryFactorBtn>
