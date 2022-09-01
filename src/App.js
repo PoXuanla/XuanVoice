@@ -116,7 +116,7 @@ const App = () => {
           </Route>
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />
-          <Route path='/song' element={<Song />} />
+          <Route path='/song/:songId' element={<Song />} />
           <Route path='/userInform/:account' element={<UserInform />} />
           <Route path='/browse' element={<Browse />} />
           <Route path='*' element={<PageNotFound />} />
