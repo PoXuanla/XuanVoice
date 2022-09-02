@@ -34,18 +34,18 @@ const AuditionModal = () => {
   }
   const playMusic = () => {
     const data = {
-      _id: '631073362f3cfeccae299a8c',
-      name: '我不是饒舌歌手',
-      intro: '我不是饒舌歌手',
+      _id: '6311917e30162259b87e5ae8',
+      name: 'Never Gonna Give You Up',
+      intro: '這首單曲在家鄉英國得到五週榜首，成為年度銷售冠軍，並且獲得全英音樂獎的最佳英國歌曲。',
 
       author: {
         account: 'xuanxuan',
-        name: 'xuanxuan',
+        name: 'Rick Astley',
         image: 'https://storage.googleapis.com/xuan-voive.appspot.com/userImg/xuanxuan.jpg'
       },
       image:
-        'https://storage.googleapis.com/xuan-voive.appspot.com/songImg/631073362f3cfeccae299a8c.jpg',
-      mp3: 'https://storage.googleapis.com/xuan-voive.appspot.com/song/631073362f3cfeccae299a8c.mp3'
+        'https://storage.googleapis.com/xuan-voive.appspot.com/songImg/6311917e30162259b87e5ae8.jpg',
+      mp3: 'https://storage.googleapis.com/xuan-voive.appspot.com/song/6311917e30162259b87e5ae8.mp3'
     }
     dispatch(replaceSongListData([data]))
     dispatch(openPlayer())

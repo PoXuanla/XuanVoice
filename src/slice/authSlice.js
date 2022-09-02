@@ -56,6 +56,7 @@ export const register = createAsyncThunk('auth/register', async (data, thunkAPI)
     const responseData = response.data
     if (responseData.status === 'success') {
       localStorage.setItem('accessToken', responseData.token)
+      localStorage.setItem('isLoggedIn', true)
       return { user: responseData.user }
     } else {
       return thunkAPI.rejectWithValue({ message: responseData.message })

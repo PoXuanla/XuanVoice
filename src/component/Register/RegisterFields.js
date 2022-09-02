@@ -20,6 +20,7 @@ const RegisterFields = React.forwardRef((props, ref) => {
         required
         size='small'
         autoComplete='off'
+        type='password'
         inputRef={passwordRef}
         inputProps={{ minLength: 6 }}
       />
@@ -28,7 +29,6 @@ const RegisterFields = React.forwardRef((props, ref) => {
         label='暱稱'
         required
         size='small'
-        type='password'
         autoComplete='off'
         inputRef={nameRef}
         inputProps={{ minLength: 2 }}

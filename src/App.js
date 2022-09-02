@@ -22,7 +22,6 @@ import MySongLists from './pages/manage/mySongLists'
 import MySongList from './pages/manage/mySongList'
 import { blue, blueGrey } from '@mui/material/colors'
 import MusicPlayer from './component/MusicPlayer/MusicPlayer'
-import AuditionModal from './component/Main/AuditionModal'
 
 const App = () => {
   const { mode } = useSelector((state) => state.mode)
@@ -90,7 +89,7 @@ const App = () => {
           bgcolor: 'background.default',
           height: '100%',
           minHeight: 'calc(100vh)',
-          pb: '70px'
+          pb: '100px'
         }}
       >
         <Nav />
@@ -122,7 +121,6 @@ const App = () => {
           <Route path='*' element={<PageNotFound />} />
         </Routes>
         <MusicPlayer />
-        <AuditionModal />
       </Box>
     </ThemeProvider>
   )

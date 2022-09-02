@@ -16,7 +16,7 @@ const MenuGridItem = (props) => {
   useEffect(() => {
     if (locationString[1] === undefined) setSelectMenuIndex(0)
     if (locationString[1] === 'likes') setSelectMenuIndex(0)
-    if (locationString[1] === 'songlist') setSelectMenuIndex(1)
+    if (locationString[1] === 'songlists') setSelectMenuIndex(1)
     if (locationString[1] === 'song') setSelectMenuIndex(2)
   }, [useLocation().pathname])
   return (

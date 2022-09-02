@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef,useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, Link } from 'react-router-dom'
 import { Container, Typography, Alert, Button } from '@mui/material'
@@ -35,11 +35,14 @@ const Login = () => {
         setLoginError(err.message)
       })
   }
-
+  //已登入就跳轉主頁
+  useEffect(() => {
+    const isLoggedIn = localStorage.getItem('isLoggedIn')
+    if (isLoggedIn === 'true') navigator('/')
+  })
   return (
     <Container maxWidth='xs'>
       <Wrapper component='form' onSubmit={submitHandler}>
-
         {/* Title */}
         <Typography variant='h6' className='title'>
           歡迎使用XuanVoice
@@ -65,7 +68,7 @@ const Login = () => {
           登入
         </LoadingButton>
       </Wrapper>
-      
+
       {/* 前往註冊 */}
       <MoveToRegister>
         <Typography variant='body1'>還沒註冊嘛?立即</Typography>
