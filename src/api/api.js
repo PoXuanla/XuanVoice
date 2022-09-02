@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 // baseURL是你API的主要Domain，之後發請求時只要填相對路徑就可以了
 const getInstance = (contentType) => {
   const instance = axios.create({
-    baseURL: 'http://localhost:80/',
+    baseURL: `${process.env.REACT_APP_URL}`,
     headers: { 'Content-Type': contentType }
   })
   requestInterceptors(instance)

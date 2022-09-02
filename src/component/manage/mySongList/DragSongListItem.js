@@ -7,7 +7,7 @@ const DragSongListItem = forwardRef((props, ref) => {
   const { songData = {}, provided = {} } = props
   // songData (Object) => 歌曲資料
   // provided (Object) => Draggable Object
-
+  songData._id = songData.songId //ListCell 內的_id 代表是songId 而非歌單排序的id
   const deleteHandler = () => {
     props.onDelete(songData)
   }
@@ -27,8 +27,10 @@ const DragSongListItem = forwardRef((props, ref) => {
           <DragHandle sx={{ fontSize: { xs: 22, sm: 24 } }} />
         </IconButton>
         {/* ListCell */}
-        <ListCell songData={songData}>{ToolBar()}</ListCell>
-      </Box> 
+        <Box sx={{ width: 'calc(100% - 40px)' }}>
+          <ListCell songData={songData}>{ToolBar()}</ListCell>
+        </Box>
+      </Box>
       <Divider sx={{ mt: 1 }} />
     </Box>
   )

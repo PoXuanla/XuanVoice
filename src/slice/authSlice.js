@@ -47,7 +47,7 @@ export const validAccessToken = createAsyncThunk('auth/validAccessToken', async 
 export const register = createAsyncThunk('auth/register', async (data, thunkAPI) => {
   try {
     thunkAPI.dispatch(setLoading())
-    const response = await axios.post(`http://localhost:80/api/v1/users`, data, {
+    const response = await axios.post(`${process.env.REACT_APP_URL}/api/v1/users`, data, {
       headers: {
         'Content-Type': `multipart/form-data;`
       }
