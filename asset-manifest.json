@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/xuanvoice/static/css/main.ea27bfb2.css",
-    "main.js": "/xuanvoice/static/js/main.88ac78c5.js",
+    "main.js": "/xuanvoice/static/js/main.2a818862.js",
     "static/js/787.579c14e8.chunk.js": "/xuanvoice/static/js/787.579c14e8.chunk.js",
     "static/media/notARapper.mp3": "/xuanvoice/static/media/notARapper.2a9081a74c908aba0ced.mp3",
     "static/media/Carousel1.jpg": "/xuanvoice/static/media/Carousel1.c3f67e483f11916d3d52.jpg",
@@ -9,11 +9,11 @@
     "static/media/Carousel2.jpg": "/xuanvoice/static/media/Carousel2.cd6c3efeecb131f2f9bd.jpg",
     "index.html": "/xuanvoice/index.html",
     "main.ea27bfb2.css.map": "/xuanvoice/static/css/main.ea27bfb2.css.map",
-    "main.88ac78c5.js.map": "/xuanvoice/static/js/main.88ac78c5.js.map",
+    "main.2a818862.js.map": "/xuanvoice/static/js/main.2a818862.js.map",
     "787.579c14e8.chunk.js.map": "/xuanvoice/static/js/787.579c14e8.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.ea27bfb2.css",
-    "static/js/main.88ac78c5.js"
+    "static/js/main.2a818862.js"
   ]
 }
