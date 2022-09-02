@@ -159,7 +159,6 @@ const SongWatchList = (props) => {
       {
         <SimpleComfirmModal
           show={showLoggedInModal}
-          close={modalClose}
           title={'登入'}
           confirmText={'前往'}
           cancelText={'取消'}

@@ -15,6 +15,7 @@ const SimpleComfirmModal = (props) => {
   const onCancelHandler = () => {
     props.onCancel()
   }
+ 
   return (
     <Modal
       open={show}

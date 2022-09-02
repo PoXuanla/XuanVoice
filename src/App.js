@@ -1,8 +1,7 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Routes, Route } from 'react-router-dom'
-import { Box } from '@mui/material'
-import { alpha } from '@mui/material/styles'
+import { Box, Checkbox } from '@mui/material'
 import { ThemeProvider, createTheme, rgbToHex } from '@mui/material/styles'
 import Nav from './component/Nav/Nav'
 import IsLoggedIn from './component/IsLoggedIn'
@@ -23,10 +22,11 @@ import MySongLists from './pages/manage/mySongLists'
 import MySongList from './pages/manage/mySongList'
 import { blue, blueGrey } from '@mui/material/colors'
 import MusicPlayer from './component/MusicPlayer/MusicPlayer'
+import AuditionModal from './component/Main/AuditionModal'
+
 const App = () => {
   const { mode } = useSelector((state) => state.mode)
   const dispatch = useDispatch()
-
   //驗證JWT Token
   useEffect(() => {
     const token = localStorage.getItem('accessToken')
@@ -122,6 +122,7 @@ const App = () => {
           <Route path='*' element={<PageNotFound />} />
         </Routes>
         <MusicPlayer />
+        <AuditionModal />
       </Box>
     </ThemeProvider>
   )
