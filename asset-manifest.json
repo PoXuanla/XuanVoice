@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/XuanVoice/static/css/main.ea27bfb2.css",
-    "main.js": "/XuanVoice/static/js/main.a31d9b8e.js",
+    "main.js": "/XuanVoice/static/js/main.b7f98d95.js",
     "static/js/787.579c14e8.chunk.js": "/XuanVoice/static/js/787.579c14e8.chunk.js",
     "static/media/notARapper.mp3": "/XuanVoice/static/media/notARapper.2a9081a74c908aba0ced.mp3",
     "static/media/Carousel1.jpg": "/XuanVoice/static/media/Carousel1.c3f67e483f11916d3d52.jpg",
@@ -9,11 +9,11 @@
     "static/media/Carousel2.jpg": "/XuanVoice/static/media/Carousel2.cd6c3efeecb131f2f9bd.jpg",
     "index.html": "/XuanVoice/index.html",
     "main.ea27bfb2.css.map": "/XuanVoice/static/css/main.ea27bfb2.css.map",
-    "main.a31d9b8e.js.map": "/XuanVoice/static/js/main.a31d9b8e.js.map",
+    "main.b7f98d95.js.map": "/XuanVoice/static/js/main.b7f98d95.js.map",
     "787.579c14e8.chunk.js.map": "/XuanVoice/static/js/787.579c14e8.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.ea27bfb2.css",
-    "static/js/main.a31d9b8e.js"
+    "static/js/main.b7f98d95.js"
   ]
 }
