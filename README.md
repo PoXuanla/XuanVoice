@@ -35,7 +35,32 @@ BacckEnd
 
 `RESTful API`
 
-## 功能介紹
+## 技術亮點
+```diff
+前端
+```
+
+1. 使用 Axios 集中管理前端API。
+
+2. 複用組件抽出骨幹做成 High Order Component。
+
+3. 將頁面複雜內容切為不同 component ，讓 page 乾淨整潔易讀，區塊 component 各司其職。
+
+4. 使用 IntersectionObserver API　實現無限滾動，並做成 Custom Hook。
+
+5. 使用 React Router & HOC 實現 「需先登入的 Page」。
+
+6. 使用 MUI custom styled component 分開 HTML 與 CSS ，使其更具可讀性。 
+
+```diff
+後端
+```
+1. 採用 MVC 開發。
+2. URL 採用 RESTful ，易讀。
+3. 使用 MiddleWare 攔截 JWT token 以保護需登入的 API。
+4. 據 API 需求採用 Mongoose ODM 或 Mongo aggregate 撈取資料。
+
+## 部分畫面展示
 ### RWD
 ```diff
 支援手機、平板
