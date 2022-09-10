@@ -36,10 +36,10 @@ const Login = () => {
       })
   }
   //已登入就跳轉主頁
-  useEffect(() => {
-    const isLoggedIn = localStorage.getItem('isLoggedIn')
-    if (isLoggedIn === 'true') navigator('/')
-  })
+  // useEffect(() => {
+  //   const isLoggedIn = localStorage.getItem('isLoggedIn')
+  //   if (isLoggedIn === 'true') navigator('/')
+  // })
   return (
     <Container maxWidth='xs'>
       <Wrapper component='form' onSubmit={submitHandler}>

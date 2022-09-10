@@ -1,14 +1,17 @@
-import { React, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
-import { Box, Divider, IconButton, Skeleton, Typography } from '@mui/material'
-import { AddCircle, PlayCircle, Edit, Delete } from '@mui/icons-material'
+import { Box, Skeleton, Typography } from '@mui/material'
 import UserSongListModal from '../UserSongListModal'
 import ListCell from '../ListCell/ListCell'
 import SimpleComfirmModal from '../SimpleComfirmModal/SimpleComfirmModal'
 import { replaceSongListData, openPlayer } from '../../slice/musicplayerSlice'
+import ShowModeToolBar from './ShowModeToolBar'
+import EditModeToolBar from './EditModeToolBar'
+
 const SongWatchList = (props) => {
   const { songListData, mode = 'show', editLocation, rank = false, isLoading = false } = props
+ 
   // songListData (Array)   => 歌曲資料 [{ name, image, author, mp3 }]
   // mode         (String)  => 歌曲列表的使用模式('edit'、'show')
   // rank         (Boolean) => 歌曲前方顯示數字
@@ -24,7 +27,8 @@ const SongWatchList = (props) => {
   const [showDelModal, setShowDelModal] = useState(false)
   const [showLoggedInModal, setShowLoggedInModal] = useState(false)
 
-  const addToSongList = (songId) => () => {
+  //ShowMode ButtonHandler
+  const addToSongList = useCallback((songId) => {
     const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true' ? true : false
     if (!isLoggedIn) {
       setShowLoggedInModal(true)
@@ -32,26 +36,38 @@ const SongWatchList = (props) => {
     }
     setAddToSongListSongId(songId)
     setShowSongList(true)
-  }
-  const closeSongListHandler = () => {
-    setShowSongList(false)
-  }
-  const editSongHandler = (songId) => () => {
-    let location = editLocation.replace('{songId}', songId)
-    navigate(location)
-  }
-  const openDelSongModal = (songId, songName) => () => {
+  }, [])
+  const playMusic = useCallback(
+    (songId) => {
+      const song = songListData.find((data) => data._id === songId)
+      const { name, image, author, mp3 } = song
+      dispatch(openPlayer())
+      dispatch(replaceSongListData([{ name, image, author, mp3 }]))
+    },
+    [songListData]
+  )
+  //EditMode ButtonHandler
+  const openDelSongModal = useCallback((songId, songName) => {
     setShowDelModal(true)
     setDelSongName(songName)
     setDelSongId(songId)
-  }
-  const modalClose = (event, reason) => {
+  }, [])
+  const editSongHandler = useCallback((songId) => {
+    let location = editLocation.replace('{songId}', songId)
+    navigate(location)
+  }, [])
+
+  //Modal Handler
+  const closeSongListHandler = useCallback(() => {
+    setShowSongList(false)
+  }, [])
+  const modalClose = useCallback((event, reason) => {
     if (reason === 'backdropClick') {
       setShowDelModal(false)
     }
     setShowDelModal(false)
-  }
-  const deleteSongHandler = async () => {
+  }, [])
+  const deleteSongHandler = useCallback(async () => {
     try {
       await deleteSong(delSongId)
       fetchSong()
@@ -59,52 +75,41 @@ const SongWatchList = (props) => {
     } catch (e) {
       setShowDelModal(false)
     }
-  }
-  const playMusic = (songId) => () => {
-    const song = songListData.find((data) => data._id === songId)
-    const { name, image, author, mp3 } = song
-    dispatch(openPlayer())
-    dispatch(replaceSongListData([{ name, image, author, mp3 }]))
-  }
-  const goToLoggin = () => {
+  }, [delSongId])
+  const goToLoggin = useCallback(() => {
     navigate('/login')
-  }
-  //工具欄-一般顯示模式
-  const showModeToolBar = (songId) => (
-    <Box
-      sx={{
-        height: 50,
-        display: 'flex',
-        justifyContent: 'right',
-        alignItems: 'center'
-      }}
-    >
-      <IconButton onClick={addToSongList(songId)}>
-        <AddCircle sx={{ fontSize: { xs: 25, sm: 25 } }}></AddCircle>
-      </IconButton>
-      <IconButton onClick={playMusic(songId)}>
-        <PlayCircle sx={{ fontSize: { xs: 25, sm: 25 } }}></PlayCircle>
-      </IconButton>
-    </Box>
-  )
-  //工具欄-編輯模式
-  const editModeToolBar = (songId, songName) => (
-    <Box
-      sx={{
-        height: 50,
-        display: 'flex',
-        justifyContent: 'right',
-        alignItems: 'center'
-      }}
-    >
-      <IconButton onClick={editSongHandler(songId)}>
-        <Edit sx={{ fontSize: { xs: 25, sm: 25 } }}></Edit>
-      </IconButton>
-      <IconButton onClick={openDelSongModal(songId, songName)}>
-        <Delete sx={{ fontSize: { xs: 25, sm: 25 } }}></Delete>
-      </IconButton>
-    </Box>
-  )
+  }, [])
+
+  // component
+  const SongList = songListData.map((songData, index) => {
+    return (
+      <Box key={index}>
+        <ListCell
+          songData={songData}
+          songIndex={index + 1}
+          rank={rank}
+          divider={index !== songListData.length - 1 ? true : false}
+        >
+          {mode === 'show' && (
+            <ShowModeToolBar
+              songId={songData._id}
+              playMusic={playMusic}
+              addToSongList={addToSongList}
+            />
+          )}
+          {mode === 'edit' && (
+            <EditModeToolBar
+              songId={songData._id}
+              songName={songData.name}
+              editSongHandler={editSongHandler}
+              openDelSongModal={openDelSongModal}
+            />
+          )}
+        </ListCell>
+      </Box>
+    )
+  })
+
   return (
     <>
       {isLoading && (
@@ -113,22 +118,8 @@ const SongWatchList = (props) => {
         </>
       )}
       {/* Render ListCell */}
-      {!isLoading &&
-        songListData.map((songData, index) => {
-          return (
-            <Box key={index}>
-              <ListCell
-                songData={songData}
-                songIndex={index + 1}
-                rank={rank}
-                divider={index !== songListData.length - 1 ? true : false}
-              >
-                {mode === 'show' && showModeToolBar(songData._id)}
-                {mode === 'edit' && editModeToolBar(songData._id, songData.name)}
-              </ListCell>
-            </Box>
-          )
-        })}
+      {!isLoading && SongList}
+      {/* no any songData */}
       {songListData.length === 0 && !isLoading && (
         <Box sx={{ textAlign: 'center' }}>
           <Typography color='text.primary' variant='body1'>
@@ -156,6 +147,7 @@ const SongWatchList = (props) => {
           onCancel={modalClose}
         >{`是否刪除 : ${delSongName}`}</SimpleComfirmModal>
       )}
+      {/* 未登入 Modal */}
       {
         <SimpleComfirmModal
           show={showLoggedInModal}
@@ -171,4 +163,4 @@ const SongWatchList = (props) => {
     </>
   )
 }
-export default SongWatchList
+export default React.memo(SongWatchList)

@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import { Typography, Button, TextField } from '@mui/material'
 import { Wrapper } from './MySongListsStyle'
 import SimpleComfirmModal from '../../SimpleComfirmModal/SimpleComfirmModal'
@@ -7,16 +7,16 @@ import { createSongList } from '../../../api/songList'
 const TitleBar = (props) => {
   const [showCreateModal, setShowCreateModal] = useState(false)
   const listNameRef = useRef()
-
+  
   //關閉Modal
-  const modalClose = (event, reason) => {
+  const modalClose = useCallback((event, reason) => {
     // if (reason === 'backdropClick') {
     //   setShowCreateSongList(false)
     // }
     setShowCreateModal(false)
-  }
+  }, [])
   //建立歌曲
-  const createSongListHandler = async () => {
+  const createSongListHandler = useCallback(async () => {
     try {
       const songListName = listNameRef.current.value
       const data = {
@@ -28,7 +28,7 @@ const TitleBar = (props) => {
     } catch (e) {
       setShowCreateModal(false)
     }
-  }
+  }, [])
   return (
     <Wrapper>
       <Typography className='title' variant='h6'>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 import { Box, Divider, Skeleton } from '@mui/material'
@@ -21,7 +21,7 @@ const MySongLists = () => {
     getUserSongList()
   }, [])
 
-  const getUserSongList = async () => {
+  const getUserSongList = useCallback(async () => {
     try {
       dispatch(setLoading())
       const response = await getUserSongLists()
@@ -31,20 +31,21 @@ const MySongLists = () => {
     } catch (e) {
       dispatch(clearLoading())
     }
-  }
+  }, [])
+
   const showDeleteModalHandler = (listId, listName) => {
     setDeleteSongListId(listId)
     setDeleteSongListName(listName)
     setShowDeleteModal(true)
   }
   //關閉刪除Modal
-  const modalClose = (event, reason) => {
+  const modalClose = useCallback((event, reason) => {
     // if (reason === 'backdropClick') {
     //   setShowCreateSongList(false)
     // }
     setShowDeleteModal(false)
-  }
-  const deleteSongListHandler = async () => {
+  }, [])
+  const deleteSongListHandler = useCallback(async () => {
     try {
       await deleteSongListBySongId(deleteSongListId)
       getUserSongList()
@@ -52,7 +53,7 @@ const MySongLists = () => {
     } catch (e) {
       setShowDeleteModal(false)
     }
-  }
+  }, [])
   // User 的歌單
   const UserSongLists = userSongList.map((songList, index) => {
     let sumOfSong = songList.songs.length

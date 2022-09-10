@@ -6,7 +6,6 @@ import { checkTokenValid } from '../api/user'
 export const login = createAsyncThunk('auth/login', async ({ account, password }, thunkAPI) => {
   try {
     thunkAPI.dispatch(setLoading())
-
     const JSONData = JSON.stringify({ account, password })
     const response = await axios.post(`${process.env.REACT_APP_URL}/api/v1/users/login`, JSONData, {
       headers: {
@@ -32,9 +31,7 @@ export const validAccessToken = createAsyncThunk('auth/validAccessToken', async 
   try {
     let isValid = false
     let user = {}
-    console.log('exec')
     const response = await checkTokenValid()
-    console.log(response)
 
     isValid = true
     user = { user: response.user }

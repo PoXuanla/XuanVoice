@@ -1,13 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Box, Container, Grid } from '@mui/material'
 import QueryFactorBar from '../component/Browse/QueryFactorBar'
-import { getBrowseSongs } from '../api/song'
-import { setLoading, clearLoading } from '../slice/loadSlice'
 import SongList from '../component/Browse/SongList'
 
 const Browse = () => {
-  const dispatch = useDispatch()
   const [categoryId, setCategoryId] = useState('all')
   const setSelectedCtyId = (categoryId) => { 
     setCategoryId(categoryId)

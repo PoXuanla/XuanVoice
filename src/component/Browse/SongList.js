@@ -19,7 +19,6 @@ const SongList = ({ categoryId }) => {
   const [pageOfSongs, setPageOfSongs] = useState(1)
   const [morePageLoading, setMorePageLoading] = useState(false)
   const [hasNextSong, setHasNextSong] = useState(false)
-
   const intersected = useObserver(nodeRef)
 
   useEffect(() => {
@@ -27,21 +26,21 @@ const SongList = ({ categoryId }) => {
   }, [intersected])
 
   useEffect(() => {
+    const initSongs = async (categoryId) => {
+      try {
+        dispatch(setLoading())
+        const response = await getBrowseSongs(categoryId, 'latest', 1)
+        setPageOfSongs((index) => index + 1)
+        setSongListData(response.songs)
+        setHasNextSong(response.hasNext)
+        dispatch(clearLoading())
+      } catch (e) {}
+    }
     initSongs(categoryId)
     setPageOfSongs(1)
     setHasNextSong(false)
   }, [categoryId])
 
-  const initSongs = async (categoryId) => {
-    try {
-      dispatch(setLoading())
-      const response = await getBrowseSongs(categoryId, 'latest', 1)
-      setPageOfSongs((index) => index + 1)
-      setSongListData(response.songs)
-      setHasNextSong(response.hasNext)
-      dispatch(clearLoading())
-    } catch (e) {}
-  }
   const showMorePage = async () => {
     try {
       setMorePageLoading(true)
@@ -53,6 +52,7 @@ const SongList = ({ categoryId }) => {
       setHasNextSong(response.hasNext)
     } catch (e) {}
   }
+
   const playAllMusic = () => {
     dispatch(replaceSongListData(songListData))
     dispatch(openPlayer())

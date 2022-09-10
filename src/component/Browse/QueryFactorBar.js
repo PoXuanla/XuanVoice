@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Typography, Box, Button, Divider } from '@mui/material'
 import { getAllSongCategories } from '../../api/songCategory'
 import { QueryFactorBarStyle, QueryFactorBtn, QueryFactorSkeleton } from './BrowseStyle'
@@ -8,16 +8,22 @@ const QueryFactorBar = (props) => {
   const [songCategories, setSongCategories] = useState([])
   const [selectedCtyIndex, setSelectedCtyIndex] = useState(0)
   const [selectedOrderIndex, setSelectedOrderIndex] = useState(0)
-
-  useEffect(async () => {
-    setLoading(true)
-    const response = await getAllSongCategories()
-    const songCategory = response.SongCategory
-    songCategory.splice(0, 0, { name: '全部', _id: 'all' })
-    setSongCategories(songCategory)
-    setLoading(false)
+  
+  useEffect(() => {
+    const getAllSongCategoriesData = async () => {
+      try {
+        setLoading(true)
+        const response = await getAllSongCategories()
+        const songCategory = response.SongCategory
+        songCategory.splice(0, 0, { name: '全部', _id: 'all' })
+        setSongCategories(songCategory)
+        setLoading(false)
+      } catch (e) {
+        console.log(e)
+      }
+    }
+    getAllSongCategoriesData() //取得所有分類
   }, [])
-
   const setSelectedCtyIdHandler = (index) => () => {
     setSelectedCtyIndex(index)
     props.setSelectedCtyId(songCategories[index]._id)
@@ -38,23 +44,34 @@ const QueryFactorBar = (props) => {
       </QueryFactorBtn>
     )
   })
-  const QueryOrderBtn = ['最新'].map((x, index) => {
-    return (
-      <QueryFactorBtn
-        key={index}
-        size='small'
-        variant={index === selectedOrderIndex ? 'contained' : 'outlined'}
-        onClick={setSelectedOrderHandler(index)}
-      >
-        {x}
-      </QueryFactorBtn>
-    )
-  })
-  const SkeletonBtn = ['全部類型', '測資', '測資', '測資'].map((name, index) => (
-    <QueryFactorSkeleton variant='rectangular' key={index}>
-      <Button size='small'>12</Button>
-    </QueryFactorSkeleton>
-  ))
+  const QueryOrderBtn = useMemo(
+    () =>
+      ['最新'].map((x, index) => {
+        return (
+          <QueryFactorBtn
+            key={index}
+            size='small'
+            variant={index === selectedOrderIndex ? 'contained' : 'outlined'}
+            onClick={setSelectedOrderHandler(index)}
+          >
+            {x}
+          </QueryFactorBtn>
+        )
+      }),
+    []
+  )
+  const SkeletonBtn = useMemo(
+    () =>
+      ['全部類型', '測資', '測資', '測資'].map((name, index) => {
+        return (
+          <QueryFactorSkeleton variant='rectangular' key={index}>
+            <Button size='small'>12</Button>
+          </QueryFactorSkeleton>
+        )
+      }),
+    []
+  )
+
   return (
     <QueryFactorBarStyle>
       <Typography variant='h6'>類型</Typography>

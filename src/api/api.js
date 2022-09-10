@@ -24,14 +24,8 @@ const requestInterceptors = (instance) => {
 const responseInterceptors = (instance) => {
   instance.interceptors.response.use(
     function (response) {
-      console.log(response.data)
+      // console.log(response.data)
       return response.data
-      const data = response.data
-      console.log(data)
-      // Do something with response data
-      if (data.message) {
-        console.log(data.message)
-      }
     },
     function (error) {
       if (error.response) {

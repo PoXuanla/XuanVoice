@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { Avatar, Container, Grid, Typography, Box, Divider, Skeleton } from '@mui/material'
-import SongWatchList from '../component/SongWatchList/SongWatchList'
+import { Container } from '@mui/material'
 import { clearLoading, setLoading } from '../slice/loadSlice'
 import { getUserInform } from '../api/user'
 import NotFoundUser from '../component/UserInform/NotFoundUser'
@@ -19,23 +18,22 @@ const UserInform = () => {
   const [userExist, setUserExist] = useState(true)
 
   useEffect(() => {
+    const getInform = async () => {
+      try {
+        dispatch(setLoading())
+        const response = await getUserInform(account)
+        const { inform: userInform } = response
+        const { songs: userSongs } = response.inform
+        setUserInform(userInform)
+        setUserSongs(userSongs)
+        dispatch(clearLoading())
+      } catch (e) {
+        setUserExist(false)
+        dispatch(clearLoading())
+      }
+    }
     getInform()
   }, [])
-
-  const getInform = async () => {
-    try {
-      dispatch(setLoading())
-      const response = await getUserInform(account)
-      const { inform: userInform } = response
-      const { songs: userSongs } = response.inform
-      setUserInform(userInform)
-      setUserSongs(userSongs)
-      dispatch(clearLoading())
-    } catch (e) {
-      setUserExist(false)
-      dispatch(clearLoading())
-    }
-  }
 
   return (
     <Container maxWidth={'md'} sx={{ mt: 2, pb: 2 }}>

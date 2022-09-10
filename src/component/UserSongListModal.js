@@ -1,5 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
-
+import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react'
 import {
   Modal,
   Box,
@@ -33,27 +32,25 @@ const UserSongListModal = (props) => {
   const [showCreateSongList, setShowCreateSongList] = useState(false)
   const [createError, setCreateError] = useState('')
 
-
-  useEffect(async () => {
+  const getSongLists = useCallback(async () => {
+    console.log('song Change', songId)
     try {
-      if (show) {
-        setCreateError('')
-        getSongLists()
+      setCreateError('')
+      const response = await getListsAndCheckSongExistList(songId)
+      const newChecked = []
+      for (let i = 0; i < response.songLists.length; i++) {
+        if (response.songLists[i].hasThisSong) {
+          newChecked.push(i)
+        }
       }
+      setUserSongList(response.songLists)
+      setChecked(newChecked)
     } catch (e) {}
-  }, [show])
+  }, [songId])
 
-  const getSongLists = async () => {
-    const response = await getListsAndCheckSongExistList(songId)
-    const newChecked = []
-    for (let i = 0; i < response.songLists.length; i++) {
-      if (response.songLists[i].hasThisSong) {
-        newChecked.push(i)
-      }
-    }
-    setUserSongList(response.songLists)
-    setChecked(newChecked)
-  }
+  useEffect(() => {
+    if (show) getSongLists()
+  }, [show, getSongLists])
 
   const handleToggle = (value) => async () => {
     const currentIndex = checked.indexOf(value)
@@ -77,38 +74,44 @@ const UserSongListModal = (props) => {
       await updateSongInSongList(userSongList[value]._id, data).then((data) => {})
     }
   }
-  const onCancelHandler = () => {
+
+  const onCancelHandler = useCallback(() => {
     props.onCancel()
-  }
-  const ListItems = userSongList.map((songList, index) => {
-    const labelId = `checkbox-list-secondary-label-${index}`
-    return (
-      <div key={index}>
-        <ListItem
-          key={songList._id}
-          secondaryAction={
-            <Checkbox
-              edge='end'
-              color='secondary'
-              onChange={handleToggle(index)}
-              checked={checked.indexOf(index) !== -1}
-              inputProps={{ 'aria-labelledby': labelId }}
-            />
-          }
-          disablePadding
-        >
-          <ListItemButton onClick={handleToggle(index)} key={index}>
-            <ListItemText
-              sx={{ color: 'text.primary' }}
-              id={labelId}
-              primary={`${songList.name}`}
-            />
-          </ListItemButton>
-        </ListItem>
-        <Divider key={index} />
-      </div>
-    )
-  })
+  }, [])
+
+  const ListItems = useMemo(() => {
+    return userSongList.map((songList, index) => {
+      console.log('listitem')
+      const labelId = `checkbox-list-secondary-label-${index}`
+      return (
+        <div key={index}>
+          <ListItem
+            key={songList._id}
+            secondaryAction={
+              <Checkbox
+                edge='end'
+                color='secondary'
+                onChange={handleToggle(index)}
+                checked={checked.indexOf(index) !== -1}
+                inputProps={{ 'aria-labelledby': labelId }}
+              />
+            }
+            disablePadding
+          >
+            <ListItemButton onClick={handleToggle(index)} key={index}>
+              <ListItemText
+                sx={{ color: 'text.primary' }}
+                id={labelId}
+                primary={`${songList.name}`}
+              />
+            </ListItemButton>
+          </ListItem>
+          <Divider key={index} />
+        </div>
+      )
+    })
+  }, [userSongList])
+
   const openCreateSongList = () => {
     setShowCreateSongList(true)
   }
@@ -126,9 +129,9 @@ const UserSongListModal = (props) => {
       newSongListRef.current.value = ''
       setShowCreateSongList(false)
       getSongLists()
-      setCreateError('')
     } catch (e) {}
   }
+  
   return (
     <>
       <SimpleComfirmModal show={show} title={'加入歌單'} onCancel={onCancelHandler} noFooter>
@@ -181,4 +184,4 @@ const UserSongListModal = (props) => {
     </>
   )
 }
-export default UserSongListModal
+export default React.memo(UserSongListModal)

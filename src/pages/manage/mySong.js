@@ -13,19 +13,19 @@ const MySong = () => {
   const [songListData, setSongListData] = useState([])
 
   useEffect(() => {
+    const fetchSong = async () => {
+      try {
+        dispatch(setLoading())
+        const response = await fetchUserSong()
+        setSongListData(response.song)
+        dispatch(clearLoading())
+      } catch (e) {
+        dispatch(clearLoading())
+      }
+    }
     fetchSong()
   }, [])
 
-  const fetchSong = async () => {
-    try {
-      dispatch(setLoading())
-      const response = await fetchUserSong()
-      setSongListData(response.song)
-      dispatch(clearLoading())
-    } catch (e) {
-      dispatch(clearLoading())
-    }
-  }
   return (
     <>
       <Wrapper>

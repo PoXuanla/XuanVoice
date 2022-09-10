@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { Avatar, Container, Grid, Typography, Box, IconButton, Divider } from '@mui/material'
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 import PlayCircleIcon from '@mui/icons-material/PlayCircle'
 import { replaceSongListData, openPlayer } from '../slice/musicplayerSlice'
 import {
@@ -20,16 +19,21 @@ const Song = () => {
   const songId = useParams().songId
   const [songData, setSongData] = useState({})
 
+  //loading music data
   useEffect(async () => {
-    const response = await getSongById(songId)
-    setSongData(response.song)
+    const getSongData = async () => {
+      const response = await getSongById(songId)
+      setSongData(response.song)
+    }
+    getSongData()
   }, [])
 
-  const playMusic = () => {
+  const playMusicHandler = () => {
     const { name, image, author, mp3 } = songData
     dispatch(openPlayer())
     dispatch(replaceSongListData([{ name, image, author, mp3 }]))
   }
+
   return (
     <Container sx={{ mt: 2 }}>
       <TopGridContainer container>
@@ -48,15 +52,8 @@ const Song = () => {
             </Typography>
           </TopInfoContainer>
           <TopToolContainer>
-            {/* <Typography variant='h6' sx={{ fontWeight: 600, color: 'text.primary' }}>
-                喜歡 :1
-              </Typography> */}
-
             <Box>
-              {/* <IconButton color='primary' aria-label='upload picture' component='span'>
-                  <FavoriteBorderIcon sx={{ color: 'red' }} />
-                </IconButton> */}
-              <IconButton size='large' onClick={playMusic}>
+              <IconButton size='large' onClick={playMusicHandler}>
                 <PlayCircleIcon sx={{ color: 'red' }} fontSize='large' />
               </IconButton>
             </Box>

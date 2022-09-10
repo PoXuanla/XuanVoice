@@ -1,8 +1,8 @@
 import { Box, Divider, Typography } from '@mui/material'
 import { Link as RouterLink } from 'react-router-dom'
-import React, { forwardRef } from 'react'
-import { DragHandle } from '@mui/icons-material'
+import React from 'react'
 import { Wrapper, RankStyle, CellAvatar, SongInfoStyle, SongItemStyle } from './ListCellStyle'
+
 const ListCell = (props) => {
   const { songData = {}, songIndex, rank = null, divider = false } = props
   const children = props.children
@@ -52,4 +52,4 @@ const ListCell = (props) => {
     </Box>
   )
 }
-export default ListCell
+export default React.memo(ListCell)
