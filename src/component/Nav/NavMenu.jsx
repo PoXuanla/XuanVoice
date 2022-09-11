@@ -1,11 +1,10 @@
 import React from 'react'
 import { MenuItem, Typography, Menu } from '@mui/material'
 import { Link } from 'react-router-dom'
-import { useSelector } from 'react-redux'
 
 const NavMenu = (props) => {
   const { anchorMenuBtn, settings } = props
-  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn)
+  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true'
 
   const handleCloseUserMenu = () => {
     props.handleCloseUserMenu()
@@ -58,4 +57,4 @@ const NavMenu = (props) => {
     </Menu>
   )
 }
-export default NavMenu
+export default React.memo(NavMenu)

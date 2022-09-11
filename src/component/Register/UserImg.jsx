@@ -2,32 +2,8 @@ import React, { useState } from 'react'
 import styled from '@emotion/styled'
 import { Button, Avatar, Alert } from '@mui/material'
 import { grey } from '@mui/material/colors'
+import { UserImage } from './RegisterStyle'
 
-const UserImage = styled('div', {
-  shouldForwardProp: (prop) => prop !== 'userImagePreview' && prop !== 'userImageError'
-})(({ theme, userImagePreview, userImageError }) => ({
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  alignItems: 'center',
-  '& .MuiAvatar-root': {
-    width: 150,
-    height: 150,
-    backgroundColor: grey[200],
-    marginBottom: theme.spacing(2),
-    display: userImagePreview ? 'block' : 'none'
-  },
-  '& input': {
-    display: 'none'
-  },
-  '& .MuiButton-root': {
-    marginBottom: theme.spacing(2)
-  },
-  '& .MuiAlert-root': {
-    display: userImageError ? 'flex' : 'none',
-    marginBottom: theme.spacing(2)
-  }
-}))
 
 const UserImg = React.forwardRef((props, ref) => {
   const [userImagePreview, setUserImagePreview] = useState('') //圖片預覽 src

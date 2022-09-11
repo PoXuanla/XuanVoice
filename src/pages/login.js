@@ -1,4 +1,4 @@
-import React, { useState, useRef,useEffect } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, Link } from 'react-router-dom'
 import { Container, Typography, Alert, Button } from '@mui/material'
@@ -36,10 +36,11 @@ const Login = () => {
       })
   }
   //已登入就跳轉主頁
-  // useEffect(() => {
-  //   const isLoggedIn = localStorage.getItem('isLoggedIn')
-  //   if (isLoggedIn === 'true') navigator('/')
-  // })
+  useEffect(() => {
+    const isLoggedIn = localStorage.getItem('isLoggedIn')
+    if (isLoggedIn === 'true') navigator('/', { replace: true })
+  },[])
+
   return (
     <Container maxWidth='xs'>
       <Wrapper component='form' onSubmit={submitHandler}>

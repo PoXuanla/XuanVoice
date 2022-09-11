@@ -9,13 +9,13 @@ import {
   ListItem
 } from '@mui/material'
 import { Link } from 'react-router-dom'
-import { useSelector } from 'react-redux'
 import InboxIcon from '@mui/icons-material/MoveToInbox'
 import MailIcon from '@mui/icons-material/Mail'
 
 const SwipeDrawer = (props) => {
-  const { pages, settings, showDrawer } = props
-  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn)
+  const {  settings, showDrawer } = props
+  const pages = ['排行榜']
+  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true'
 
   //處理尺寸小於 sm 的 menu
   const toggleDrawer = (bool) => (event) => {
@@ -78,4 +78,4 @@ const SwipeDrawer = (props) => {
     </SwipeableDrawer>
   )
 }
-export default SwipeDrawer
+export default React.memo(SwipeDrawer)

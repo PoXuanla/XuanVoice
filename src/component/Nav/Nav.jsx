@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { Box, Button, Tooltip, AppBar, Toolbar, IconButton, Container, Avatar } from '@mui/material'
+import React, { useCallback, useMemo, useState } from 'react'
+import { Box, Button, AppBar, Toolbar, Container } from '@mui/material'
 
 import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
@@ -26,16 +26,16 @@ const Nav = () => {
   const [showDrawer, setShowDrawer] = useState(false)
 
   //處理尺寸小於 sm 的 menu
-  const toggleDrawer = (bool) => {
+  const toggleDrawer = useCallback((bool) => {
     setShowDrawer(bool)
-  }
+  }, [])
   //處理尺寸 >= sm 的 menu
   const handleOpenUserMenu = (event) => {
     setAnchorMenuBtn(event.currentTarget)
   }
-  const handleCloseUserMenu = () => {
+  const handleCloseUserMenu = useCallback(() => {
     setAnchorMenuBtn(null)
-  }
+  }, [])
   const openMenu = (event) => {
     if (document.body.offsetWidth >= theme.breakpoints.values.md) {
       handleOpenUserMenu(event)
@@ -64,26 +64,28 @@ const Nav = () => {
     dispatch(toggleMode())
     setAnchorMenuBtn(null)
   }
-  const pages = [ '排行榜']
-  const settings = [
-    {
-      text: '個人頁面',
-      needLogin: true,
-      click: clearAnchorMenuBtn,
-      link: `/userInform/${Object.getOwnPropertyNames(user).length !== 0 ? user.account : ''}`
-    },
-    { text: '我的歌單', needLogin: true, click: clearAnchorMenuBtn, link: '/manage/songlists' },
-    { text: '管理歌曲', needLogin: true, click: clearAnchorMenuBtn, link: '/manage/song' },
-    {
-      text: mode === 'light' ? '深色模式' : '淺色模式',
-      needLogin: false,
-      click: toggleModeHandler,
-      link: null
-    },
-    { text: '登入', needLogin: false, click: loginHandler, link: null },
-    { text: '登出', needLogin: true, click: logoutHandler, link: null }
-  ]
-
+  const pages = ['排行榜']
+  const settings = useMemo(
+    () => [
+      {
+        text: '個人頁面',
+        needLogin: true,
+        click: clearAnchorMenuBtn,
+        link: `/userInform/${Object.getOwnPropertyNames(user).length !== 0 ? user.account : ''}`
+      },
+      { text: '我的歌單', needLogin: true, click: clearAnchorMenuBtn, link: '/manage/songlists' },
+      { text: '管理歌曲', needLogin: true, click: clearAnchorMenuBtn, link: '/manage/song' },
+      {
+        text: mode === 'light' ? '深色模式' : '淺色模式',
+        needLogin: false,
+        click: toggleModeHandler,
+        link: null
+      },
+      { text: '登入', needLogin: false, click: loginHandler, link: null },
+      { text: '登出', needLogin: true, click: logoutHandler, link: null }
+    ],
+    [user]
+  )
   return (
     <AppBar position='static' elevation={0}>
       <Container maxWidth='xl'>
@@ -117,12 +119,7 @@ const Nav = () => {
             {/* 觸發 Menu 的按鈕 */}
             <UserImgBtn openMenu={openMenu} userImg={userImg} />
             {/* 尺寸小於 md 的 Menu */}
-            <SwipeDrawer
-              pages={pages}
-              settings={settings}
-              toggleDrawer={toggleDrawer}
-              showDrawer={showDrawer}
-            />
+            <SwipeDrawer settings={settings} toggleDrawer={toggleDrawer} showDrawer={showDrawer} />
             {/*  尺寸大於 md 的 Menu */}
             <NavMenu
               settings={settings}

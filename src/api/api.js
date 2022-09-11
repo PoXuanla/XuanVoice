@@ -32,6 +32,8 @@ const responseInterceptors = (instance) => {
         switch (error.response.status) {
           case 401:
             console.log(`axios interceptor ${error.response.data.message}`)
+            localStorage.removeItem('accessToken')
+            localStorage.removeItem('isLoggedIn')
             // const navigate = useNavigate()
             // navigate('/login')
             // go to login page and show alert

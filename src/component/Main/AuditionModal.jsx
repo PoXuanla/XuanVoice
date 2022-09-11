@@ -1,38 +1,34 @@
 import { Box, Typography, Checkbox } from '@mui/material'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import SimpleComfirmModal from '../SimpleComfirmModal/SimpleComfirmModal'
 import { replaceSongListData, openPlayer } from '../../slice/musicplayerSlice'
 import { useDispatch } from 'react-redux'
 
 const AuditionModal = () => {
   const dispatch = useDispatch()
-  const [isChecked, setIsChecked] = useState(true)
-  const [showModal, setShowModal] = useState(true)
+  const [isChecked, setIsChecked] = useState(true) //是否點擊「不再顯示」
+  const [showModal, setShowModal] = useState(true) //顯示試聽紐
 
   useEffect(() => {
     const showAuditionModal = localStorage.getItem('showAuditionModal')
     if (showAuditionModal === null) {
       setShowModal(true)
-      localStorage.setItem('showAuditionModal', false)
     } else if (showAuditionModal === 'true') {
       setShowModal(true)
-      localStorage.setItem('showAuditionModal', false)
     } else {
       setShowModal(false)
-      localStorage.setItem('showAuditionModal', false)
     }
   }, [])
-  const changeShowNextTime = (e) => {
-    //不再顯示
-    if (!isChecked === true) {
-      localStorage.setItem('showAuditionModal', false)
-    } else {
-      //顯示
-      localStorage.setItem('showAuditionModal', true)
-    }
+  
+  useEffect(() => {
+    if (isChecked) localStorage.setItem('showAuditionModal', false)
+    else localStorage.setItem('showAuditionModal', true)
+  }, [isChecked])
+
+  const changeShowNextHandler = (e) => {
     setIsChecked((checked) => !checked)
   }
-  const playMusic = () => {
+  const playMusicHandler = useCallback(() => {
     const data = {
       _id: '6311917e30162259b87e5ae8',
       name: 'Never Gonna Give You Up',
@@ -50,23 +46,10 @@ const AuditionModal = () => {
     dispatch(replaceSongListData([data]))
     dispatch(openPlayer())
     setShowModal(false)
-
-    if (isChecked === true) {
-      localStorage.setItem('showAuditionModal', false)
-    } else {
-      //顯示
-      localStorage.setItem('showAuditionModal', true)
-    }
-  }
-  const modalClose = () => {
-    if (isChecked === true) {
-      localStorage.setItem('showAuditionModal', false)
-    } else {
-      //顯示
-      localStorage.setItem('showAuditionModal', true)
-    }
+  }, [])
+  const modalCloseHandler = useCallback(() => {
     setShowModal(false)
-  }
+  }, [])
 
   return (
     <SimpleComfirmModal
@@ -74,8 +57,8 @@ const AuditionModal = () => {
       title={'通知'}
       confirmText={'很想試聽!'}
       cancelText={'取消'}
-      onConfirm={playMusic}
-      onCancel={modalClose}
+      onConfirm={playMusicHandler}
+      onCancel={modalCloseHandler}
     >
       {
         <Box sx={{ textAlign: 'center' }}>
@@ -83,7 +66,7 @@ const AuditionModal = () => {
             試聽熱門單曲
           </Typography>
           不再顯示
-          <Checkbox checked={isChecked} onChange={changeShowNextTime} />
+          <Checkbox checked={isChecked} onChange={changeShowNextHandler} />
         </Box>
       }
     </SimpleComfirmModal>

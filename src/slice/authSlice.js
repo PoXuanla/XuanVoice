@@ -29,14 +29,10 @@ export const login = createAsyncThunk('auth/login', async ({ account, password }
 })
 export const validAccessToken = createAsyncThunk('auth/validAccessToken', async (thunkAPI) => {
   try {
-    let isValid = false
-    let user = {}
     const response = await checkTokenValid()
-
-    isValid = true
-    user = { user: response.user }
+    let user = { user: response.user }
     localStorage.setItem('isLoggedIn', true)
-    return isValid ? user : thunkAPI.rejectWithValue()
+    return user
   } catch (e) {
     thunkAPI.rejectWithValue()
   }
@@ -66,41 +62,32 @@ export const register = createAsyncThunk('auth/register', async (data, thunkAPI)
 const authSlice = createSlice({
   name: 'auth',
   initialState: {
-    // isLoggedIn: localStorage.getItem('accessToken') ? true : false,
-    isLoggedIn: false,
-    user: {} //
+    user: {} 
   },
   reducers: {
     logout: (state, action) => {
       localStorage.removeItem('accessToken')
       localStorage.removeItem('isLoggedIn')
-      state.isLoggedIn = false
       state.user = {}
     }
   },
   extraReducers: {
     [login.fulfilled]: (state, action) => {
-      state.isLoggedIn = true
       state.user = action.payload.user
     },
     [login.rejected]: (state) => {
-      state.isLoggedIn = false
       state.user = {}
     },
     [validAccessToken.fulfilled]: (state, action) => {
-      state.isLoggedIn = true
       state.user = action.payload.user
     },
     [validAccessToken.rejected]: (state) => {
-      state.isLoggedIn = false
       state.user = {}
     },
     [register.fulfilled]: (state, action) => {
-      state.isLoggedIn = true
       state.user = action.payload.user
     },
     [register.rejected]: (state) => {
-      state.isLoggedIn = false
       state.user = {}
     }
   }
